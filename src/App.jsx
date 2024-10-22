@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { BookTable } from "./Books";
+import { BookTable } from "./BooksTable";
 
 function App() {
   const currentDate = new Date().toDateString();
