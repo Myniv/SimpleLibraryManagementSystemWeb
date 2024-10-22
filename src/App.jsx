@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { BookTable } from "./BooksTable";
+import { AddBookForm } from "./Form";
 
 function App() {
   const currentDate = new Date().toDateString();
@@ -13,6 +14,7 @@ function App() {
         <p>{currentDate}</p>
       </header>
       <BookTable />
+      <AddBookForm />
     </>
   );
 }
