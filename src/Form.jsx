@@ -18,12 +18,12 @@ const AddBookForm = () => {
       );
       if (selectedBook) {
         setFormData({
-        //   id: selectedBook.id,
-        //   title: selectedBook.title,
-        //   author: selectedBook.author,
+          //   id: selectedBook.id,
+          //   title: selectedBook.title,
+          //   author: selectedBook.author,
           category: selectedBook.category,
-        //   publicationyear: selectedBook.publicationyear,
-        //   isbn: selectedBook.isbn,
+          //   publicationyear: selectedBook.publicationyear,
+          //   isbn: selectedBook.isbn,
         });
       }
     } else {
@@ -37,74 +37,146 @@ const AddBookForm = () => {
   const handleSubmit = (e) => {
     //prevent default is for not completely submitting
     e.preventDefault();
-    console.log(`Form Submitted`);
+
+    // Alert message if form is filled correctly
+    alert("The new book has been submitted!!");
+    setFormData({
+      id: "",
+      title: "",
+      category: "",
+      author: "",
+      publicationyear: "",
+      isbn: "",
+    });
   };
 
   //For make unik array (Remove Duplicate)
   const unikCategorys = Array.from(
     new Set(bookList.map((bookList) => bookList.category))
   );
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="id">ID</label>
-        <input type="number" id="id" name="id" value={formData.id} required />
+    <>
+      <br></br>
+      <br></br>
+      <h2>Form Book Input</h2>
+      <div className="container border border-dark">
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="id" className="form-label">
+              ID
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              id="id"
+              name="id"
+              value={formData.id}
+              onChange={handleChange}
+              placeholder="ID"
+              required
+            />
+          </div>
 
-        <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={formData.title}
-          required
-        />
+          <div className="mb-3">
+            <label htmlFor="title" className="form-label">
+              Title
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Title"
+              required
+            />
+          </div>
 
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          {unikCategorys.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-          {/* <option value={""} selected>
-            Category
-          </option> */}
-        </select>
+          <div className="mb-3">
+            <label htmlFor="category" className="form-label">
+              Category
+            </label>
+            <select
+              className="form-select"
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>
+                Select category
+              </option>
+              {unikCategorys.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="author">Author</label>
-        <input
-          type="text"
-          id="author"
-          name="author"
-          value={formData.author}
-          required
-        />
+          <div className="mb-3">
+            <label htmlFor="author" className="form-label">
+              Author
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="author"
+              name="author"
+              value={formData.author}
+              onChange={handleChange}
+              placeholder="Author"
+              required
+            />
+          </div>
 
-        <label htmlFor="publicationyear">Publication Year</label>
-        <input
-          type="date"
-          id="publicationyear"
-          name="publicationyear"
-          value={formData.publicationyear}
-          required
-        />
+          <div className="mb-3">
+            <label htmlFor="publicationyear" className="form-label">
+              Publication Year
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="publicationyear"
+              name="publicationyear"
+              value={formData.publicationyearr}
+              onChange={handleChange}
+              placeholder="Publication Year"
+              required
+            />
+          </div>
 
-        <label htmlFor="isbn">ISBN</label>
-        <input
-          type="number"
-          id="isbn"
-          name="isbn"
-          value={formData.isbn}
-          required
-        />
+          <div className="mb-3">
+            <label htmlFor="isbn" className="form-label">
+              ISBN
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              id="isbn"
+              name="isbn"
+              value={formData.isbn}
+              onChange={handleChange}
+              placeholder="ISBN"
+              required
+            />
+          </div>
+          {/* <div class="d-flex justify-content-end"> */}
+
+          <div className="d-grid gap-2">
+            <button
+              type="submit"
+              className="btn btn-primary m-3 right text-right"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </>
   );
 };
 

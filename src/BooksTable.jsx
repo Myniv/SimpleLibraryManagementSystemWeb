@@ -48,9 +48,19 @@ const BookTable = () => {
           return <option key={category}>{category}</option>;
         })}
       </select> */}
+      <br></br>
+      <div className="d-flex justify-content-between align-items-center">
+        <h2>Book Table</h2>
+        <button className="btn btn-primary m-1" onClick={clearFilters}>
+          Clear
+        </button>
+      </div>
 
-      <select onChange={(e) => setCategory(e.target.value)}>
-        <option value="" disabled default selected>
+      <select
+        className="form-select form-select-sm mb-3"
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        <option value="" default selected>
           Select Category
         </option>
         {categorys.map((category) => {
@@ -58,31 +68,42 @@ const BookTable = () => {
         })}
       </select>
 
-      <button onClick={clearFilters}>Clear</button>
-      <table>
-        <thead>
+      <table className="table table-striped table-bordered">
+        <thead className="thead-dark">
           <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Kategori</th>
-            <th>Publication Year</th>
-            <th>ISBN</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Category</th>
+            <th scope="col">Publication Year</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">ACTION</th>
           </tr>
         </thead>
         <tbody>
           {filteredBooks.map((book) => (
-            <tr key={book.isbn}>
+            <tr scope="row" key={book.isbn}>
               <td key={book.title}>{book.title}</td>
-              <td key={book.nama}>{book.nama}</td>
               <td key={book.author}>{book.author}</td>
               <td key={book.category}>{book.category}</td>
               <td key={book.publicationyear}>{book.publicationyear}</td>
               <td key={book.isbn}>{book.isbn}</td>
               <td>
-                <button>Edit</button>
-              </td>
-              <td>
-                <button>Delete</button>
+                <div className="d-grid gap-2 d-md-flex justify-content-md">
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    value={"edit"}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger btn-sm"
+                    value={"delete"}
+                  >
+                    Delete
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

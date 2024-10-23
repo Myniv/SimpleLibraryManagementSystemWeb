@@ -9,8 +9,10 @@ function App() {
   return (
     <>
       <HeaderFunction />
-      <BookTable />
-      <AddBookForm />
+      <div className="container">
+        <BookTable />
+        <AddBookForm />
+      </div>
       <FooterFunction />
     </>
   );
