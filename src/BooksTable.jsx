@@ -3,6 +3,7 @@ import { bookList } from "./Books";
 
 const BookTable = () => {
   //this is to represent the bookList
+  //usestate is for save data and change state
   const [filteredBooks, setFilteredBooks] = useState(bookList);
 
   //if u want to add more filter, add this function too
@@ -17,6 +18,7 @@ const BookTable = () => {
   //   };
 
   //if u want to add more filter, add this function too
+
   const categorys = Array.from(
     new Set(bookList.map((bookList) => bookList.category))
   );

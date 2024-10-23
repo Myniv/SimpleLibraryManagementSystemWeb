@@ -10,6 +10,7 @@ const AddBookForm = () => {
     isbn: "",
   });
 
+  //To change when user type in
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "category") {
@@ -18,6 +19,9 @@ const AddBookForm = () => {
       );
       if (selectedBook) {
         setFormData({
+          //why just the category? cause if i include all of it, everything will change too
+          //And because of that, i just want to change the category
+
           //   id: selectedBook.id,
           //   title: selectedBook.title,
           //   author: selectedBook.author,
@@ -35,11 +39,14 @@ const AddBookForm = () => {
   };
 
   const handleSubmit = (e) => {
-    //prevent default is for not completely submitting
+    //prevent default is for not completely submitting and not refresh page
+    //so the logic can be added below it if want to sending data withot refresh the page
     e.preventDefault();
 
-    // Alert message if form is filled correctly
+    // Alert message 
     alert("The new book has been submitted!!");
+
+    //Reset all form
     setFormData({
       id: "",
       title: "",
