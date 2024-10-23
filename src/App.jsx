@@ -2,19 +2,16 @@ import { useState } from "react";
 
 import { BookTable } from "./BooksTable";
 import { AddBookForm } from "./Form";
+import { FooterFunction } from "./Foot";
+import { HeaderFunction } from "./Head";
 
 function App() {
-  const currentDate = new Date().toDateString();
-
   return (
     <>
-      <header>
-        <title>Library Management</title>
-        <h1>Library Management</h1>
-        <p>{currentDate}</p>
-      </header>
+      <HeaderFunction />
       <BookTable />
       <AddBookForm />
+      <FooterFunction />
     </>
   );
 }
