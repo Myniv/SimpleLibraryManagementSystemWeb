@@ -44,7 +44,7 @@ const AddBookForm = () => {
     e.preventDefault();
 
     // Alert message 
-    alert("The new book has been submitted!!");
+      alert("The new book has been submitted!!");
 
     //Reset all form
     setFormData({
@@ -149,7 +149,7 @@ const AddBookForm = () => {
               className="form-control"
               id="publicationyear"
               name="publicationyear"
-              value={formData.publicationyearr}
+              value={formData.publicationyear}
               onChange={handleChange}
               placeholder="Publication Year"
               required

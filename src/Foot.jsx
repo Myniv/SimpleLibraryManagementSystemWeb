@@ -1,4 +1,3 @@
-import Logo from "./img/LinkedIn_logo.png";
 
 const FooterFunction = () => {
   const name = "Mulyana";

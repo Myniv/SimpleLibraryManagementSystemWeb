@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { BookTable } from "./BooksTable";
 import { AddBookForm } from "./Form";
 import { FooterFunction } from "./Foot";
