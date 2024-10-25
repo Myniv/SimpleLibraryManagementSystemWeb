@@ -43,8 +43,8 @@ const AddBookForm = () => {
     //so the logic can be added below it if want to sending data withot refresh the page
     e.preventDefault();
 
-    // Alert message 
-      alert("The new book has been submitted!!");
+    // Alert message
+    alert("The new book has been submitted!!");
 
     //Reset all form
     setFormData({
@@ -67,120 +67,122 @@ const AddBookForm = () => {
       <br></br>
       <br></br>
       <h2>Form Book Input</h2>
-      <div className="container border border-dark">
+      <div className="container border">
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="id" className="form-label">
-              ID
-            </label>
-            <input
-              type="number"
-              className="form-control"
-              id="id"
-              name="id"
-              value={formData.id}
-              onChange={handleChange}
-              placeholder="ID"
-              required
-            />
-          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label htmlFor="id" className="form-label">
+                  ID
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="id"
+                  name="id"
+                  value={formData.id}
+                  onChange={handleChange}
+                  placeholder="ID"
+                  required
+                />
+              </div>
 
-          <div className="mb-3">
-            <label htmlFor="title" className="form-label">
-              Title
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Title"
-              required
-            />
-          </div>
+              <div className="mb-3">
+                <label htmlFor="title" className="form-label">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  placeholder="Title"
+                  required
+                />
+              </div>
 
-          <div className="mb-3">
-            <label htmlFor="category" className="form-label">
-              Category
-            </label>
-            <select
-              className="form-select"
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              required
-            >
-              <option value="" disabled>
-                Select category
-              </option>
-              {unikCategorys.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </div>
+              <div className="mb-3">
+                <label htmlFor="category" className="form-label">
+                  Category
+                </label>
+                <select
+                  className="form-select"
+                  id="category"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled>
+                    Select category
+                  </option>
+                  {unikCategorys.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-          <div className="mb-3">
-            <label htmlFor="author" className="form-label">
-              Author
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="author"
-              name="author"
-              value={formData.author}
-              onChange={handleChange}
-              placeholder="Author"
-              required
-            />
-          </div>
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label htmlFor="author" className="form-label">
+                  Author
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="author"
+                  name="author"
+                  value={formData.author}
+                  onChange={handleChange}
+                  placeholder="Author"
+                  required
+                />
+              </div>
 
-          <div className="mb-3">
-            <label htmlFor="publicationyear" className="form-label">
-              Publication Year
-            </label>
-            <input
-              type="date"
-              className="form-control"
-              id="publicationyear"
-              name="publicationyear"
-              value={formData.publicationyear}
-              onChange={handleChange}
-              placeholder="Publication Year"
-              required
-            />
-          </div>
+              <div className="mb-3">
+                <label htmlFor="publicationyear" className="form-label">
+                  Publication Year
+                </label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="publicationyear"
+                  name="publicationyear"
+                  value={formData.publicationyear}
+                  onChange={handleChange}
+                  placeholder="Publication Year"
+                  required
+                />
+              </div>
 
-          <div className="mb-3">
-            <label htmlFor="isbn" className="form-label">
-              ISBN
-            </label>
-            <input
-              type="number"
-              className="form-control"
-              id="isbn"
-              name="isbn"
-              value={formData.isbn}
-              onChange={handleChange}
-              placeholder="ISBN"
-              required
-            />
+              <div className="mb-3">
+                <label htmlFor="isbn" className="form-label">
+                  ISBN
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="isbn"
+                  name="isbn"
+                  value={formData.isbn}
+                  onChange={handleChange}
+                  placeholder="ISBN"
+                  required
+                />
+              </div>
+            </div>
           </div>
-          {/* <div class="d-flex justify-content-end"> */}
-
-          <div className="d-grid gap-2">
-            <button
-              type="submit"
-              className="btn btn-primary m-3 right text-right"
-            >
-              Submit
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="btn btn-primary mb-3 right text-right"
+          >
+            Submit
+          </button>
         </form>
       </div>
     </>
