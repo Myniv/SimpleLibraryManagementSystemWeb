@@ -29,6 +29,9 @@ const BookTable = ({book, setBook}) => {
     setCategory("");
   };
 
+  const onDeleteBook = (id) => {
+    setBook(book.filter((b) => b.id !== id));
+  };
 
   return (
     <div>
@@ -94,6 +97,7 @@ const BookTable = ({book, setBook}) => {
                   <button
                     type="button"
                     className="btn btn-danger btn-sm"
+                    onClick={() => onDeleteBook(book.id)}
                     value={"delete"}
                   >
                     Delete
