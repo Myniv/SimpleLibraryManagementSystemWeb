@@ -1,43 +1,34 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { bookList } from "./Books";
 
-const BookTable = () => {
+const BookTable = ({book, setBook}) => {
   //this is to represent the bookList
   //usestate is for save data and change state
-  const [filteredBooks, setFilteredBooks] = useState(bookList);
+  const [filteredBooks, setFilteredBooks] = useState(book);
 
   //if u want to add more filter, add this function too
   const [category, setCategory] = useState("");
 
-  //This is the other way to filter but cant clear so i dont use it
-
-  //   const filterByCategory = (category) => {
-  //     setFilteredBooks(
-  //       bookList.filter((bookList) => bookList.category === category)
-  //     );
-  //   };
-
-  //if u want to add more filter, add this function too
-
   const categorys = Array.from(
-    new Set(bookList.map((bookList) => bookList.category))
+    new Set(book.map((book) => book.category))
   );
 
   useEffect(() => {
     setFilteredBooks(
-      bookList.filter((bookList) => {
+      book.filter((book) => {
         return (
-          !category || category === bookList.category
+          !category || category === book.category
           //If u want to add more filter category, add here with &&
         );
       })
     );
     //dont forget this below too
-  }, [category]);
+  }, [category, book]);
 
   const clearFilters = () => {
     setCategory("");
   };
+
 
   return (
     <div>
@@ -73,6 +64,7 @@ const BookTable = () => {
       <table className="table table-striped table-bordered">
         <thead className="thead-dark">
           <tr>
+            <th scope="col">ID</th>
             <th scope="col">Title</th>
             <th scope="col">Author</th>
             <th scope="col">Category</th>
@@ -83,7 +75,8 @@ const BookTable = () => {
         </thead>
         <tbody>
           {filteredBooks.map((book) => (
-            <tr scope="row" key={book.isbn}>
+            <tr scope="row" key={book.id}>
+              <td key={book.id}>{book.id}</td>
               <td key={book.title}>{book.title}</td>
               <td key={book.author}>{book.author}</td>
               <td key={book.category}>{book.category}</td>

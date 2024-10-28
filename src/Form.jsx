@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { bookList } from "./Books";
-const AddBookForm = () => {
+const AddBookForm = ({book, setBook}) => {
   const [formData, setFormData] = useState({
     id: "",
     title: "",
@@ -10,6 +11,8 @@ const AddBookForm = () => {
     isbn: "",
   });
 
+  // const [book, setBook] = useState(bookList);
+
   //To change when user type in
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,30 +21,28 @@ const AddBookForm = () => {
         (bookList) => bookList.category === value
       );
       if (selectedBook) {
-        setFormData({
-          //why just the category? cause if i include all of it, everything will change too
-          //And because of that, i just want to change the category
-
-          //   id: selectedBook.id,
-          //   title: selectedBook.title,
-          //   author: selectedBook.author,
+        setFormData((prevData) => ({
+          ...prevData,
           category: selectedBook.category,
-          //   publicationyear: selectedBook.publicationyear,
-          //   isbn: selectedBook.isbn,
-        });
+
+        }));
       }
     } else {
-      setFormData({
-        ...FormData,
+      setFormData((prevData) => ({
+        ...formData,
         [name]: value,
-      });
+      }));
     }
   };
 
+  const bookId = book.length+1;
   const handleSubmit = (e) => {
     //prevent default is for not completely submitting and not refresh page
     //so the logic can be added below it if want to sending data withot refresh the page
     e.preventDefault();
+    
+    const newBookId = {...formData, id: book.length +1};
+    setBook([...book, newBookId]);
 
     // Alert message
     alert("The new book has been submitted!!");
@@ -50,8 +51,8 @@ const AddBookForm = () => {
     setFormData({
       id: "",
       title: "",
-      category: "",
       author: "",
+      category: "",
       publicationyear: "",
       isbn: "",
     });
@@ -81,9 +82,8 @@ const AddBookForm = () => {
                   id="id"
                   name="id"
                   value={formData.id}
-                  onChange={handleChange}
-                  placeholder="ID"
-                  required
+                  placeholder={bookId}
+                  disabled
                 />
               </div>
 
