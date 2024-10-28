@@ -1,8 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { bookList } from "./Books";
-const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) => {
+const AddBookForm = ({
+  book,
+  setBook,
+  isEditing,
+  setIsEditing,
+  selectedBook,
+}) => {
   const [formData, setFormData] = useState({
     id: "",
     title: "",
@@ -13,11 +19,34 @@ const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) =
   });
 
   useEffect(() => {
-    console.log("useEffect triggered", { isEditing, selectedBook });
-    if(isEditing && selectedBook){
+    if (isEditing && selectedBook) {
       setFormData(selectedBook);
     }
-  }, [isEditing, selectedBook])
+  }, [isEditing, selectedBook]);
+
+  //setError Validation
+  const [errors, setErrors] = useState({});
+  const validateForm = () => {
+    const newErrors = {};
+
+    const currentYear = new Date().getFullYear();
+    if (
+      !formData.publicationyear ||
+      formData.publicationyear.length < 1800 ||
+      formData.publicationyear.length > currentYear
+    ) {
+      newErrors.publicationyear =
+        "Publication Year must be between in year 1800 and year " + currentYear;
+    }
+
+    const isValidISBN = /^(978|979)\d{10}$/;
+    if (!formData.isbn || (formData.isbn && !isValidISBN.test(formData.isbn))) {
+      newErrors.isbn =
+        "The first 3 digit ISBN must be 978 or 979 and have a total of 13 digit.";
+    }
+
+    return newErrors;
+  };
 
   //To change when user type in
   const handleChange = (e) => {
@@ -70,25 +99,31 @@ const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) =
     alert("The new book has been Submitted!!");
   };
 
-  const bookIdComponent = book.length + 1;
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(isEditing){
-      onUpdateBook();
-      setIsEditing(false);
-    } else{
-      onAddBook();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      if (isEditing) {
+        onUpdateBook();
+        setIsEditing(false);
+      } else {
+        onAddBook();
+      }
+      //Reset all form
+      setFormData({
+        id: "",
+        title: "",
+        author: "",
+        category: "",
+        publicationyear: "",
+        isbn: "",
+      });
+
+      setErrors({});
+    } else {
+      setErrors(validationErrors);
     }
-    //Reset all form
-    setFormData({
-      id: "",
-      title: "",
-      author: "",
-      category: "",
-      publicationyear: "",
-      isbn: "",
-    });
   };
 
   //For make unik array (Remove Duplicate)
@@ -96,11 +131,20 @@ const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) =
     new Set(bookList.map((bookList) => bookList.category))
   );
 
+  const bookIdComponent = book.length + 1;
+
+  const addOrEditTite = React.useRef("Add Book");
+  const changeTitle = () => {
+    if (isEditing) {
+      addOrEditTite.current = "Edit Book";
+    }
+  };
+
   return (
     <>
       <br></br>
       <br></br>
-      <h2>Form Book Input</h2>
+      <h2>{changeTitle()}</h2>
       <div className="container border">
         <form onSubmit={handleSubmit}>
           <div className="row">
@@ -134,6 +178,8 @@ const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) =
                   placeholder="Title"
                   required
                 />
+                {/* If name error, show <div> */}
+                {/* This is the same as the rest*/}
               </div>
 
               <div className="mb-3">
@@ -182,8 +228,10 @@ const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) =
                   Publication Year
                 </label>
                 <input
-                  type="date"
-                  className="form-control"
+                  type="number"
+                  className={`form-control ${
+                    errors.publicationyear ? "is-invalid" : ""
+                  }`}
                   id="publicationyear"
                   name="publicationyear"
                   value={formData.publicationyear}
@@ -191,6 +239,11 @@ const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) =
                   placeholder="Publication Year"
                   required
                 />
+                {errors.publicationyear && (
+                  <div className="invalid-feedback">
+                    {errors.publicationyear}
+                  </div>
+                )}
               </div>
 
               <div className="mb-3">
@@ -199,7 +252,7 @@ const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) =
                 </label>
                 <input
                   type="number"
-                  className="form-control"
+                  className={`form-control ${errors.isbn ? "is-invalid" : ""}`}
                   id="isbn"
                   name="isbn"
                   value={formData.isbn}
@@ -207,6 +260,9 @@ const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) =
                   placeholder="ISBN"
                   required
                 />
+                {errors.isbn && (
+                  <div className="invalid-feedback">{errors.isbn}</div>
+                )}
               </div>
             </div>
           </div>

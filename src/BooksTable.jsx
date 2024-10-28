@@ -51,7 +51,7 @@ const BookTable = ({ book, setBook, setIsEditing, setSelectedBook}) => {
         className="form-select form-select-sm mb-3"
         onChange={(e) => setCategory(e.target.value)}
       >
-        <option value="" default selected>
+        <option value="" defaultValue="">
           Select Category
         </option>
         {categorys.map((category) => {
