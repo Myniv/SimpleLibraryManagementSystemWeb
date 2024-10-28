@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { bookList } from "./Books";
-const AddBookForm = ({book, setBook}) => {
+const AddBookForm = ({ book, setBook, isEditing, setIsEditing, selectedBook }) => {
   const [formData, setFormData] = useState({
     id: "",
     title: "",
@@ -11,20 +12,24 @@ const AddBookForm = ({book, setBook}) => {
     isbn: "",
   });
 
-  // const [book, setBook] = useState(bookList);
+  useEffect(() => {
+    console.log("useEffect triggered", { isEditing, selectedBook });
+    if(isEditing && selectedBook){
+      setFormData(selectedBook);
+    }
+  }, [isEditing, selectedBook])
 
   //To change when user type in
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "category") {
-      const selectedBook = bookList.find(
+      const selectBook = bookList.find(
         (bookList) => bookList.category === value
       );
-      if (selectedBook) {
+      if (selectBook) {
         setFormData((prevData) => ({
           ...prevData,
-          category: selectedBook.category,
-
+          category: selectBook.category,
         }));
       }
     } else {
@@ -35,18 +40,46 @@ const AddBookForm = ({book, setBook}) => {
     }
   };
 
-  const bookId = book.length+1;
-  const handleSubmit = (e) => {
-    //prevent default is for not completely submitting and not refresh page
-    //so the logic can be added below it if want to sending data withot refresh the page
-    e.preventDefault();
-    
-    const newBookId = {...formData, id: book.length +1};
+  const onUpdateBook = () => {
+    //loop through map to check if book.id === formData.id
+    const editingBooks = book.map((book) => {
+      if (book.id === formData.id) {
+        return {
+          //if True, set title: formData.title and etc
+          ...book,
+          title: formData.title,
+          author: formData.author,
+          category: formData.category,
+          publicationyear: formData.publicationyear,
+          isbn: formData.isbn,
+        };
+      } else {
+        return book;
+      }
+    });
+
+    setBook(editingBooks);
+
+    alert("The Book has been Editted!!");
+  };
+
+  const onAddBook = () => {
+    //Add new book
+    const newBookId = { ...formData, id: book.length + 1 };
     setBook([...book, newBookId]);
+    alert("The new book has been Submitted!!");
+  };
 
-    // Alert message
-    alert("The new book has been submitted!!");
+  const bookIdComponent = book.length + 1;
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if(isEditing){
+      onUpdateBook();
+      setIsEditing(false);
+    } else{
+      onAddBook();
+    }
     //Reset all form
     setFormData({
       id: "",
@@ -82,7 +115,7 @@ const AddBookForm = ({book, setBook}) => {
                   id="id"
                   name="id"
                   value={formData.id}
-                  placeholder={bookId}
+                  placeholder={bookIdComponent}
                   disabled
                 />
               </div>
@@ -181,7 +214,7 @@ const AddBookForm = ({book, setBook}) => {
             type="submit"
             className="btn btn-primary mb-3 right text-right"
           >
-            Submit
+            {isEditing ? "Update Book" : "Add Book"}
           </button>
         </form>
       </div>

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 
-const BookTable = ({book, setBook}) => {
+const BookTable = ({ book, setBook, setIsEditing, setSelectedBook}) => {
   //this is to represent the bookList
   //usestate is for save data and change state
   const [filteredBooks, setFilteredBooks] = useState(book);
@@ -9,9 +9,7 @@ const BookTable = ({book, setBook}) => {
   //if u want to add more filter, add this function too
   const [category, setCategory] = useState("");
 
-  const categorys = Array.from(
-    new Set(book.map((book) => book.category))
-  );
+  const categorys = Array.from(new Set(book.map((book) => book.category)));
 
   useEffect(() => {
     setFilteredBooks(
@@ -33,17 +31,14 @@ const BookTable = ({book, setBook}) => {
     setBook(book.filter((b) => b.id !== id));
   };
 
+  const onEditingBook = (id) => {
+    const selectBook = book.find(book => book.id === id);
+    setSelectedBook(selectBook);
+    setIsEditing(true);
+  };
+
   return (
     <div>
-      {/* This is the jsx of the other way to filter */}
-      {/* <select onChange={(e) => filterByCategory(e.target.value)}>
-        <option value="" disabled default selected>
-          Select Category
-        </option>
-        {categorys.map((category) => {
-          return <option key={category}>{category}</option>;
-        })}
-      </select> */}
       <br></br>
       <div className="d-flex justify-content-between align-items-center">
         <h2>Book Table</h2>
@@ -90,6 +85,7 @@ const BookTable = ({book, setBook}) => {
                   <button
                     type="button"
                     className="btn btn-primary btn-sm"
+                    onClick={() => onEditingBook(book.id) }
                     value={"edit"}
                   >
                     Edit

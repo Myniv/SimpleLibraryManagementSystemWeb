@@ -1,4 +1,4 @@
-const bookList = [
+let bookList = [
   {
     id: 1,
     title: "One Piece",
