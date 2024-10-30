@@ -54,7 +54,7 @@ const AddBookForm = ({
   //To change when user type in
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setFormData(() => ({
       ...formData,
       [name]: value,
     }));
