@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { bookList } from "./Books";
 const AddBookForm = ({
   book,
@@ -17,10 +17,15 @@ const AddBookForm = ({
     publicationyear: "",
     isbn: "",
   });
+  const addOrEditTitle = useRef("Form Add Book");
+  const addOrEditButton = useRef("Add Book");
 
   useEffect(() => {
     if (isEditing && selectedBook) {
       setFormData(selectedBook);
+      addOrEditTitle.current = "Form Edit Book";
+      addOrEditButton.current = "Edit Book";
+      // console.log(isEditing);
     }
   }, [isEditing, selectedBook]);
 
@@ -30,13 +35,15 @@ const AddBookForm = ({
     const newErrors = {};
 
     const currentYear = new Date().getFullYear();
+    //ParseInt is for parsing the formData.publicationyear (from string or date or ect) to Int
+    const pubYear = parseInt(formData.publicationyear, 10);
     if (
-      !formData.publicationyear ||
-      formData.publicationyear.length < 1800 ||
-      formData.publicationyear.length > currentYear
+      !pubYear ||
+      pubYear < 1900 ||
+      pubYear >= currentYear+1
     ) {
       newErrors.publicationyear =
-        "Publication Year must be between in year 1800 and year " + currentYear;
+        "Publication Year must be between in year 1900 and year " + currentYear;
     }
 
     const isValidISBN = /^(978|979)\d{10}$/;
@@ -76,6 +83,7 @@ const AddBookForm = ({
         return {
           //if True, set title: formData.title and etc
           ...book,
+          id: formData.id,
           title: formData.title,
           author: formData.author,
           category: formData.category,
@@ -104,11 +112,15 @@ const AddBookForm = ({
 
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
-      if (isEditing) {
+      if (isEditing === true) {
         onUpdateBook();
         setIsEditing(false);
+        console.log("In Edit");
+        // console.log(isEditing);
       } else {
         onAddBook();
+        console.log("In Add");
+        // console.log(isEditing);
       }
       //Reset all form
       setFormData({
@@ -126,6 +138,19 @@ const AddBookForm = ({
     }
   };
 
+  const onCancelEdit = () => {
+    setFormData({
+      id: "",
+      title: "",
+      author: "",
+      category: "",
+      publicationyear: "",
+      isbn: "",
+    });
+
+    setIsEditing(false);
+  };
+
   //For make unik array (Remove Duplicate)
   const unikCategorys = Array.from(
     new Set(bookList.map((bookList) => bookList.category))
@@ -133,18 +158,11 @@ const AddBookForm = ({
 
   const bookIdComponent = book.length + 1;
 
-  const addOrEditTite = React.useRef("Add Book");
-  const changeTitle = () => {
-    if (isEditing) {
-      addOrEditTite.current = "Edit Book";
-    }
-  };
-
   return (
     <>
       <br></br>
       <br></br>
-      <h2>{changeTitle()}</h2>
+      <h2>{addOrEditTitle.current}</h2>
       <div className="container border">
         <form onSubmit={handleSubmit}>
           <div className="row">
@@ -268,10 +286,19 @@ const AddBookForm = ({
           </div>
           <button
             type="submit"
-            className="btn btn-primary mb-3 right text-right"
+            className="btn btn-primary m-3 right text-right"
           >
-            {isEditing ? "Update Book" : "Add Book"}
+            {addOrEditButton.current}
           </button>
+          {isEditing === true && (
+            <button
+              type="submit"
+              onClick={onCancelEdit}
+              className="btn btn-danger right text-right"
+            >
+              Cancel Edit
+            </button>
+          )}
         </form>
       </div>
     </>
