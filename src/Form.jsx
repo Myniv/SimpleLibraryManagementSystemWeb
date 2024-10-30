@@ -37,11 +37,7 @@ const AddBookForm = ({
     const currentYear = new Date().getFullYear();
     //ParseInt is for parsing the formData.publicationyear (from string or date or ect) to Int
     const pubYear = parseInt(formData.publicationyear, 10);
-    if (
-      !pubYear ||
-      pubYear < 1900 ||
-      pubYear >= currentYear+1
-    ) {
+    if (!pubYear || pubYear < 1900 || pubYear >= currentYear + 1) {
       newErrors.publicationyear =
         "Publication Year must be between in year 1900 and year " + currentYear;
     }
@@ -58,22 +54,10 @@ const AddBookForm = ({
   //To change when user type in
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "category") {
-      const selectBook = bookList.find(
-        (bookList) => bookList.category === value
-      );
-      if (selectBook) {
-        setFormData((prevData) => ({
-          ...prevData,
-          category: selectBook.category,
-        }));
-      }
-    } else {
-      setFormData((prevData) => ({
-        ...formData,
-        [name]: value,
-      }));
-    }
+    setFormData((prevData) => ({
+      ...formData,
+      [name]: value,
+    }));
   };
 
   const onUpdateBook = () => {
@@ -149,6 +133,8 @@ const AddBookForm = ({
     });
 
     setIsEditing(false);
+    addOrEditTitle.current = "Form Add Book";
+    addOrEditButton.current = "Add Book";
   };
 
   //For make unik array (Remove Duplicate)
