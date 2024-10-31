@@ -17,8 +17,13 @@ const AddBookForm = ({
     publicationyear: "",
     isbn: "",
   });
+  
+  //To change title end button text
   const addOrEditTitle = useRef("Form Add Book");
   const addOrEditButton = useRef("Add Book");
+
+  //To focus on input Title if edit or add
+  const focusTitleInput = useRef(null);
 
   useEffect(() => {
     if (isEditing && selectedBook) {
@@ -26,6 +31,10 @@ const AddBookForm = ({
       addOrEditTitle.current = "Form Edit Book";
       addOrEditButton.current = "Edit Book";
       // console.log(isEditing);
+    }
+
+    if(focusTitleInput.current){
+      focusTitleInput.current.focus();
     }
   }, [isEditing, selectedBook]);
 
@@ -99,12 +108,9 @@ const AddBookForm = ({
       if (isEditing === true) {
         onUpdateBook();
         setIsEditing(false);
-        console.log("In Edit");
-        // console.log(isEditing);
+        onEndEdit();
       } else {
         onAddBook();
-        console.log("In Add");
-        // console.log(isEditing);
       }
       //Reset all form
       setFormData({
@@ -133,6 +139,11 @@ const AddBookForm = ({
     });
 
     setIsEditing(false);
+    addOrEditTitle.current = "Form Add Book";
+    addOrEditButton.current = "Add Book";
+  };
+
+  const onEndEdit = () => {
     addOrEditTitle.current = "Form Add Book";
     addOrEditButton.current = "Add Book";
   };
@@ -180,6 +191,7 @@ const AddBookForm = ({
                   value={formData.title}
                   onChange={handleChange}
                   placeholder="Title"
+                  ref={focusTitleInput}
                   required
                 />
                 {/* If name error, show <div> */}
