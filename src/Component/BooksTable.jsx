@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 
-const BookTable = ({ book, setBook, setIsEditing, setSelectedBook}) => {
+const BookTable = ({ book, setBook, setIsEditing, setSelectedBook }) => {
+
   //this is to represent the bookList
   //usestate is for save data and change state
   const [filteredBooks, setFilteredBooks] = useState(book);
@@ -23,16 +24,26 @@ const BookTable = ({ book, setBook, setIsEditing, setSelectedBook}) => {
     //dont forget this below too
   }, [category, book]);
 
+  useEffect(() => {
+    const storedBooks = JSON.parse(localStorage.getItem("book")) || [];
+    setBook(storedBooks);
+  }, []);
+
   const clearFilters = () => {
     setCategory("");
   };
 
   const onDeleteBook = (id) => {
-    setBook(book.filter((b) => b.id !== id));
+    const storedBooks = JSON.parse(localStorage.getItem("book")) || [];
+    const deleteBooks = storedBooks.filter((b) => b.id !== id);
+    localStorage.setItem("book", JSON.stringify(deleteBooks));
+    setBook(deleteBooks); 
+
+    alert("The book has been deleted!");
   };
 
   const onEditingBook = (id) => {
-    const selectBook = book.find(book => book.id === id);
+    const selectBook = book.find((book) => book.id === id);
     setSelectedBook(selectBook);
     setIsEditing(true);
   };
@@ -85,7 +96,7 @@ const BookTable = ({ book, setBook, setIsEditing, setSelectedBook}) => {
                   <button
                     type="button"
                     className="btn btn-primary btn-sm"
-                    onClick={() => onEditingBook(book.id) }
+                    onClick={() => onEditingBook(book.id)}
                     value={"edit"}
                   >
                     Edit

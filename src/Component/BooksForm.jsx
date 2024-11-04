@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { bookList } from "./Books";
 const AddBookForm = ({
-  book,
-  setBook,
   isEditing,
   setIsEditing,
   selectedBook,
+  book,
+  setBook,
 }) => {
   const [formData, setFormData] = useState({
     id: "",
@@ -17,7 +17,7 @@ const AddBookForm = ({
     publicationyear: "",
     isbn: "",
   });
-  
+
   //To change title end button text
   const addOrEditTitle = useRef("Form Add Book");
   const addOrEditButton = useRef("Add Book");
@@ -33,7 +33,7 @@ const AddBookForm = ({
       // console.log(isEditing);
     }
 
-    if(focusTitleInput.current){
+    if (focusTitleInput.current) {
       focusTitleInput.current.focus();
     }
   }, [isEditing, selectedBook]);
@@ -60,13 +60,17 @@ const AddBookForm = ({
     return newErrors;
   };
 
-  //To change when user type in
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(() => ({
+  const onAddBook = () => {
+    //Add new book
+    const newBookId = {
       ...formData,
-      [name]: value,
-    }));
+      id: book.length > 0 ? book[book.length - 1].id + 1 : 1,
+    };
+    const newBook = [...book, newBookId];
+    setBook(newBook);
+    localStorage.setItem("book", JSON.stringify(newBook));
+
+    alert("The new book has been Submitted!!");
   };
 
   const onUpdateBook = () => {
@@ -90,14 +94,29 @@ const AddBookForm = ({
 
     setBook(editingBooks);
 
+    localStorage.setItem("book", JSON.stringify(editingBooks));
+
     alert("The Book has been Editted!!");
   };
 
-  const onAddBook = () => {
-    //Add new book
-    const newBookId = { ...formData, id: book.length + 1 };
-    setBook([...book, newBookId]);
-    alert("The new book has been Submitted!!");
+  const onCancelEdit = () => {
+    setFormData({
+      id: "",
+      title: "",
+      author: "",
+      category: "",
+      publicationyear: "",
+      isbn: "",
+    });
+
+    setIsEditing(false);
+    addOrEditTitle.current = "Form Add Book";
+    addOrEditButton.current = "Add Book";
+  };
+
+  const onEndEdit = () => {
+    addOrEditTitle.current = "Form Add Book";
+    addOrEditButton.current = "Add Book";
   };
 
   const handleSubmit = (e) => {
@@ -128,24 +147,13 @@ const AddBookForm = ({
     }
   };
 
-  const onCancelEdit = () => {
-    setFormData({
-      id: "",
-      title: "",
-      author: "",
-      category: "",
-      publicationyear: "",
-      isbn: "",
-    });
-
-    setIsEditing(false);
-    addOrEditTitle.current = "Form Add Book";
-    addOrEditButton.current = "Add Book";
-  };
-
-  const onEndEdit = () => {
-    addOrEditTitle.current = "Form Add Book";
-    addOrEditButton.current = "Add Book";
+  //To change when user type in
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(() => ({
+      ...formData,
+      [name]: value,
+    }));
   };
 
   //For make unik array (Remove Duplicate)
@@ -153,7 +161,7 @@ const AddBookForm = ({
     new Set(bookList.map((bookList) => bookList.category))
   );
 
-  const bookIdComponent = book.length + 1;
+  // const bookIdComponent = book.length > 0 ? book[book.length - 1].id + 1 : 1;
 
   return (
     <>
@@ -174,7 +182,7 @@ const AddBookForm = ({
                   id="id"
                   name="id"
                   value={formData.id}
-                  placeholder={bookIdComponent}
+                  // placeholder={bookIdComponent}
                   disabled
                 />
               </div>

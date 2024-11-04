@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { BookTable } from "../Component/BooksTable";
 import { AddBookForm } from "../Component/BooksForm";
-import { bookList } from "../Component/Books";
 
 function BooksPage() {
-  const [book, setBook] = useState(bookList);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
-
+  const [book, setBook] = useState([]);
+  
   return (
     <>
       <div className="container">
