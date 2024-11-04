@@ -1,10 +1,11 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
-const BookTable = ({ book, setBook, setIsEditing, setSelectedBook }) => {
+const BookTable = () => {
+  const { book, setBook, setIsEditing, setSelectedBook } = useOutletContext();
 
-  //this is to represent the bookList
-  //usestate is for save data and change state
+  const navigate = useNavigate();
+
   const [filteredBooks, setFilteredBooks] = useState(book);
 
   //if u want to add more filter, add this function too
@@ -25,6 +26,7 @@ const BookTable = ({ book, setBook, setIsEditing, setSelectedBook }) => {
   }, [category, book]);
 
   useEffect(() => {
+    //this is to read or get from the local storage
     const storedBooks = JSON.parse(localStorage.getItem("book")) || [];
     setBook(storedBooks);
   }, []);
@@ -36,8 +38,10 @@ const BookTable = ({ book, setBook, setIsEditing, setSelectedBook }) => {
   const onDeleteBook = (id) => {
     const storedBooks = JSON.parse(localStorage.getItem("book")) || [];
     const deleteBooks = storedBooks.filter((b) => b.id !== id);
+
+    //This is to add to the local storage
     localStorage.setItem("book", JSON.stringify(deleteBooks));
-    setBook(deleteBooks); 
+    setBook(deleteBooks);
 
     alert("The book has been deleted!");
   };
@@ -46,14 +50,18 @@ const BookTable = ({ book, setBook, setIsEditing, setSelectedBook }) => {
     const selectBook = book.find((book) => book.id === id);
     setSelectedBook(selectBook);
     setIsEditing(true);
+    navigate(`/books/${id}`);
   };
 
+  const onAddBook = () => {
+    navigate("/books/add");
+  };
   return (
     <div>
       <br></br>
       <div className="d-flex justify-content-between align-items-center">
         <h2>Book Table</h2>
-        <button className="btn btn-primary m-1" onClick={clearFilters}>
+        <button className="btn btn-primary m-1 me-3" onClick={clearFilters}>
           Clear
         </button>
       </div>
@@ -113,8 +121,24 @@ const BookTable = ({ book, setBook, setIsEditing, setSelectedBook }) => {
               </td>
             </tr>
           ))}
+          <tr>
+            <td colSpan="7">
+              <div className="d-flex justify-content-end">
+                <div className="d-grid gap-2 col-2">
+                  <button
+                    type="button"
+                    className="btn btn-primary  btn-block me-1"
+                    onClick={onAddBook}
+                  >
+                    Add Book
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
+
     </div>
   );
 };

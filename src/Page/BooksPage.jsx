@@ -1,29 +1,27 @@
 import { useState } from "react";
-import { BookTable } from "../Component/BooksTable";
-import { AddBookForm } from "../Component/BooksForm";
+import { Outlet} from "react-router-dom";
+import { HeaderFunction } from "../Head";
+import { FooterFunction } from "../Foot";
 
 function BooksPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [book, setBook] = useState([]);
-  
+
   return (
     <>
-      <div className="container">
-        <BookTable
-          book={book}
-          setBook={setBook}
-          setIsEditing={setIsEditing}
-          setSelectedBook={setSelectedBook}
+        <HeaderFunction/>
+        <Outlet
+          context={{
+            book,
+            setBook,
+            isEditing,
+            setIsEditing,
+            selectedBook,
+            setSelectedBook,
+          }}
         />
-        <AddBookForm
-          book={book}
-          setBook={setBook}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
-          selectedBook={selectedBook}
-        />
-      </div>
+        <FooterFunction/>
     </>
   );
 }

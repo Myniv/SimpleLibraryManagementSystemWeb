@@ -1,14 +1,11 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
-import { bookList } from "./Books";
-const AddBookForm = ({
-  isEditing,
-  setIsEditing,
-  selectedBook,
-  book,
-  setBook,
-}) => {
+import { useNavigate, useOutletContext } from "react-router-dom";
+const AddBookForm = () => {
+  const { book, setBook, isEditing, setIsEditing, selectedBook } =
+    useOutletContext();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     id: "",
     title: "",
@@ -68,6 +65,8 @@ const AddBookForm = ({
     };
     const newBook = [...book, newBookId];
     setBook(newBook);
+
+    //add to local storage with newbook
     localStorage.setItem("book", JSON.stringify(newBook));
 
     alert("The new book has been Submitted!!");
@@ -94,12 +93,13 @@ const AddBookForm = ({
 
     setBook(editingBooks);
 
+    //change data in local storage based on id
     localStorage.setItem("book", JSON.stringify(editingBooks));
 
     alert("The Book has been Editted!!");
   };
 
-  const onCancelEdit = () => {
+  const onCancel = () => {
     setFormData({
       id: "",
       title: "",
@@ -110,14 +110,12 @@ const AddBookForm = ({
     });
 
     setIsEditing(false);
-    addOrEditTitle.current = "Form Add Book";
-    addOrEditButton.current = "Add Book";
+
+    //move to books when cancel 
+    navigate("/books");
   };
 
-  const onEndEdit = () => {
-    addOrEditTitle.current = "Form Add Book";
-    addOrEditButton.current = "Add Book";
-  };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -127,7 +125,6 @@ const AddBookForm = ({
       if (isEditing === true) {
         onUpdateBook();
         setIsEditing(false);
-        onEndEdit();
       } else {
         onAddBook();
       }
@@ -142,6 +139,9 @@ const AddBookForm = ({
       });
 
       setErrors({});
+
+      //move to /books
+      navigate("/books");
     } else {
       setErrors(validationErrors);
     }
@@ -158,10 +158,10 @@ const AddBookForm = ({
 
   //For make unik array (Remove Duplicate)
   const unikCategorys = Array.from(
-    new Set(bookList.map((bookList) => bookList.category))
+    new Set(book.map((bookList) => bookList.category))
   );
 
-  // const bookIdComponent = book.length > 0 ? book[book.length - 1].id + 1 : 1;
+  const bookIdComponent = book[book.length - 1].id + 1;
 
   return (
     <>
@@ -182,7 +182,7 @@ const AddBookForm = ({
                   id="id"
                   name="id"
                   value={formData.id}
-                  // placeholder={bookIdComponent}
+                  placeholder={bookIdComponent}
                   disabled
                 />
               </div>
@@ -296,15 +296,13 @@ const AddBookForm = ({
           >
             {addOrEditButton.current}
           </button>
-          {isEditing === true && (
-            <button
-              type="submit"
-              onClick={onCancelEdit}
-              className="btn btn-danger right text-right"
-            >
-              Cancel Edit
-            </button>
-          )}
+          <button
+            type="submit"
+            onClick={onCancel}
+            className="btn btn-danger right text-right"
+          >
+            Cancel {addOrEditButton.current}
+          </button>
         </form>
       </div>
     </>
