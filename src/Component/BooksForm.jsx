@@ -1,10 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 const AddBookForm = () => {
   const { book, setBook, isEditing, setIsEditing, selectedBook } =
     useOutletContext();
   const navigate = useNavigate();
+
+  //the other way to get id beside using useState selected book is using param
+  //ex {params.id}
+  const params = useParams();
 
   const [formData, setFormData] = useState({
     id: "",
@@ -25,7 +29,8 @@ const AddBookForm = () => {
   useEffect(() => {
     if (isEditing && selectedBook) {
       setFormData(selectedBook);
-      addOrEditTitle.current = "Form Edit Book";
+      //the example using params
+      addOrEditTitle.current = `Form Edit book with id: ${params.id}`;
       addOrEditButton.current = "Edit Book";
       // console.log(isEditing);
     }
@@ -33,7 +38,7 @@ const AddBookForm = () => {
     if (focusTitleInput.current) {
       focusTitleInput.current.focus();
     }
-  }, [isEditing, selectedBook]);
+  }, [isEditing, selectedBook, params]);
 
   //setError Validation
   const [errors, setErrors] = useState({});

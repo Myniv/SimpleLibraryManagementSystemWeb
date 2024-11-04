@@ -29,7 +29,7 @@ const BookTable = () => {
     //this is to read or get from the local storage
     const storedBooks = JSON.parse(localStorage.getItem("book")) || [];
     setBook(storedBooks);
-  }, []);
+  }, [setBook]);
 
   const clearFilters = () => {
     setCategory("");
