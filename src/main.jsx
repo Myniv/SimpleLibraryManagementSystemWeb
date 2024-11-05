@@ -5,8 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainPage from "./Page/MainPage";
 import BooksPage from "./Page/BooksPage";
-import { BookTable } from "./Component/BooksTable";
-import { AddBookForm } from "./Component/BooksForm";
+import { BookTable } from "./Component/Books/BooksTable";
+import { AddBookForm } from "./Component/Books/BooksForm";
 
 const router = createBrowserRouter([
   {
