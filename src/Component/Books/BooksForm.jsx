@@ -116,11 +116,9 @@ const AddBookForm = () => {
 
     setIsEditing(false);
 
-    //move to books when cancel 
+    //move to books when cancel
     navigate("/books");
   };
-
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -172,143 +170,147 @@ const AddBookForm = () => {
     <>
       <br></br>
       <br></br>
-      <h2>{addOrEditTitle.current}</h2>
-      <div className="container border">
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-md-6">
-              <div className="mb-3">
-                <label htmlFor="id" className="form-label">
-                  ID
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="id"
-                  name="id"
-                  value={formData.id}
-                  placeholder={bookIdComponent}
-                  disabled
-                />
-              </div>
+      <div className="mb-5">
+        <h2 className="ms-5">{addOrEditTitle.current}</h2>
+        <div className="container border">
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="id" className="form-label">
+                    ID
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="id"
+                    name="id"
+                    value={formData.id}
+                    placeholder={bookIdComponent}
+                    disabled
+                  />
+                </div>
 
-              <div className="mb-3">
-                <label htmlFor="title" className="form-label">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="title"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  placeholder="Title"
-                  ref={focusTitleInput}
-                  required
-                />
-                {/* If name error, show <div> */}
-                {/* This is the same as the rest*/}
-              </div>
+                <div className="mb-3">
+                  <label htmlFor="title" className="form-label">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    placeholder="Title"
+                    ref={focusTitleInput}
+                    required
+                  />
+                  {/* If name error, show <div> */}
+                  {/* This is the same as the rest*/}
+                </div>
 
-              <div className="mb-3">
-                <label htmlFor="category" className="form-label">
-                  Category
-                </label>
-                <select
-                  className="form-select"
-                  id="category"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="" disabled>
-                    Select category
-                  </option>
-                  {unikCategorys.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
+                <div className="mb-3">
+                  <label htmlFor="category" className="form-label">
+                    Category
+                  </label>
+                  <select
+                    className="form-select"
+                    id="category"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="" disabled>
+                      Select category
                     </option>
-                  ))}
-                </select>
+                    {unikCategorys.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="author" className="form-label">
+                    Author
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="author"
+                    name="author"
+                    value={formData.author}
+                    onChange={handleChange}
+                    placeholder="Author"
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="publicationyear" className="form-label">
+                    Publication Year
+                  </label>
+                  <input
+                    type="number"
+                    className={`form-control ${
+                      errors.publicationyear ? "is-invalid" : ""
+                    }`}
+                    id="publicationyear"
+                    name="publicationyear"
+                    value={formData.publicationyear}
+                    onChange={handleChange}
+                    placeholder="Publication Year"
+                    required
+                  />
+                  {errors.publicationyear && (
+                    <div className="invalid-feedback">
+                      {errors.publicationyear}
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="isbn" className="form-label">
+                    ISBN
+                  </label>
+                  <input
+                    type="number"
+                    className={`form-control ${
+                      errors.isbn ? "is-invalid" : ""
+                    }`}
+                    id="isbn"
+                    name="isbn"
+                    value={formData.isbn}
+                    onChange={handleChange}
+                    placeholder="ISBN"
+                    required
+                  />
+                  {errors.isbn && (
+                    <div className="invalid-feedback">{errors.isbn}</div>
+                  )}
+                </div>
               </div>
             </div>
-
-            <div className="col-md-6">
-              <div className="mb-3">
-                <label htmlFor="author" className="form-label">
-                  Author
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="author"
-                  name="author"
-                  value={formData.author}
-                  onChange={handleChange}
-                  placeholder="Author"
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="publicationyear" className="form-label">
-                  Publication Year
-                </label>
-                <input
-                  type="number"
-                  className={`form-control ${
-                    errors.publicationyear ? "is-invalid" : ""
-                  }`}
-                  id="publicationyear"
-                  name="publicationyear"
-                  value={formData.publicationyear}
-                  onChange={handleChange}
-                  placeholder="Publication Year"
-                  required
-                />
-                {errors.publicationyear && (
-                  <div className="invalid-feedback">
-                    {errors.publicationyear}
-                  </div>
-                )}
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="isbn" className="form-label">
-                  ISBN
-                </label>
-                <input
-                  type="number"
-                  className={`form-control ${errors.isbn ? "is-invalid" : ""}`}
-                  id="isbn"
-                  name="isbn"
-                  value={formData.isbn}
-                  onChange={handleChange}
-                  placeholder="ISBN"
-                  required
-                />
-                {errors.isbn && (
-                  <div className="invalid-feedback">{errors.isbn}</div>
-                )}
-              </div>
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary m-3 right text-right"
-          >
-            {addOrEditButton.current}
-          </button>
-          <button
-            type="submit"
-            onClick={onCancel}
-            className="btn btn-danger right text-right"
-          >
-            Cancel {addOrEditButton.current}
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="btn btn-primary m-3 right text-right"
+            >
+              {addOrEditButton.current}
+            </button>
+            <button
+              type="submit"
+              onClick={onCancel}
+              className="btn btn-danger right text-right"
+            >
+              Cancel {addOrEditButton.current}
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );

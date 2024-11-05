@@ -57,7 +57,7 @@ const BookTable = () => {
     navigate("/books/add");
   };
   return (
-    <div>
+    <div className="m-4">
       <br></br>
       <div className="d-flex justify-content-between align-items-center">
         <h2>Book Table</h2>
