@@ -47,6 +47,7 @@ const MemberTable = () => {
               <th scope="col">ID</th>
               <th scope="col">Name</th>
               <th scope="col">Email</th>
+              <th scope="col">Gender</th>
               <th scope="col">Phone Number</th>
               <th scope="col">Address</th>
               <th scope="col">ACTION</th>
@@ -58,6 +59,7 @@ const MemberTable = () => {
                 <td>{member.id}</td>
                 <td>{member.fullname}</td>
                 <td>{member.email}</td>
+                <td>{member.gender}</td>
                 <td>{member.phonenumber}</td>
                 <td>{member.address}</td>
                 <td>

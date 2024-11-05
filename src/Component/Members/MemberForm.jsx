@@ -13,6 +13,7 @@ const MemberForm = () => {
     id: "",
     fullname: "",
     email: "",
+    gender: "",
     phonenumber: "",
     address: "",
   });
@@ -69,6 +70,7 @@ const MemberForm = () => {
       id: "",
       fullname: "",
       email: "",
+      gender: "",
       phonenumber: "",
       address: "",
     });
@@ -94,14 +96,17 @@ const MemberForm = () => {
       newErrors.email = "Email must be a valid email format";
     }
 
+    if (!formData.gender) {
+      newErrors.gender = "Gender is required!!";
+    }
+
     //Phone validation like this
-    //Still doesnt work, idk
-    const phoneRegex = /^(\+62|62|0)8[1-9][0-9]{6,9}$/;
+    const phoneRegex = /^(\+62|62)8[1-9][0-9]{6,9}$/;
     if (
       !formData.phonenumber ||
       (formData.phonenumber && !phoneRegex.test(formData.phonenumber))
     ) {
-      newErrors.phonenumber = "Phone number must be between 10 and 15 digits";
+      newErrors.phonenumber = "Phone number must be start at +62 and between 10 - 13 digit!!";
     }
 
     if (!formData.address || formData.address.length > 200) {
@@ -134,6 +139,7 @@ const MemberForm = () => {
         id: "",
         fullname: "",
         email: "",
+        gender: "",
         phonenumber: "",
         address: "",
       });
@@ -168,8 +174,7 @@ const MemberForm = () => {
                     className="form-control"
                     id="id"
                     name="id"
-                    value={formData.id}
-                    placeholder={memberId}
+                    value={isEditing ? formData.id : memberId}
                     disabled
                   />
                 </div>
@@ -217,6 +222,44 @@ const MemberForm = () => {
                     <div className="invalid-feedback">{errors.email}</div>
                   )}
                 </div>
+
+                <div className="mb-3 formcheck">
+                  <label className="form-label">Select Gender</label>
+                  <div className="mt">
+                    <input
+                      type="radio"
+                      id="gender1"
+                      name="gender"
+                      className={`form-check-input ${
+                        errors.gender ? "is-invalid" : ""
+                      }`}
+                      value="Laki laki"
+                      onChange={handleChange}
+                      checked={formData.gender === "Laki laki"}
+                    />
+                    <label htmlFor="gender1" className="form-check-label ms-2">
+                      Laki laki
+                    </label>
+
+                    <input
+                      type="radio"
+                      id="gender2"
+                      name="gender"
+                      className={`form-check-input ms-2${
+                        errors.gender ? "is-invalid" : ""
+                      }`}
+                      value="Perempuan"
+                      onChange={handleChange}
+                      checked={formData.gender === "Perempuan"}
+                    />
+                    <label htmlFor="gender2" className="form-check-label ms-2">
+                      Perempuan
+                    </label>
+                    {errors.gender && (
+                      <div className="invalid-feedback">{errors.gender}</div>
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="col-md-6">
                 <div className="mb-3">
@@ -233,7 +276,7 @@ const MemberForm = () => {
                     value={formData.phonenumber}
                     onChange={handleChange}
                     required
-                    placeholder="Phone Number"
+                    placeholder="+628XXXXXXXXX"
                   />
                   {errors.phonenumber && (
                     <div className="invalid-feedback">{errors.phonenumber}</div>
