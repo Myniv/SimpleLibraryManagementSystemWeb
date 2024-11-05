@@ -164,7 +164,7 @@ const AddBookForm = () => {
     new Set(book.map((bookList) => bookList.category))
   );
 
-  const bookIdComponent = book[book.length - 1].id + 1;
+  const bookIdComponent = book.length > 0 ? book[book.length - 1].id + 1 : 1;
 
   return (
     <>
