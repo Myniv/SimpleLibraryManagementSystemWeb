@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import {
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 
 const MemberForm = () => {
   const { member, setMember, isEditing, setIsEditing, selectedMember } =
     useOutletContext();
+
+  const navigate = useNavigate();
 
   const params = useParams();
 
@@ -36,7 +42,11 @@ const MemberForm = () => {
     const newMember = [...member, newMemberId];
 
     localStorage.setItem("member", JSON.stringify(newMember));
+    navigate("/members");
+
     setMember(newMember);
+
+    alert("New member has been added!!")
   };
 
   const onUpdateMember = () => {
@@ -53,6 +63,7 @@ const MemberForm = () => {
 
     setMember(editingMember);
     localStorage.setItem("member", JSON.stringify(editingMember));
+    navigate("/members");
 
     alert("This Member has been Editted!!");
   };
@@ -67,18 +78,18 @@ const MemberForm = () => {
     });
     setIsEditing(false);
 
-    //TODO navigate("/members")
+    navigate("/members");
   };
 
   const [errors, setErrors] = useState({});
   const validateForm = () => {
     const newErrors = {};
     if (
-      !formData.name ||
-      formData.name.length < 2 ||
-      formData.name.length > 100
+      !formData.fullname ||
+      formData.fullname.length < 2 ||
+      formData.fullname.length > 100
     ) {
-      newErrors.name = "Name must be between 2 and 100 characters";
+      newErrors.fullname = "Name must be between 2 and 100 characters";
     }
 
     //email validation like this
@@ -89,7 +100,7 @@ const MemberForm = () => {
 
     //Phone validation like this
     //Still doesnt work, idk
-    const phoneRegex = /^[0-9]{10,15}$/;
+    const phoneRegex = /^(\+62|62|0)8[1-9][0-9]{6,9}$/;
     if (
       !formData.phonenumber ||
       (formData.phonenumber && !phoneRegex.test(formData.phonenumber))
@@ -138,7 +149,7 @@ const MemberForm = () => {
     }
   };
 
-  const memberId = member[member.length - 1].id + 1;
+  const memberId = member.length > 0 ? member[member.length - 1].id + 1 : 1;
 
   return (
     <>
@@ -150,39 +161,41 @@ const MemberForm = () => {
         <form onSubmit={handleSubmit} className="mb-4">
           <div className="row">
             <div className="col-md-6">
-            <div className="mb-3">
-                  <label htmlFor="id" className="form-label">
-                    ID
-                  </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="id"
-                    name="id"
-                    value={formData.id}
-                    placeholder={memberId}
-                    disabled
-                  />
-                </div>
+              <div className="mb-3">
+                <label htmlFor="id" className="form-label">
+                  ID
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="id"
+                  name="id"
+                  value={formData.id}
+                  placeholder={memberId}
+                  disabled
+                />
+              </div>
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">
                   Name
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                  value={formData.name}
+                  id="fullname"
+                  name="fullname"
+                  className={`form-control ${
+                    errors.fullname ? "is-invalid" : ""
+                  }`}
+                  value={formData.fullname}
                   onChange={handleChange}
                   required
-                  placeholder="Name"
+                  placeholder="Full Name"
                   ref={focusNameInput}
                 />
                 {/* If name error, show <div> */}
                 {/* This is the same as the rest*/}
-                {errors.name && (
-                  <div className="invalid-feedback">{errors.name}</div>
+                {errors.fullname && (
+                  <div className="invalid-feedback">{errors.fullname}</div>
                 )}
               </div>
 
@@ -260,7 +273,7 @@ const MemberForm = () => {
             onClick={onCancel}
             className="btn btn-danger right text-right"
           >
-            {isEditing ? "Edit Member" : "Add Member"}
+            {isEditing ? "Cancel Edit" : "Cancel Add"}
           </button>
         </form>
       </div>
@@ -268,4 +281,4 @@ const MemberForm = () => {
   );
 };
 
-export default MemberForm
+export default MemberForm;

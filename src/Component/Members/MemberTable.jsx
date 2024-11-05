@@ -1,9 +1,11 @@
 import { useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const MemberTable = () => {
   const { member, setMember, setIsEditing, setSelectedMember } =
     useOutletContext();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedMember = JSON.parse(localStorage.getItem("member")) || [];
@@ -25,38 +27,39 @@ const MemberTable = () => {
     const selectMember = member.find((member) => member.id === id);
     setSelectedMember(selectMember);
     setIsEditing(true);
-    //TODO add Navigate to edit Form
+    navigate(`/members/${id}`);
   };
 
-  const onAddmember = () => {
-    //TODO Add Navigate to add form
-    console.log("Add member");
+  const onAddMember = () => {
+    navigate("/members/add");
   };
 
   return (
     <>
       <div className="m-4">
+        <br></br>
+        <div className="d-flex justify-content-between align-items-center">
+          <h2>Member Table</h2>
+        </div>
         <table className="table table-striped table-bordered">
           <thead className="thead-dark">
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Category</th>
-              <th scope="col">Publication Year</th>
-              <th scope="col">ISBN</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone Number</th>
+              <th scope="col">Address</th>
               <th scope="col">ACTION</th>
             </tr>
           </thead>
           <tbody>
             {member.map((member) => (
               <tr scope="row" key={member.id}>
-                <td key={member.id}>{member.id}</td>
-                <td key={member.title}>{member.title}</td>
-                <td key={member.author}>{member.author}</td>
-                <td key={member.category}>{member.category}</td>
-                <td key={member.publicationyear}>{member.publicationyear}</td>
-                <td key={member.isbn}>{member.isbn}</td>
+                <td>{member.id}</td>
+                <td>{member.fullname}</td>
+                <td>{member.email}</td>
+                <td>{member.phonenumber}</td>
+                <td>{member.address}</td>
                 <td>
                   <div className="d-grid gap-2 d-md-flex justify-content-md">
                     <button
@@ -80,20 +83,20 @@ const MemberTable = () => {
               </tr>
             ))}
             <tr>
-              <td colSpan="7">
-                <div className="d-flex justify-content-end">
-                  <div className="d-grid gap-2 col-2">
-                    <button
-                      type="button"
-                      className="btn btn-primary  btn-block me-1"
-                      onClick={onAddmember}
-                    >
-                      Add member
-                    </button>
-                  </div>
+            <td colSpan="7">
+              <div className="d-flex justify-content-end">
+                <div className="d-grid gap-2 col-2">
+                  <button
+                    type="button"
+                    className="btn btn-primary  btn-block me-1"
+                    onClick={onAddMember}
+                  >
+                    Add Member
+                  </button>
                 </div>
-              </td>
-            </tr>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -101,4 +104,4 @@ const MemberTable = () => {
   );
 };
 
-export default MemberTable
+export default MemberTable;

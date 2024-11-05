@@ -3,19 +3,19 @@ import { Outlet } from "react-router-dom";
 
 function MembersPage() {
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedmember, setSelectedmember] = useState(null);
-  const [member, setmember] = useState([]);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [member, setMember] = useState([]);
 
   return (
     <>
       <Outlet
         context={{
           member,
-          setmember,
+          setMember,
           isEditing,
           setIsEditing,
-          selectedmember,
-          setSelectedmember,
+          selectedMember,
+          setSelectedMember,
         }}
       />
     </>
