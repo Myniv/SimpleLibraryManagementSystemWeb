@@ -4,7 +4,7 @@ const FooterFunction = () => {
   const year = new Date().getFullYear();
   return (
     // <div class="d-flex flex-column min-vh-100">
-    <footer className="p-3 bg-dark text-white mt-5 ">
+    <footer className="p-3 bg-dark text-white mt-auto">
       <div className="container">
         <p className="mb-1 text-center">{`Copyright © ${year}  ${name}. All Rights Reserved`}</p>
         <p className="mb-0 text-center">

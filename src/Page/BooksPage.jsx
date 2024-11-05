@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Outlet} from "react-router-dom";
-import { HeaderFunction } from "../Head";
-import { FooterFunction } from "../Foot";
+
 
 function BooksPage() {
   const [isEditing, setIsEditing] = useState(false);
@@ -10,7 +9,6 @@ function BooksPage() {
 
   return (
     <>
-        <HeaderFunction/>
         <Outlet
           context={{
             book,
@@ -21,7 +19,6 @@ function BooksPage() {
             setSelectedBook,
           }}
         />
-        <FooterFunction/>
     </>
   );
 }
