@@ -168,8 +168,6 @@ const AddBookForm = () => {
 
   return (
     <>
-      <br></br>
-      <br></br>
       <div className="mb-5">
         <h2 className="ms-5">{addOrEditTitle.current}</h2>
         <div className="container border">

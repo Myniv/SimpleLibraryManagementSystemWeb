@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 const MemberForm = () => {
   const { member, setMember, isEditing, setIsEditing, selectedMember } =
@@ -46,7 +42,7 @@ const MemberForm = () => {
 
     setMember(newMember);
 
-    alert("New member has been added!!")
+    alert("New member has been added!!");
   };
 
   const onUpdateMember = () => {
@@ -153,129 +149,134 @@ const MemberForm = () => {
 
   return (
     <>
-      <h2>
-        {" "}
-        {isEditing ? "Form Edit Member with id" + params.id : "Form Add Member"}
-      </h2>
-      <div className="container border">
-        <form onSubmit={handleSubmit} className="mb-4">
-          <div className="row">
-            <div className="col-md-6">
-              <div className="mb-3">
-                <label htmlFor="id" className="form-label">
-                  ID
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="id"
-                  name="id"
-                  value={formData.id}
-                  placeholder={memberId}
-                  disabled
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="name" className="form-label">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="fullname"
-                  name="fullname"
-                  className={`form-control ${
-                    errors.fullname ? "is-invalid" : ""
-                  }`}
-                  value={formData.fullname}
-                  onChange={handleChange}
-                  required
-                  placeholder="Full Name"
-                  ref={focusNameInput}
-                />
-                {/* If name error, show <div> */}
-                {/* This is the same as the rest*/}
-                {errors.fullname && (
-                  <div className="invalid-feedback">{errors.fullname}</div>
-                )}
-              </div>
+      <div className="mb-5">
+        <h2 className="ms-5">
+          {isEditing
+            ? "Form Edit Member with id" + params.id
+            : "Form Add Member"}
+        </h2>
+        <div className="container border">
+          <form onSubmit={handleSubmit} className="mb-4">
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="id" className="form-label">
+                    ID
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="id"
+                    name="id"
+                    value={formData.id}
+                    placeholder={memberId}
+                    disabled
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="fullname"
+                    name="fullname"
+                    className={`form-control ${
+                      errors.fullname ? "is-invalid" : ""
+                    }`}
+                    value={formData.fullname}
+                    onChange={handleChange}
+                    required
+                    placeholder="Full Name"
+                    ref={focusNameInput}
+                  />
+                  {/* If name error, show <div> */}
+                  {/* This is the same as the rest*/}
+                  {errors.fullname && (
+                    <div className="invalid-feedback">{errors.fullname}</div>
+                  )}
+                </div>
 
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="Email"
-                />
-                {errors.email && (
-                  <div className="invalid-feedback">{errors.email}</div>
-                )}
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className={`form-control ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="Email"
+                  />
+                  {errors.email && (
+                    <div className="invalid-feedback">{errors.email}</div>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="phonenumber" className="form-label">
+                    Phone Number
+                  </label>
+                  <input
+                    type="number"
+                    id="phonenumber"
+                    name="phonenumber"
+                    className={`form-control ${
+                      errors.phonenumber ? "is-invalid" : ""
+                    }`}
+                    value={formData.phonenumber}
+                    onChange={handleChange}
+                    required
+                    placeholder="Phone Number"
+                  />
+                  {errors.phonenumber && (
+                    <div className="invalid-feedback">{errors.phonenumber}</div>
+                  )}
+                </div>
+
+                <div className="mb-1">
+                  <label htmlFor="address" className="form-label">
+                    Address
+                  </label>
+                  <textarea
+                    id="address"
+                    name="address"
+                    className={`form-control ${
+                      errors.address ? "is-invalid" : ""
+                    }`}
+                    value={formData.address}
+                    onChange={handleChange}
+                    required
+                    placeholder="Address"
+                  />
+                  {errors.address && (
+                    <div className="invalid-feedback">{errors.address}</div>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="col-md-6">
-              <div className="mb-3">
-                <label htmlFor="phonenumber" className="form-label">
-                  Phone Number
-                </label>
-                <input
-                  type="number"
-                  id="phonenumber"
-                  name="phonenumber"
-                  className={`form-control ${
-                    errors.phonenumber ? "is-invalid" : ""
-                  }`}
-                  value={formData.phonenumber}
-                  onChange={handleChange}
-                  required
-                  placeholder="Phone Number"
-                />
-                {errors.phonenumber && (
-                  <div className="invalid-feedback">{errors.phonenumber}</div>
-                )}
-              </div>
+            <button
+              type="submit"
+              className="btn btn-primary m-1 right text-right"
+            >
+              {isEditing ? "Edit Member" : "Add Member"}
+            </button>
 
-              <div className="mb-1">
-                <label htmlFor="address" className="form-label">
-                  Address
-                </label>
-                <textarea
-                  id="address"
-                  name="address"
-                  className={`form-control ${
-                    errors.address ? "is-invalid" : ""
-                  }`}
-                  value={formData.address}
-                  onChange={handleChange}
-                  required
-                  placeholder="Address"
-                />
-                {errors.address && (
-                  <div className="invalid-feedback">{errors.address}</div>
-                )}
-              </div>
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary m-1 right text-right"
-          >
-            {isEditing ? "Edit Member" : "Add Member"}
-          </button>
-
-          <button
-            type="submit"
-            onClick={onCancel}
-            className="btn btn-danger right text-right"
-          >
-            {isEditing ? "Cancel Edit" : "Cancel Add"}
-          </button>
-        </form>
+            <button
+              type="submit"
+              onClick={onCancel}
+              className="btn btn-danger right text-right"
+            >
+              {isEditing ? "Cancel Edit" : "Cancel Add"}
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );
