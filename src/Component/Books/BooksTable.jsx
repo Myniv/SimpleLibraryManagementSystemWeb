@@ -36,14 +36,15 @@ const BookTable = () => {
   };
 
   const onDeleteBook = (id) => {
-    const storedBooks = JSON.parse(localStorage.getItem("book")) || [];
-    const deleteBooks = storedBooks.filter((b) => b.id !== id);
+    const confirmMessage = "Are you sure you want to delete this book?";
+    if (confirm(confirmMessage)) {
+      const storedBooks = JSON.parse(localStorage.getItem("book")) || [];
+      const deleteBooks = storedBooks.filter((b) => b.id !== id);
 
-    //This is to add to the local storage
-    localStorage.setItem("book", JSON.stringify(deleteBooks));
-    setBook(deleteBooks);
-
-    alert("The book has been deleted!");
+      //This is to add to the local storage
+      localStorage.setItem("book", JSON.stringify(deleteBooks));
+      setBook(deleteBooks);
+    }
   };
 
   const onEditingBook = (id) => {
@@ -87,18 +88,20 @@ const BookTable = () => {
             <th scope="col">Category</th>
             <th scope="col">Publication Year</th>
             <th scope="col">ISBN</th>
+            <th scope="col">Availability</th>
             <th scope="col">ACTION</th>
           </tr>
         </thead>
         <tbody>
           {filteredBooks.map((book) => (
             <tr scope="row" key={book.id}>
-              <td key={book.id}>{book.id}</td>
-              <td key={book.title}>{book.title}</td>
-              <td key={book.author}>{book.author}</td>
-              <td key={book.category}>{book.category}</td>
-              <td key={book.publicationyear}>{book.publicationyear}</td>
-              <td key={book.isbn}>{book.isbn}</td>
+              <td>{book.id}</td>
+              <td>{book.title}</td>
+              <td>{book.author}</td>
+              <td>{book.category}</td>
+              <td>{book.publicationyear}</td>
+              <td>{book.isbn}</td>
+              <td>{book.availability ? "Available" : "Not Available"}</td>
               <td>
                 <div className="d-grid gap-2 d-md-flex justify-content-md">
                   <button
@@ -122,7 +125,7 @@ const BookTable = () => {
             </tr>
           ))}
           <tr>
-            <td colSpan="7">
+            <td colSpan="8">
               <div className="d-flex justify-content-end">
                 <div className="d-grid gap-2 col-2">
                   <button
@@ -138,7 +141,6 @@ const BookTable = () => {
           </tr>
         </tbody>
       </table>
-
     </div>
   );
 };

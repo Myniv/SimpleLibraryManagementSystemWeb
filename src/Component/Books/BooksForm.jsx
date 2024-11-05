@@ -17,6 +17,7 @@ const AddBookForm = () => {
     category: "",
     publicationyear: "",
     isbn: "",
+    availability: "",
   });
 
   //To change title end button text
@@ -57,6 +58,17 @@ const AddBookForm = () => {
     if (!formData.isbn || (formData.isbn && !isValidISBN.test(formData.isbn))) {
       newErrors.isbn =
         "The first 3 digit ISBN must be 978 or 979 and have a total of 13 digit.";
+    } else if (
+      //.some is for searching array data that at least have one that same as the condition and return boolean
+      //if form adding based isEditing false
+      book.some((b) => b.isbn === formData.isbn && !isEditing) ||
+      //if form editing based isEditing true and if the isbn is the same like the other id except itself
+      book.some(
+        (b) => b.isbn === formData.isbn && isEditing && b.id !== formData.id
+      )
+    ) {
+      newErrors.isbn =
+        "ISBN must be unique and cant be the same like the other!!";
     }
 
     return newErrors;
@@ -73,6 +85,7 @@ const AddBookForm = () => {
 
     //add to local storage with newbook
     localStorage.setItem("book", JSON.stringify(newBook));
+    // navigate("/books");
 
     alert("The new book has been Submitted!!");
   };
@@ -90,6 +103,7 @@ const AddBookForm = () => {
           category: formData.category,
           publicationyear: formData.publicationyear,
           isbn: formData.isbn,
+          availability: formData.availability,
         };
       } else {
         return book;
@@ -100,6 +114,7 @@ const AddBookForm = () => {
 
     //change data in local storage based on id
     localStorage.setItem("book", JSON.stringify(editingBooks));
+    // navigate("/books");
 
     alert("The Book has been Editted!!");
   };
@@ -112,12 +127,22 @@ const AddBookForm = () => {
       category: "",
       publicationyear: "",
       isbn: "",
+      availability: "",
     });
 
     setIsEditing(false);
 
     //move to books when cancel
     navigate("/books");
+  };
+
+  //To change when user type in
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(() => ({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -139,6 +164,7 @@ const AddBookForm = () => {
         category: "",
         publicationyear: "",
         isbn: "",
+        availability: "",
       });
 
       setErrors({});
@@ -150,19 +176,10 @@ const AddBookForm = () => {
     }
   };
 
-  //To change when user type in
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(() => ({
-      ...formData,
-      [name]: value,
-    }));
-  };
-
   //For make unik array (Remove Duplicate)
-  const unikCategorys = Array.from(
-    new Set(book.map((bookList) => bookList.category))
-  );
+  // const unikCategorys = Array.from(
+  //   new Set(book.map((bookList) => bookList.category))
+  // );
 
   const bookIdComponent = book.length > 0 ? book[book.length - 1].id + 1 : 1;
 
@@ -223,11 +240,13 @@ const AddBookForm = () => {
                     <option value="" disabled>
                       Select category
                     </option>
-                    {unikCategorys.map((category) => (
+                    <option value="Shonen">Shonen</option>
+                    <option value="Sheinen">Sheinen</option>
+                    {/* {unikCategorys.map((category) => (
                       <option key={category} value={category}>
                         {category}
                       </option>
-                    ))}
+                    ))} */}
                   </select>
                 </div>
               </div>
@@ -291,6 +310,20 @@ const AddBookForm = () => {
                   {errors.isbn && (
                     <div className="invalid-feedback">{errors.isbn}</div>
                   )}
+                </div>
+
+                <div className="mb-3 form-check">
+                  <input
+                    type="checkbox"
+                    id="availability"
+                    name="availability"
+                    className="form-check-input"
+                    checked={formData.availability}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="availability" className="form-check-label">
+                    Availability
+                  </label>
                 </div>
               </div>
             </div>
