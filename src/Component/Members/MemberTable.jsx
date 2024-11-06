@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import DeleteConfirmation from "../Widgets/DeleteConfirmations";
+import DeleteConfirmation from "../Elements/DeleteConfirmations";
 
 const MemberTable = () => {
   const { member, setMember, setIsEditing, setSelectedMember } =
