@@ -31,6 +31,16 @@ const MemberForm = () => {
     }
   }, [isEditing, selectedMember]);
 
+  // const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // useEffect(() => {
+  //   if (!isEditing && isSubmitting) {
+  //     onAddMember();
+  //   } else if (isEditing && formData.id && isSubmitting) {
+  //     onUpdateMember();
+  //   }
+  // }, [isEditing, formData, isSubmitting]);
+
   const onAddMember = () => {
     const newMemberId = {
       ...formData,
@@ -137,9 +147,11 @@ const MemberForm = () => {
       if (isEditing === true) {
         onUpdateMember();
         setIsEditing(false);
-      } else {
+      }
+      else {
         onAddMember();
       }
+      // setIsSubmitting(true);
 
       setFormData({
         id: "",
