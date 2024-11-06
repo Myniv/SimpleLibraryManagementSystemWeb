@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import DeleteConfirmation from "../Widgets/DeleteConfirmations";
 
 const BookTable = () => {
   const { book, setBook, setIsEditing, setSelectedBook } = useOutletContext();
@@ -36,15 +37,15 @@ const BookTable = () => {
   };
 
   const onDeleteBook = (id) => {
-    const confirmMessage = "Are you sure you want to delete this book?";
-    if (confirm(confirmMessage)) {
+    const isDelete = () => {
       const storedBooks = JSON.parse(localStorage.getItem("book")) || [];
       const deleteBooks = storedBooks.filter((b) => b.id !== id);
 
       //This is to add to the local storage
       localStorage.setItem("book", JSON.stringify(deleteBooks));
       setBook(deleteBooks);
-    }
+    };
+    DeleteConfirmation({ deleteData: () => isDelete() });
   };
 
   const onEditingBook = (id) => {
@@ -59,7 +60,6 @@ const BookTable = () => {
   };
   return (
     <div className="m-4">
-      <br></br>
       <div className="d-flex justify-content-between align-items-center">
         <h2>Book Table</h2>
         <button className="btn btn-primary m-1 me-3" onClick={clearFilters}>

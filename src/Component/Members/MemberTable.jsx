@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import DeleteConfirmation from "../Widgets/DeleteConfirmations";
 
 const MemberTable = () => {
   const { member, setMember, setIsEditing, setSelectedMember } =
@@ -13,14 +14,15 @@ const MemberTable = () => {
   }, [setMember]);
 
   const onDeleteMember = (id) => {
-    const confirmMessage = "Are you sure want to delete this member?";
-    if (confirm(confirmMessage)) {
+    const isDelete = () => {
       const storedMember = JSON.parse(localStorage.getItem("member")) || [];
       const deleteMember = storedMember.filter((b) => b.id !== id);
 
       localStorage.setItem("member", JSON.stringify(deleteMember));
       setMember(deleteMember);
-    }
+    };
+
+    DeleteConfirmation({ deleteData: () => isDelete() });
   };
 
   const onEditingMember = (id) => {
@@ -37,7 +39,6 @@ const MemberTable = () => {
   return (
     <>
       <div className="m-4">
-        <br></br>
         <div className="d-flex justify-content-between align-items-center">
           <h2>Member Table</h2>
         </div>
@@ -85,20 +86,20 @@ const MemberTable = () => {
               </tr>
             ))}
             <tr>
-            <td colSpan="7">
-              <div className="d-flex justify-content-end">
-                <div className="d-grid gap-2 col-2">
-                  <button
-                    type="button"
-                    className="btn btn-primary  btn-block me-1"
-                    onClick={onAddMember}
-                  >
-                    Add Member
-                  </button>
+              <td colSpan="7">
+                <div className="d-flex justify-content-end">
+                  <div className="d-grid gap-2 col-2">
+                    <button
+                      type="button"
+                      className="btn btn-primary  btn-block me-1"
+                      onClick={onAddMember}
+                    >
+                      Add Member
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
