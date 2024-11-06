@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
-import { HeaderFunction } from "../Head";
-import { FooterFunction } from "../Foot";
+import { HeaderFunction } from "../Component/Modules/Head";
+import { FooterFunction } from "../Component/Modules/Foot";
 
 const LandingPage = () => {
   return (
