@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import ShowLoading from "../../Elements/ShowLoading";
 
 const MemberForm = () => {
-  const { member, setMember, isEditing, setIsEditing, selectedMember } =
+  const { member, setMember, isEditing, setIsEditing, selectedMember /*, isAdding, setIsAdding*/ } =
     useOutletContext();
 
   const navigate = useNavigate();
@@ -34,12 +34,14 @@ const MemberForm = () => {
   // const [isSubmitting, setIsSubmitting] = useState(false);
 
   // useEffect(() => {
-  //   if (!isEditing && isSubmitting) {
+  //   if (!isEditing && isSubmitting && isAdding) {
+  //     console.log("Add Member")
   //     onAddMember();
-  //   } else if (isEditing && formData.id && isSubmitting) {
+  //   } else if (isEditing && isSubmitting) {
+  //     console.log("UpdateMember");
   //     onUpdateMember();
   //   }
-  // }, [isEditing, formData, isSubmitting]);
+  // }, [isEditing, isSubmitting, isAdding]);
 
   const onAddMember = () => {
     const newMemberId = {
@@ -57,6 +59,8 @@ const MemberForm = () => {
       loadingMessage: "Adding data Members...",
       nextPage: () => navigate("/members"),
     });
+
+    // setIsAdding(false);
   };
 
   const onUpdateMember = () => {

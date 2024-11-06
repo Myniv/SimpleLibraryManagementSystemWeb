@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import DeleteConfirmation from "../../Elements/DeleteConfirmations";
 
 const MemberTable = () => {
-  const { member, setMember, setIsEditing, setSelectedMember } =
+  const { member, setMember, setIsEditing, setSelectedMember, /*setIsAdding*/ } =
     useOutletContext();
 
   const navigate = useNavigate();
@@ -33,6 +33,7 @@ const MemberTable = () => {
   };
 
   const onAddMember = () => {
+    // setIsAdding(true);
     navigate("/members/add");
   };
 
