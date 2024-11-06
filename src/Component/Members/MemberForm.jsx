@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import ShowLoading from "../Widgets/ShowLoading";
 
 const MemberForm = () => {
   const { member, setMember, isEditing, setIsEditing, selectedMember } =
@@ -39,11 +40,13 @@ const MemberForm = () => {
     const newMember = [...member, newMemberId];
 
     localStorage.setItem("member", JSON.stringify(newMember));
-    navigate("/members");
-
+    // alert("New member has been added!!");
     setMember(newMember);
-
-    alert("New member has been added!!");
+    // navigate("/members");
+    ShowLoading({
+      loadingMessage: "Adding data Members...",
+      nextPage: () => navigate("/members"),
+    });
   };
 
   const onUpdateMember = () => {
@@ -60,9 +63,11 @@ const MemberForm = () => {
 
     setMember(editingMember);
     localStorage.setItem("member", JSON.stringify(editingMember));
-    navigate("/members");
 
-    alert("This Member has been Editted!!");
+    ShowLoading({
+      loadingMessage: "Updating data Members...",
+      nextPage: () => navigate("/members"),
+    });
   };
 
   const onCancel = () => {
@@ -106,7 +111,8 @@ const MemberForm = () => {
       !formData.phonenumber ||
       (formData.phonenumber && !phoneRegex.test(formData.phonenumber))
     ) {
-      newErrors.phonenumber = "Phone number must be start at +62 and between 10 - 13 digit!!";
+      newErrors.phonenumber =
+        "Phone number must be start at +62 and between 10 - 13 digit!!";
     }
 
     if (!formData.address || formData.address.length > 200) {
