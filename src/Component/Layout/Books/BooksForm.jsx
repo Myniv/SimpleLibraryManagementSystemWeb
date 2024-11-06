@@ -55,6 +55,10 @@ const AddBookForm = () => {
         "Publication Year must be between in year 1900 and year " + currentYear;
     }
 
+    if (!formData.title || formData.title.length < 3) {
+      newErrors.title = "Title must be more than 2 characters!!";
+    }
+
     const isValidISBN = /^(978|979)\d{10}$/;
     if (!formData.isbn || (formData.isbn && !isValidISBN.test(formData.isbn))) {
       newErrors.isbn =
@@ -215,7 +219,9 @@ const AddBookForm = () => {
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${
+                      errors.title ? "is-invalid" : ""
+                    }`}
                     id="title"
                     name="title"
                     value={formData.title}
@@ -224,6 +230,11 @@ const AddBookForm = () => {
                     ref={focusTitleInput}
                     required
                   />
+                  {errors.title && (
+                    <div className="invalid-feedback">
+                      {errors.title}
+                    </div>
+                  )}
                   {/* If name error, show <div> */}
                   {/* This is the same as the rest*/}
                 </div>
