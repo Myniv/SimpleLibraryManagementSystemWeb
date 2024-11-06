@@ -40,7 +40,7 @@ const HeaderFunction = () => {
                   return isActive ? "nav-link active" : "nav-link";
                 }}
               >
-                Customer
+                Members
               </NavLink>
             </li>
           </ul>
