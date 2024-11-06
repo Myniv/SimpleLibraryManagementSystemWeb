@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import ShowLoading from "../Widgets/ShowLoading";
 const AddBookForm = () => {
   const { book, setBook, isEditing, setIsEditing, selectedBook } =
     useOutletContext();
@@ -85,9 +86,12 @@ const AddBookForm = () => {
 
     //add to local storage with newbook
     localStorage.setItem("book", JSON.stringify(newBook));
-    // navigate("/books");
 
-    alert("The new book has been Submitted!!");
+    //Add loading
+    ShowLoading({
+      loadingMessage: "Adding data Members...",
+      nextPage: () => navigate("/books"),
+    });
   };
 
   const onUpdateBook = () => {
@@ -114,9 +118,11 @@ const AddBookForm = () => {
 
     //change data in local storage based on id
     localStorage.setItem("book", JSON.stringify(editingBooks));
-    // navigate("/books");
 
-    alert("The Book has been Editted!!");
+    ShowLoading({
+      loadingMessage: `Updating book with id: ${params.id}...`,
+      nextPage: () => navigate("/books"),
+    });
   };
 
   const onCancel = () => {
@@ -168,9 +174,7 @@ const AddBookForm = () => {
       });
 
       setErrors({});
-
-      //move to /books
-      navigate("/books");
+      
     } else {
       setErrors(validationErrors);
     }
