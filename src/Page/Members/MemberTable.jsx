@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import DeleteConfirmation from "../../Elements/DeleteConfirmations";
+import DeleteConfirmation from "../../Component/Elements/DeleteConfirmations";
 
 const MemberTable = () => {
-  const { member, setMember, setIsEditing, setSelectedMember, /*setIsAdding*/ } =
+  const { member, setMember, setIsEditing, setSelectedMember /*setIsAdding*/ } =
     useOutletContext();
 
   const navigate = useNavigate();

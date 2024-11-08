@@ -1,22 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainPage from "./Page/MainPage";
-import BooksPage from "./Page/BooksPage";
-import { BookTable } from "./Component/Layout/Books/BooksTable";
-import { AddBookForm } from "./Component/Layout/Books/BooksForm";
-import LandingPage from "./Page/LandingPage";
-import MembersPage from "./Page/MembersPage";
-import MemberTable from "./Component/Layout/Members/MemberTable";
-import MemberForm from "./Component/Layout/Members/MemberForm";
+import BooksLayout from "./Component/Layout/BooksLayout";
+import { BookTable } from "./Page/Books/BooksTable";
+import { AddBookForm } from "./Page/Books/BooksForm";
+import LandingLayout from "./Component/Layout/LandingLayout";
+import MembersLayout from "./Component/Layout/MembersLayout";
+import MemberTable from "./Page/Members/MemberTable";
+import MemberForm from "./Page/Members/MemberForm";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandingPage />,
+    element: <LandingLayout />,
     errorElement: <div>404 Not Found</div>,
     children: [
       { path: "", element: <MainPage /> },
       {
         path: "/books",
-        element: <BooksPage />,
+        element: <BooksLayout />,
         children: [
           { path: "", element: <BookTable /> },
           { path: "/books/add", element: <AddBookForm /> },
@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/members",
-        element: <MembersPage />,
+        element: <MembersLayout />,
         children: [
           { path: "", element: <MemberTable /> },
           { path: "/members/add", element: <MemberForm /> },

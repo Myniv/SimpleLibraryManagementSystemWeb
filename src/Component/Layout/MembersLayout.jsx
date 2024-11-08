@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
-function MembersPage() {
+function MembersLayout() {
   const [isEditing, setIsEditing] = useState(false);
   // const [isAdding, setIsAdding] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -25,4 +25,4 @@ function MembersPage() {
   );
 }
 
-export default MembersPage;
+export default MembersLayout;

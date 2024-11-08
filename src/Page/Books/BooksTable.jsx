@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import DeleteConfirmation from "../../Elements/DeleteConfirmations";
+import DeleteConfirmation from "../../Component/Elements/DeleteConfirmations";
 
 const BookTable = () => {
   const { book, setBook, setIsEditing, setSelectedBook } = useOutletContext();

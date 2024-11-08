@@ -1,8 +1,8 @@
 import { Outlet } from "react-router";
-import { HeaderFunction } from "../Component/Modules/Head";
-import { FooterFunction } from "../Component/Modules/Foot";
+import { HeaderFunction } from "../Modules/Head";
+import { FooterFunction } from "../Modules/Foot";
 
-const LandingPage = () => {
+const LandingLayout = () => {
   return (
     <>
       <div className="d-flex flex-column min-vh-100">
@@ -16,4 +16,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default LandingLayout;
