@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import ShowLoading from "../../Component/Elements/ShowLoading";
+import LoadingAddEdit from "../../Component/Elements/LoadingAddEdit";
 import axios from "axios";
 
 const MemberForm = () => {
@@ -49,7 +49,7 @@ const MemberForm = () => {
     axios
       .post("http://localhost:5265/api/Users", formData)
       .then(() => {
-        ShowLoading({
+        LoadingAddEdit({
           loadingMessage: "The new project is being added...",
           nextPage: () => navigate("/members"),
         });
@@ -61,7 +61,7 @@ const MemberForm = () => {
     axios
       .put(`http://localhost:5265/api/Users/${formData.userid}`, formData)
       .then(() => {
-        ShowLoading({
+        LoadingAddEdit({
           loadingMessage: "The member is being edited...",
           nextPage: () => navigate("/members"),
         });

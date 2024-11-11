@@ -4,7 +4,7 @@ import axios from "axios";
 import DeleteConfirmation from "../../Component/Elements/DeleteConfirmations";
 import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import DangerButton from "../../Component/Elements/DangerButton";
-import Loading from "../../Component/Elements/Loading";
+import LoadingState from "../../Component/Elements/LoadingState";
 import Pagination from "../../Component/Widgets/Pagination";
 
 const MemberTable = () => {
@@ -78,7 +78,7 @@ const MemberTable = () => {
   return (
     <>
       {loading ? (
-        <Loading />
+        <LoadingState />
       ) : (
         <div className="m-4">
           <div className="d-flex justify-content-between align-items-center">
@@ -122,7 +122,7 @@ const MemberTable = () => {
                     <PrimaryButton
                       onClick={onAddMember}
                       buttonName={"Add Member"}
-                      className = "btn-sm"
+                      className="btn-sm"
                     />
                     <Pagination
                       currentPage={currentPage}

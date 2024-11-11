@@ -1,12 +1,12 @@
 import Swal from "sweetalert2";
 
-const ShowLoading = ({ loadingMessage, nextPage }) => {
+const LoadingAddEdit = ({ loadingMessage, nextPage }) => {
   const loading = Swal.fire({
     title: loadingMessage.toString(),
     html: "Please wait...",
     allowEscapeKey: false,
     allowOutsideClick: false,
-    timer:3000,
+    timer: 3000,
     didOpen: () => {
       Swal.showLoading();
     },
@@ -28,4 +28,4 @@ const ShowLoading = ({ loadingMessage, nextPage }) => {
   return loading;
 };
 
-export default ShowLoading;
+export default LoadingAddEdit;
