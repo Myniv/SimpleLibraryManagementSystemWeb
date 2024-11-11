@@ -1,100 +1,80 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import ShowLoading from "../../Component/Elements/ShowLoading";
+import axios from "axios";
 
 const MemberForm = () => {
-  const { member, setMember, isEditing, setIsEditing, selectedMember /*, isAdding, setIsAdding*/ } =
-    useOutletContext();
+  const { member } = useOutletContext();
+
+  const [onSubmit, setOnSubmit] = useState(false);
 
   const navigate = useNavigate();
-
   const params = useParams();
 
   const [formData, setFormData] = useState({
-    id: "",
-    fullname: "",
-    email: "",
-    gender: "",
+    userid: "",
+    username: "",
     phonenumber: "",
-    address: "",
   });
 
   const focusNameInput = useRef(null);
 
   useEffect(() => {
-    if (isEditing && selectedMember) {
-      setFormData(selectedMember);
+    if (params.id) {
+      const findMember = member.find(
+        (member) => member.userid === Number(params.id)
+      );
+      if (findMember) {
+        setFormData(findMember);
+      }
     }
 
     if (focusNameInput.current) {
       focusNameInput.current.focus();
     }
-  }, [isEditing, selectedMember]);
+  }, [params, member]);
 
-  // const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // useEffect(() => {
-  //   if (!isEditing && isSubmitting && isAdding) {
-  //     console.log("Add Member")
-  //     onAddMember();
-  //   } else if (isEditing && isSubmitting) {
-  //     console.log("UpdateMember");
-  //     onUpdateMember();
-  //   }
-  // }, [isEditing, isSubmitting, isAdding]);
+  useEffect(() => {
+    if (onSubmit) {
+      if (params.id) {
+        onUpdateMember();
+      } else {
+        onAddMember();
+      }
+      setOnSubmit(false);
+    }
+  }, [onSubmit]);
 
   const onAddMember = () => {
-    const newMemberId = {
-      ...formData,
-      id: member.length > 0 ? member[member.length - 1].id + 1 : 1,
-    };
-
-    const newMember = [...member, newMemberId];
-
-    localStorage.setItem("member", JSON.stringify(newMember));
-    // alert("New member has been added!!");
-    setMember(newMember);
-    // navigate("/members");
-    ShowLoading({
-      loadingMessage: "Adding data Members...",
-      nextPage: () => navigate("/members"),
-    });
-
-    // setIsAdding(false);
+    axios
+      .post("http://localhost:5265/api/Users", formData)
+      .then(() => {
+        ShowLoading({
+          loadingMessage: "The new project is being added...",
+          nextPage: () => navigate("/members"),
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const onUpdateMember = () => {
-    const editingMember = member.map((member) => {
-      if (member.id === formData.id) {
-        return {
-          ...member,
-          ...formData,
-        };
-      } else {
-        return member;
-      }
-    });
-
-    setMember(editingMember);
-    localStorage.setItem("member", JSON.stringify(editingMember));
-
-    ShowLoading({
-      loadingMessage: "Updating data Members...",
-      nextPage: () => navigate("/members"),
-    });
+    axios
+      .put(`http://localhost:5265/api/Users/${formData.userid}`, formData)
+      .then(() => {
+        ShowLoading({
+          loadingMessage: "The member is being edited...",
+          nextPage: () => navigate("/members"),
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const onCancel = () => {
     setFormData({
-      id: "",
-      fullname: "",
-      email: "",
-      gender: "",
+      userid: "",
+      username: "",
       phonenumber: "",
-      address: "",
     });
-    setIsEditing(false);
-
     navigate("/members");
   };
 
@@ -102,43 +82,25 @@ const MemberForm = () => {
   const validateForm = () => {
     const newErrors = {};
     if (
-      !formData.fullname ||
-      formData.fullname.length < 2 ||
-      formData.fullname.length > 100
+      !formData.username ||
+      formData.username.length < 2 ||
+      formData.username.length > 100
     ) {
-      newErrors.fullname = "Name must be between 2 and 100 characters";
+      newErrors.username = "Name must be between 2 and 100 characters";
     }
 
-    //email validation like this
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email || !emailRegex.test(formData.email)) {
-      newErrors.email = "Email must be a valid email format";
-    }
-
-    if (!formData.gender) {
-      newErrors.gender = "Gender is required!!";
-    }
-
-    //Phone validation like this
     const phoneRegex = /^(\+62|62)8[1-9][0-9]{6,9}$/;
-    if (
-      !formData.phonenumber ||
-      (formData.phonenumber && !phoneRegex.test(formData.phonenumber))
-    ) {
+    if (!formData.phonenumber || !phoneRegex.test(formData.phonenumber)) {
       newErrors.phonenumber =
-        "Phone number must be start at +62 and between 10 - 13 digit!!";
-    }
-
-    if (!formData.address || formData.address.length > 200) {
-      newErrors.address = "Address must not exceed 200 characters";
+        "Phone number must start with +62 and be 10-13 digits.";
     }
     return newErrors;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(() => ({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [name]: value,
     }));
   };
@@ -146,41 +108,23 @@ const MemberForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const validatonErrors = validateForm();
-    if (Object.keys(validatonErrors).length === 0) {
-      if (isEditing === true) {
-        onUpdateMember();
-        setIsEditing(false);
-      }
-      else {
-        onAddMember();
-      }
-      // setIsSubmitting(true);
-
-      setFormData({
-        id: "",
-        fullname: "",
-        email: "",
-        gender: "",
-        phonenumber: "",
-        address: "",
-      });
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      setOnSubmit(true);
       setErrors({});
-
-      //Todo navigate("/members");
     } else {
-      setErrors(validatonErrors);
+      setErrors(validationErrors);
     }
   };
 
-  const memberId = member.length > 0 ? member[member.length - 1].id + 1 : 1;
+  // const memberId = member.length > 0 ? member[member.length - 1].id + 1 : 1;
 
   return (
     <>
       <div className="mb-5">
         <h2 className="ms-5">
-          {isEditing
-            ? "Form Edit Member with id" + params.id
+          {params.id
+            ? "Form Edit Member with id " + params.id
             : "Form Add Member"}
         </h2>
         <div className="container border">
@@ -188,102 +132,42 @@ const MemberForm = () => {
             <div className="row">
               <div className="col-md-6">
                 <div className="mb-3">
-                  <label htmlFor="id" className="form-label">
+                  {/* <label htmlFor="userid" className="form-label">
                     ID
-                  </label>
+                  </label> */}
                   <input
-                    type="number"
+                    type="hidden"
                     className="form-control"
-                    id="id"
-                    name="id"
-                    value={isEditing ? formData.id : memberId}
+                    id="userid"
+                    name="userid"
+                    value={formData.userid}
                     disabled
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
+                  <label htmlFor="username" className="form-label">
                     Name
                   </label>
                   <input
                     type="text"
-                    id="fullname"
-                    name="fullname"
+                    id="username"
+                    name="username"
                     className={`form-control ${
-                      errors.fullname ? "is-invalid" : ""
+                      errors.username ? "is-invalid" : ""
                     }`}
-                    value={formData.fullname}
+                    value={formData.username}
                     onChange={handleChange}
                     required
                     placeholder="Full Name"
                     ref={focusNameInput}
                   />
-                  {/* If name error, show <div> */}
-                  {/* This is the same as the rest*/}
-                  {errors.fullname && (
-                    <div className="invalid-feedback">{errors.fullname}</div>
+                  {errors.username && (
+                    <div className="invalid-feedback">{errors.username}</div>
                   )}
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className={`form-control ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    placeholder="Email"
-                  />
-                  {errors.email && (
-                    <div className="invalid-feedback">{errors.email}</div>
-                  )}
-                </div>
-
-                <div className="mb-3 formcheck">
-                  <label className="form-label">Select Gender</label>
-                  <div className="mt">
-                    <input
-                      type="radio"
-                      id="gender1"
-                      name="gender"
-                      className={`form-check-input ${
-                        errors.gender ? "is-invalid" : ""
-                      }`}
-                      value="Laki laki"
-                      onChange={handleChange}
-                      checked={formData.gender === "Laki laki"}
-                    />
-                    <label htmlFor="gender1" className="form-check-label ms-2">
-                      Laki laki
-                    </label>
-
-                    <input
-                      type="radio"
-                      id="gender2"
-                      name="gender"
-                      className={`form-check-input ms-2${
-                        errors.gender ? "is-invalid" : ""
-                      }`}
-                      value="Perempuan"
-                      onChange={handleChange}
-                      checked={formData.gender === "Perempuan"}
-                    />
-                    <label htmlFor="gender2" className="form-check-label ms-2">
-                      Perempuan
-                    </label>
-                    {errors.gender && (
-                      <div className="invalid-feedback">{errors.gender}</div>
-                    )}
-                  </div>
                 </div>
               </div>
               <div className="col-md-6">
+                <div className="mb-3"></div>
                 <div className="mb-3">
                   <label htmlFor="phonenumber" className="form-label">
                     Phone Number
@@ -304,41 +188,18 @@ const MemberForm = () => {
                     <div className="invalid-feedback">{errors.phonenumber}</div>
                   )}
                 </div>
-
-                <div className="mb-1">
-                  <label htmlFor="address" className="form-label">
-                    Address
-                  </label>
-                  <textarea
-                    id="address"
-                    name="address"
-                    className={`form-control ${
-                      errors.address ? "is-invalid" : ""
-                    }`}
-                    value={formData.address}
-                    onChange={handleChange}
-                    required
-                    placeholder="Address"
-                  />
-                  {errors.address && (
-                    <div className="invalid-feedback">{errors.address}</div>
-                  )}
-                </div>
               </div>
             </div>
-            <button
-              type="submit"
-              className="btn btn-primary m-1 right text-right"
-            >
-              {isEditing ? "Edit Member" : "Add Member"}
+            <button type="submit" className="btn btn-primary m-1">
+              {params.id ? "Edit Member" : "Add Member"}
             </button>
 
             <button
-              type="submit"
+              type="button"
               onClick={onCancel}
-              className="btn btn-danger right text-right"
+              className="btn btn-danger m-1"
             >
-              {isEditing ? "Cancel Edit" : "Cancel Add"}
+              {params.id ? "Cancel Edit" : "Cancel Add"}
             </button>
           </form>
         </div>
