@@ -1,24 +1,24 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import ShowLoading from "../../Component/Elements/ShowLoading";
+import LoadingAddEdit from "../../Component/Elements/LoadingAddEdit";
+import axios from "axios";
+import DangerButton from "../../Component/Elements/DangerButton";
+import PrimaryButton from "../../Component/Elements/PrimaryButton";
 const AddBookForm = () => {
-  const { book, setBook, isEditing, setIsEditing, selectedBook } =
-    useOutletContext();
+  const { book } = useOutletContext();
   const navigate = useNavigate();
 
-  //the other way to get id beside using useState selected book is using param
-  //ex {params.id}
+  const [onSubmit, setOnSubmit] = useState(false);
+
   const params = useParams();
 
   const [formData, setFormData] = useState({
-    id: "",
+    bookid: "",
     title: "",
     author: "",
-    category: "",
     publicationyear: "",
     isbn: "",
-    availability: "",
   });
 
   //To change title end button text
@@ -29,18 +29,30 @@ const AddBookForm = () => {
   const focusTitleInput = useRef(null);
 
   useEffect(() => {
-    if (isEditing && selectedBook) {
-      setFormData(selectedBook);
-      //the example using params
-      addOrEditTitle.current = `Form Edit book with id: ${params.id}`;
-      addOrEditButton.current = "Edit Book";
-      // console.log(isEditing);
+    if (params.id) {
+      const findBook = book.find((book) => book.bookid === Number(params.id));
+      if (findBook) {
+        setFormData(findBook);
+        addOrEditTitle.current = `Form Edit book with id: ${params.id}`;
+        addOrEditButton.current = "Edit Book";
+      }
     }
 
     if (focusTitleInput.current) {
       focusTitleInput.current.focus();
     }
-  }, [isEditing, selectedBook, params]);
+  }, [book, params]);
+
+  useEffect(() => {
+    if (onSubmit) {
+      if (params.id) {
+        onUpdateBook();
+      } else {
+        onAddBook();
+      }
+      setOnSubmit(false);
+    }
+  }, [onSubmit]);
 
   //setError Validation
   const [errors, setErrors] = useState({});
@@ -66,10 +78,11 @@ const AddBookForm = () => {
     } else if (
       //.some is for searching array data that at least have one that same as the condition and return boolean
       //if form adding based isEditing false
-      book.some((b) => b.isbn === formData.isbn && !isEditing) ||
+      book.some((b) => b.isbn === formData.isbn && !params.id) ||
       //if form editing based isEditing true and if the isbn is the same like the other id except itself
       book.some(
-        (b) => b.isbn === formData.isbn && isEditing && b.id !== formData.id
+        (b) =>
+          b.isbn === formData.isbn && params.id && b.bookid !== formData.bookid
       )
     ) {
       newErrors.isbn =
@@ -80,69 +93,37 @@ const AddBookForm = () => {
   };
 
   const onAddBook = () => {
-    //Add new book
-    const newBookId = {
-      ...formData,
-      id: book.length > 0 ? book[book.length - 1].id + 1 : 1,
-    };
-    const newBook = [...book, newBookId];
-    setBook(newBook);
-
-    //add to local storage with newbook
-    localStorage.setItem("book", JSON.stringify(newBook));
-
-    //Add loading
-    ShowLoading({
-      loadingMessage: "Adding data Members...",
-      nextPage: () => navigate("/books"),
-    });
+    axios
+      .post("http://localhost:5265/api/Books", formData)
+      .then(() => {
+        LoadingAddEdit({
+          loadingMessage: "The new book is being added...",
+          nextPage: () => navigate("/books"),
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const onUpdateBook = () => {
-    //loop through map to check if book.id === formData.id
-    const editingBooks = book.map((book) => {
-      if (book.id === formData.id) {
-        return {
-          //if True, set title: formData.title and etc
-          ...book,
-          id: formData.id,
-          title: formData.title,
-          author: formData.author,
-          category: formData.category,
-          publicationyear: formData.publicationyear,
-          isbn: formData.isbn,
-          availability: formData.availability,
-        };
-      } else {
-        return book;
-      }
-    });
-
-    setBook(editingBooks);
-
-    //change data in local storage based on id
-    localStorage.setItem("book", JSON.stringify(editingBooks));
-
-    ShowLoading({
-      loadingMessage: `Updating book with id: ${params.id}...`,
-      nextPage: () => navigate("/books"),
-    });
+    axios
+      .put(`http://localhost:5265/api/Books/${formData.bookid}`, formData)
+      .then(() => {
+        LoadingAddEdit({
+          loadingMessage: "The book is being edited...",
+          nextPage: () => navigate("/books"),
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const onCancel = () => {
     setFormData({
-      id: "",
+      bookid: "",
       title: "",
       author: "",
-      category: "",
       publicationyear: "",
       isbn: "",
-      availability: "",
     });
-
-    setIsEditing(false);
-
-    //move to books when cancel
     navigate("/books");
   };
 
@@ -160,35 +141,15 @@ const AddBookForm = () => {
 
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
-      if (isEditing === true) {
-        onUpdateBook();
-        setIsEditing(false);
-      } else {
-        onAddBook();
-      }
-      //Reset all form
-      setFormData({
-        id: "",
-        title: "",
-        author: "",
-        category: "",
-        publicationyear: "",
-        isbn: "",
-        availability: "",
-      });
-
+      setOnSubmit(true);
       setErrors({});
     } else {
       setErrors(validationErrors);
     }
   };
 
-  //For make unik array (Remove Duplicate)
-  // const unikCategorys = Array.from(
-  //   new Set(book.map((bookList) => bookList.category))
-  // );
-
-  const bookIdComponent = book.length > 0 ? book[book.length - 1].id + 1 : 1;
+  const bookIdComponent =
+    book.length > 0 ? book[book.length - 1].bookid + 1 : 1;
 
   return (
     <>
@@ -199,15 +160,15 @@ const AddBookForm = () => {
             <div className="row">
               <div className="col-md-6">
                 <div className="mb-3">
-                  <label htmlFor="id" className="form-label">
+                  <label htmlFor="bookid" className="form-label">
                     ID
                   </label>
                   <input
                     type="number"
                     className="form-control"
-                    id="id"
-                    name="id"
-                    value={formData.id}
+                    id="bookid"
+                    name="bookid"
+                    value={formData.bookid}
                     placeholder={bookIdComponent}
                     disabled
                   />
@@ -236,30 +197,26 @@ const AddBookForm = () => {
                   {/* If name error, show <div> */}
                   {/* This is the same as the rest*/}
                 </div>
-
+                
                 <div className="mb-3">
-                  <label htmlFor="category" className="form-label">
-                    Category
+                  <label htmlFor="isbn" className="form-label">
+                    ISBN
                   </label>
-                  <select
-                    className="form-select"
-                    id="category"
-                    name="category"
-                    value={formData.category}
+                  <input
+                    type="number"
+                    className={`form-control ${
+                      errors.isbn ? "is-invalid" : ""
+                    }`}
+                    id="isbn"
+                    name="isbn"
+                    value={formData.isbn}
                     onChange={handleChange}
+                    placeholder="ISBN"
                     required
-                  >
-                    <option value="" disabled>
-                      Select category
-                    </option>
-                    <option value="Shonen">Shonen</option>
-                    <option value="Sheinen">Sheinen</option>
-                    {/* {unikCategorys.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))} */}
-                  </select>
+                  />
+                  {errors.isbn && (
+                    <div className="invalid-feedback">{errors.isbn}</div>
+                  )}
                 </div>
               </div>
 
@@ -302,41 +259,6 @@ const AddBookForm = () => {
                     </div>
                   )}
                 </div>
-
-                <div className="mb-3">
-                  <label htmlFor="isbn" className="form-label">
-                    ISBN
-                  </label>
-                  <input
-                    type="number"
-                    className={`form-control ${
-                      errors.isbn ? "is-invalid" : ""
-                    }`}
-                    id="isbn"
-                    name="isbn"
-                    value={formData.isbn}
-                    onChange={handleChange}
-                    placeholder="ISBN"
-                    required
-                  />
-                  {errors.isbn && (
-                    <div className="invalid-feedback">{errors.isbn}</div>
-                  )}
-                </div>
-
-                <div className="mb-3 form-check">
-                  <input
-                    type="checkbox"
-                    id="availability"
-                    name="availability"
-                    className="form-check-input"
-                    checked={formData.availability}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="availability" className="form-check-label">
-                    Availability
-                  </label>
-                </div>
               </div>
             </div>
             <button
@@ -345,13 +267,11 @@ const AddBookForm = () => {
             >
               {addOrEditButton.current}
             </button>
-            <button
-              type="submit"
+
+            <DangerButton
               onClick={onCancel}
-              className="btn btn-danger right text-right"
-            >
-              Cancel {addOrEditButton.current}
-            </button>
+              buttonName={`Cancel ${addOrEditButton.current}`}
+            />
           </form>
         </div>
       </div>
