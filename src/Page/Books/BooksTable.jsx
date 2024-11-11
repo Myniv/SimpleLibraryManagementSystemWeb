@@ -5,6 +5,7 @@ import axios from "axios";
 import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import DangerButton from "../../Component/Elements/DangerButton";
 import LoadingState from "../../Component/Elements/LoadingState";
+import Pagination from "../../Component/Widgets/Pagination";
 
 const BookTable = () => {
   const { book, setBook } = useOutletContext();
@@ -15,6 +16,9 @@ const BookTable = () => {
   const [deleteBooksId, setDeleteBooksId] = useState(false);
 
   const [loading, setLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
     setLoading(true);
@@ -60,6 +64,20 @@ const BookTable = () => {
   const onAddBook = () => {
     navigate("/books/add");
   };
+
+  // set the data for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedBooks = book.slice(startIndex, startIndex + itemsPerPage);
+
+  // set total pages
+  const totalPages = Math.ceil(book.length / itemsPerPage);
+
+  // Handle pagination navigation
+  const goToPreviousPage = () =>
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const goToNextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+
   return (
     <>
       {loading ? (
@@ -82,7 +100,7 @@ const BookTable = () => {
               </tr>
             </thead>
             <tbody>
-              {book.map((book) => (
+              {paginatedBooks.map((book) => (
                 <tr scope="row" key={book.id}>
                   <td>{book.bookid}</td>
                   <td>{book.title}</td>
@@ -108,13 +126,17 @@ const BookTable = () => {
               ))}
               <tr>
                 <td colSpan="8">
-                  <div className="d-flex justify-content-end">
-                    <div className="d-grid gap-2 col-2">
-                      <PrimaryButton
-                        onClick={onAddBook}
-                        buttonName={"Add Book"}
-                      />
-                    </div>
+                  <div className="d-grid gap-2 d-md-flex justify-content-between">
+                    <PrimaryButton
+                      onClick={onAddBook}
+                      buttonName={"Add Book"}
+                    />
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      goToPreviousPage={goToPreviousPage}
+                      goToNextPage={goToNextPage}
+                    />
                   </div>
                 </td>
               </tr>
