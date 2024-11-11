@@ -117,7 +117,7 @@ const MemberForm = () => {
     }
   };
 
-  // const memberId = member.length > 0 ? member[member.length - 1].id + 1 : 1;
+  const memberId = member.length > 0 ? member[member.length - 1].userid + 1 : 1;
 
   return (
     <>
@@ -129,66 +129,61 @@ const MemberForm = () => {
         </h2>
         <div className="container border">
           <form onSubmit={handleSubmit} className="mb-4">
-            <div className="row">
-              <div className="col-md-6">
-                <div className="mb-3">
-                  {/* <label htmlFor="userid" className="form-label">
+            <div className="mb-3">
+              <label htmlFor="userid" className="form-label">
                     ID
-                  </label> */}
-                  <input
-                    type="hidden"
-                    className="form-control"
-                    id="userid"
-                    name="userid"
-                    value={formData.userid}
-                    disabled
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="username" className="form-label">
-                    Name
                   </label>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    className={`form-control ${
-                      errors.username ? "is-invalid" : ""
-                    }`}
-                    value={formData.username}
-                    onChange={handleChange}
-                    required
-                    placeholder="Full Name"
-                    ref={focusNameInput}
-                  />
-                  {errors.username && (
-                    <div className="invalid-feedback">{errors.username}</div>
-                  )}
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="mb-3"></div>
-                <div className="mb-3">
-                  <label htmlFor="phonenumber" className="form-label">
-                    Phone Number
-                  </label>
-                  <input
-                    type="number"
-                    id="phonenumber"
-                    name="phonenumber"
-                    className={`form-control ${
-                      errors.phonenumber ? "is-invalid" : ""
-                    }`}
-                    value={formData.phonenumber}
-                    onChange={handleChange}
-                    required
-                    placeholder="+628XXXXXXXXX"
-                  />
-                  {errors.phonenumber && (
-                    <div className="invalid-feedback">{errors.phonenumber}</div>
-                  )}
-                </div>
-              </div>
+              <input
+                type="number"
+                className="form-control"
+                id="userid"
+                name="userid"
+                value={formData.userid}
+                placeholder={memberId}
+                disabled
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="username" className="form-label">
+                Name
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                className={`form-control ${
+                  errors.username ? "is-invalid" : ""
+                }`}
+                value={formData.username}
+                onChange={handleChange}
+                required
+                placeholder="Full Name"
+                ref={focusNameInput}
+              />
+              {errors.username && (
+                <div className="invalid-feedback">{errors.username}</div>
+              )}
+            </div>
+            <div className="mb-3"></div>
+            <div className="mb-3">
+              <label htmlFor="phonenumber" className="form-label">
+                Phone Number
+              </label>
+              <input
+                type="number"
+                id="phonenumber"
+                name="phonenumber"
+                className={`form-control ${
+                  errors.phonenumber ? "is-invalid" : ""
+                }`}
+                value={formData.phonenumber}
+                onChange={handleChange}
+                required
+                placeholder="+628XXXXXXXXX"
+              />
+              {errors.phonenumber && (
+                <div className="invalid-feedback">{errors.phonenumber}</div>
+              )}
             </div>
             <button type="submit" className="btn btn-primary m-1">
               {params.id ? "Edit Member" : "Add Member"}
