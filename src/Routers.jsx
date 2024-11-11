@@ -7,6 +7,9 @@ import LandingLayout from "./Component/Layout/LandingLayout";
 import MembersLayout from "./Component/Layout/MembersLayout";
 import MemberTable from "./Page/Members/MemberTable";
 import MemberForm from "./Page/Members/MemberForm";
+import TransactionsLayout from "./Component/Layout/TransactionsLayout";
+import BorrowsTable from "./Page/Transactions/BorrowsTable";
+import ReturnsForms from "./Page/Transactions/ReturnsForms";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +33,15 @@ export const router = createBrowserRouter([
           { path: "", element: <MemberTable /> },
           { path: "/members/add", element: <MemberForm /> },
           { path: "/members/:id", element: <MemberForm /> },
+        ],
+      },
+      {
+        path: "/transactions",
+        element: <TransactionsLayout />,
+        children: [
+          { path: "", element: <BorrowsTable /> },
+          { path: "/transactions/borrow", element: <ReturnsForms /> },
+          { path: "/transactions/return/:id", element: <ReturnsForms /> },
         ],
       },
     ],

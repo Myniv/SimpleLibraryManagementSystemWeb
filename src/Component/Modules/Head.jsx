@@ -43,6 +43,16 @@ const HeaderFunction = () => {
                 Members
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                to="/transactions"
+                className={({ isActive }) => {
+                  return isActive ? "nav-link active" : "nav-link";
+                }}
+              >
+                Borrow
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>
