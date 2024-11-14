@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import DeleteConfirmation from "../../Component/Elements/DeleteConfirmations";
@@ -6,6 +7,7 @@ import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import DangerButton from "../../Component/Elements/DangerButton";
 import LoadingState from "../../Component/Elements/LoadingState";
 import Pagination from "../../Component/Widgets/Pagination";
+import ErrorMessage from "../../Component/Elements/ErrorMessage";
 
 const BookTable = () => {
   const { book, setBook } = useOutletContext();
@@ -14,6 +16,7 @@ const BookTable = () => {
 
   const [deleteBooks, setDeleteBooks] = useState(false);
   const [deleteBooksId, setDeleteBooksId] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +34,7 @@ const BookTable = () => {
       })
       .catch((err) => {
         setLoading(false);
+        setErrorMessage(err.message);
         console.log(err);
       });
   }, [setBook]);
@@ -82,6 +86,8 @@ const BookTable = () => {
     <>
       {loading ? (
         <LoadingState />
+      ) : errorMessage ? (
+        <ErrorMessage errorMessage={errorMessage}/>
       ) : (
         <div className="m-4">
           <div className="d-flex justify-content-between align-items-between">

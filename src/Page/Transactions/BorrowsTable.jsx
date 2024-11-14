@@ -4,11 +4,13 @@ import axios from "axios";
 import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import LoadingState from "../../Component/Elements/LoadingState";
 import Pagination from "../../Component/Widgets/Pagination";
+import ErrorMessage from "../../Component/Elements/ErrorMessage";
 
 const BorrowsTable = () => {
   const { transactions, setTransactions } = useOutletContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -26,6 +28,7 @@ const BorrowsTable = () => {
       })
       .catch((err) => {
         setLoading(false);
+        setErrorMessage(err.message);
         console.log(err);
       });
   }, [setTransactions]);
@@ -58,6 +61,8 @@ const BorrowsTable = () => {
     <>
       {loading ? (
         <LoadingState />
+      ) : errorMessage ? (
+        <ErrorMessage errorMessage={errorMessage}/>
       ) : (
         <div className="m-4">
           <div className="d-flex justify-content-between align-items-center">

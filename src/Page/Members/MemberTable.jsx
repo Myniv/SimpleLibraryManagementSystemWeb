@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
@@ -6,6 +7,7 @@ import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import DangerButton from "../../Component/Elements/DangerButton";
 import LoadingState from "../../Component/Elements/LoadingState";
 import Pagination from "../../Component/Widgets/Pagination";
+import ErrorMessage from "../../Component/Elements/ErrorMessage";
 
 const MemberTable = () => {
   const { member, setMember } = useOutletContext();
@@ -15,6 +17,8 @@ const MemberTable = () => {
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const itemsPerPage = 5;
 
   useEffect(() => {
@@ -28,6 +32,7 @@ const MemberTable = () => {
       })
       .catch((err) => {
         setLoading(false);
+        setErrorMessage(err.message);
         console.log(err);
       });
   }, [setMember]);
@@ -79,6 +84,8 @@ const MemberTable = () => {
     <>
       {loading ? (
         <LoadingState />
+      ) : errorMessage ? (
+        <ErrorMessage errorMessage={errorMessage}/>
       ) : (
         <div className="m-4">
           <div className="d-flex justify-content-between align-items-center">
