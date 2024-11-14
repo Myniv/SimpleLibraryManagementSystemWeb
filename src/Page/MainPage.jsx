@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 const MainPage = () => {
@@ -5,12 +6,26 @@ const MainPage = () => {
   const [book, setBook] = useState([]);
 
   useEffect(() => {
-    const storedMember = JSON.parse(localStorage.getItem("member")) || [];
-    setMember(storedMember);
+    axios
+      .get("http://localhost:5265/api/Users")
+      .then((res) => {
+        const sortedMembers = res.data.sort((a, b) => a.userid - b.userid);
+        setMember(sortedMembers);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    const storedBook = JSON.parse(localStorage.getItem("book")) || [];
-    setBook(storedBook)
-  },[]);
+    axios
+      .get("http://localhost:5265/api/Books")
+      .then((res) => {
+        const sortedBooks = res.data.sort((a, b) => a.bookid - b.bookid);
+        setBook(sortedBooks);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className="container text-center my-4">
