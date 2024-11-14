@@ -84,8 +84,9 @@ const BookTable = () => {
         <LoadingState />
       ) : (
         <div className="m-4">
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex justify-content-between align-items-between">
             <h2>Book Table</h2>
+            <PrimaryButton onClick={onAddBook} buttonName={"Add Book"} />
           </div>
 
           <table className="table table-striped table-bordered">
@@ -124,24 +125,16 @@ const BookTable = () => {
                   </td>
                 </tr>
               ))}
-              <tr>
-                <td colSpan="8">
-                  <div className="d-grid gap-2 d-md-flex justify-content-between">
-                    <PrimaryButton
-                      onClick={onAddBook}
-                      buttonName={"Add Book"}
-                    />
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      goToPreviousPage={goToPreviousPage}
-                      goToNextPage={goToNextPage}
-                    />
-                  </div>
-                </td>
-              </tr>
             </tbody>
           </table>
+          <div className="d-grid gap-2 d-md-flex justify-content-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              goToPreviousPage={goToPreviousPage}
+              goToNextPage={goToNextPage}
+            />
+          </div>
         </div>
       )}
     </>

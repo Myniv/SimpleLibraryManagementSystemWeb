@@ -83,6 +83,11 @@ const MemberTable = () => {
         <div className="m-4">
           <div className="d-flex justify-content-between align-items-center">
             <h2>Member Table</h2>
+            <PrimaryButton
+              onClick={onAddMember}
+              buttonName={"Add Member"}
+              className="btn-sm"
+            />
           </div>
           <table className="table table-striped table-bordered">
             <thead className="thead-dark">
@@ -118,12 +123,7 @@ const MemberTable = () => {
               ))}
               <tr>
                 <td colSpan="4">
-                  <div className="d-grid gap-2 d-md-flex justify-content-between">
-                    <PrimaryButton
-                      onClick={onAddMember}
-                      buttonName={"Add Member"}
-                      className="btn-sm"
-                    />
+                  <div className="d-grid gap-2 d-md-flex justify-content-center">
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}

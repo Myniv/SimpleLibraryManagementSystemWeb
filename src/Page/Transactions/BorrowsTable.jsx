@@ -62,6 +62,11 @@ const BorrowsTable = () => {
         <div className="m-4">
           <div className="d-flex justify-content-between align-items-center">
             <h2>Transaction Table</h2>
+            <PrimaryButton
+              onClick={onAddTransaction}
+              buttonName={"Borrow Book"}
+              className="btn-sm"
+            />
           </div>
           <table className="table table-striped table-bordered">
             <thead className="thead-dark">
@@ -101,12 +106,7 @@ const BorrowsTable = () => {
               ))}
               <tr>
                 <td colSpan="7">
-                  <div className="d-grid gap-2 d-md-flex justify-content-between">
-                    <PrimaryButton
-                      onClick={onAddTransaction}
-                      buttonName={"Borrow Book"}
-                      className="btn-sm"
-                    />
+                  <div className="d-grid gap-2 d-md-flex justify-content-center">
                     <Pagination
                       currentPage={currentPage}
                       totalPages={totalPages}
