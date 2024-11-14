@@ -89,6 +89,7 @@ const BorrowsTable = () => {
                   <td>
                     <div className="d-grid gap-2 d-md-flex justify-content-md">
                       <PrimaryButton
+                        disabled={transaction.isreturned ? true : false}
                         onClick={() =>
                           onEditingTransaction(transaction.transactionid)
                         }
