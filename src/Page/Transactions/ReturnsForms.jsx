@@ -119,8 +119,14 @@ const ReturnsForms = () => {
     if (!formData.borrowdate) {
       newErrors.borrowdate = "Borrow date is required.";
     }
-    if (!formData.borrowexpired) {
-      newErrors.borrowexpired = "Expiration date is required.";
+    if (formData.returndate) {
+      const borrowDate = new Date(formData.borrowdate);
+      const returnDate = new Date(formData.returndate);
+
+      if (returnDate < borrowDate) {
+        newErrors.returndate =
+          "Return date must not be earlier than the borrow date.";
+      }
     }
     return newErrors;
   };
@@ -284,7 +290,6 @@ const ReturnsForms = () => {
                 }`}
                 value={formData.borrowdate}
                 onChange={handleChange}
-                required
                 disabled={params.id ? true : false}
               />
               {errors.borrowdate && (
@@ -292,11 +297,13 @@ const ReturnsForms = () => {
               )}
             </div>
             <div className="mb-3">
-              <label htmlFor="borrowexpired" className="form-label">
-                Expiration Date
-              </label>
+              {params.id && (
+                <label htmlFor="borrowexpired" className="form-label">
+                  Expiration Date
+                </label>
+              )}
               <input
-                type="date"
+                type={params.id ? "date" : "hidden"}
                 id="borrowexpired"
                 name="borrowexpired"
                 className={`form-control ${
@@ -307,9 +314,6 @@ const ReturnsForms = () => {
                 required
                 disabled={params.id ? true : false}
               />
-              {errors.borrowexpired && (
-                <div className="invalid-feedback">{errors.borrowexpired}</div>
-              )}
             </div>
             <div className="mb-3 form-check">
               <input
@@ -332,11 +336,16 @@ const ReturnsForms = () => {
                 type="date"
                 id="returndate"
                 name="returndate"
-                className="form-control"
+                className={`form-control ${
+                  errors.returndate ? "is-invalid" : ""
+                }`}
                 value={formData.returndate}
                 onChange={handleChange}
                 disabled={!formData.isreturned}
               />
+              {errors.returndate && (
+                <div className="invalid-feedback">{errors.returndate}</div>
+              )}
             </div>
             <button type="submit" className="btn btn-primary m-1">
               {params.id ? "Return Book" : "Borrow Book"}
