@@ -8,13 +8,19 @@ const getId = async (id) => {
   return await api.get(`/Books/${id}`);
 };
 
-const getSearch = async (pageNumber, perPage) => {
+const getSearch = async (pageNumber, perPage, keyword, sortBy, sortOrder) => {
   try {
-    console.log("Fetching books with:", { pageNumber, perPage });
-    const response = await api.post("/api/Books/search", {
-      pageNumber,
-      perPage,
-    });
+    const response = await api.post(
+      "/api/Books/search",
+      {
+        pageNumber,
+        perPage,
+      },
+      {
+        params: { Keyword: keyword, SortBy: sortBy, SortOrder: sortOrder },
+      }
+    );
+    console.log(response);
     return response;
   } catch (error) {
     console.error("Error fetching books:", error);

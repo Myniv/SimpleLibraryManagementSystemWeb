@@ -5,12 +5,17 @@ import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import LoadingState from "../../Component/Elements/LoadingState";
 import ErrorMessage from "../../Component/Elements/ErrorMessage";
 import UserService from "../../service/book/BookService";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
 
-const fetchBooks = async ({ page, pageSize }) => {
-  const { data } = await UserService.getSearch(page, pageSize);
-  console.log(data.data);
+const fetchBooks = async ({ page, pageSize, keyword, sortBy, sortOrder }) => {
+  const { data } = await UserService.getSearch(
+    page,
+    pageSize,
+    keyword,
+    sortBy,
+    sortOrder
+  );
   return data;
 };
 
@@ -20,11 +25,15 @@ const BookTable2 = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [pageSize, setPageSize] = useState(3);
+  const [keyword, setKeyword] = useState("");
+  const [sortBy, setSortBy] = useState("title");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["books", currentPage, pageSize],
-    queryFn: () => fetchBooks({ page: currentPage, pageSize }),
-    keepPreviousData: true,
+    queryKey: ["books", currentPage, pageSize, keyword, sortBy, sortOrder],
+    queryFn: () =>
+      fetchBooks({ page: currentPage, pageSize, keyword, sortBy, sortOrder }),
+    placeholderData: keepPreviousData,
   });
 
   //   useEffect(() => {
@@ -78,9 +87,30 @@ const BookTable2 = () => {
       setPageCount(Math.ceil(data.total / pageSize));
     }
   }, [data, pageSize, currentPage]);
+
   const handlePageSizeChange = (event) => {
     // setPageSize(event.target.value);
     setCurrentPage(event.selected + 1);
+  };
+
+  const handleSearch = (e) => {
+    setKeyword(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleSorting = (field) => {
+    if (field === sortBy) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+      console.log(sortOrder);
+      console.log(sortBy);
+    } else {
+      setSortBy(field);
+      setSortOrder("asc");
+    }
+  };
+  const getSortIcon = (field) => {
+    if (sortBy !== field) return "↕️";
+    return sortOrder === "asc" ? "↑" : "↓";
   };
 
   return (
@@ -94,16 +124,60 @@ const BookTable2 = () => {
           <div className="d-flex justify-content-between align-items-between">
             <h2>Book Table</h2>
             <PrimaryButton onClick={onAddBook} buttonName={"Add Book"} />
+
+            <div className="input-group">
+              <span className="input-group-text">Search</span>
+              <input
+                placeholder="Cari pengguna..."
+                type="text"
+                className="form-control"
+                onChange={handleSearch}
+                value={keyword}
+              />
+            </div>
           </div>
 
           <table className="table table-striped table-bordered">
             <thead className="thead-dark">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Title</th>
+                <th scope="col">
+                  Title
+                  <button
+                    onClick={() => handleSorting("title")}
+                    className="text-decoration-none text-dark p-0"
+                  >
+                    {getSortIcon("title")}
+                  </button>
+                </th>
                 <th scope="col">Author</th>
-                <th scope="col">Publisher</th>
-                <th scope="col">ISBN</th>
+                <th scope="col">
+                  Publisher
+                  <button
+                    onClick={() => handleSorting("publisher")}
+                    className="text-decoration-none text-dark p-0"
+                  >
+                    {getSortIcon("publisher")}
+                  </button>
+                </th>
+                <th scope="col">
+                  ISBN
+                  <button
+                    onClick={() => handleSorting("isbn")}
+                    className="text-decoration-none text-dark p-0"
+                  >
+                    {getSortIcon("isbn")}
+                  </button>
+                </th>
+                <th scope="col">
+                  Description
+                  <button
+                    onClick={() => handleSorting("description")}
+                    className="text-decoration-none text-dark p-0"
+                  >
+                    {getSortIcon("description")}
+                  </button>
+                </th>
                 <th scope="col">ACTION</th>
               </tr>
             </thead>
@@ -115,6 +189,7 @@ const BookTable2 = () => {
                   <td>{book.author}</td>
                   <td>{book.publisher}</td>
                   <td>{book.isbn}</td>
+                  <td>{book.description}</td>
                   <td>
                     <div className="d-grid gap-2 d-md-flex justify-content-md"></div>
                   </td>
