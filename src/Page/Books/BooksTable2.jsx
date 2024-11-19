@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import LoadingState from "../../Component/Elements/LoadingState";
 import ErrorMessage from "../../Component/Elements/ErrorMessage";
-import UserService from "../../service/book/BookService";
+import BookService from "../../service/book/BookService";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
+import InfiniteScrollList from "./InfiniteScrollList";
 
 const fetchBooks = async ({ page, pageSize, keyword, sortBy, sortOrder }) => {
-  const { data } = await UserService.getSearch(
+  const { data } = await BookService.getSearch(
     page,
     pageSize,
     keyword,
@@ -211,6 +212,7 @@ const BookTable2 = () => {
               activeClassName="active"
             />
           </div>
+          <InfiniteScrollList />
         </div>
       )}
     </>

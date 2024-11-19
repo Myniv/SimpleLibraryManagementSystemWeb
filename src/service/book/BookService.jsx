@@ -20,7 +20,6 @@ const getSearch = async (pageNumber, perPage, keyword, sortBy, sortOrder) => {
         params: { Keyword: keyword, SortBy: sortBy, SortOrder: sortOrder },
       }
     );
-    console.log(response);
     return response;
   } catch (error) {
     console.error("Error fetching books:", error);
