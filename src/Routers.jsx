@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainPage from "./Page/MainPage";
 import BooksLayout from "./Component/Layout/BooksLayout";
-import { BookTable } from "./Page/Books/BooksTable";
+// import { BookTable } from "./Page/Books/BooksTable";
 import { AddBookForm } from "./Page/Books/BooksForm";
 import LandingLayout from "./Component/Layout/LandingLayout";
 import MembersLayout from "./Component/Layout/MembersLayout";
@@ -10,18 +10,19 @@ import MemberForm from "./Page/Members/MemberForm";
 import TransactionsLayout from "./Component/Layout/TransactionsLayout";
 import BorrowsTable from "./Page/Transactions/BorrowsTable";
 import ReturnsForms from "./Page/Transactions/ReturnsForms";
+import { BookTable2 } from "./Page/Books/BooksTable2";
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingLayout />,
-    errorElement: <div>404 Not Found</div>,
+    // errorElement: <div>404 Not Found</div>,
     children: [
       { path: "", element: <MainPage /> },
       {
         path: "/books",
         element: <BooksLayout />,
         children: [
-          { path: "", element: <BookTable /> },
+          { path: "", element: <BookTable2 /> },
           { path: "/books/add", element: <AddBookForm /> },
           { path: "/books/:id", element: <AddBookForm /> },
         ],
