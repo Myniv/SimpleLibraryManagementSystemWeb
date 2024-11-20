@@ -3,18 +3,62 @@ import BookService from "../../service/book/BookService";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CardBook from "../../Component/Elements/CardBook";
 import LoadingState from "../../Component/Elements/LoadingState";
-import { Tab, Tabs } from "react-bootstrap";
+import { Button, Col, Form, Row, Tab, Tabs } from "react-bootstrap";
+import { useState } from "react";
 
 const PAGE_SIZE = 3;
-const fetchDataFromApi = async ({ pageParam }) => {
-  const { data } = await BookService.getSearch(pageParam, PAGE_SIZE);
+const fetchDataFromApi = async ({
+  pageParam,
+  keyword,
+  title,
+  isbn,
+  author,
+  category,
+  language,
+}) => {
+  const { data } = await BookService.getSearch(
+    pageParam,
+    PAGE_SIZE,
+    keyword,
+    "",
+    "",
+    title,
+    isbn,
+    author,
+    category,
+    language
+  );
   return data;
 };
 
 const InfiniteScrollList = () => {
+  const [keyword, setKeyword] = useState("");
+  const [title, setTitle] = useState("");
+  const [isbn, setIsbn] = useState("");
+  const [author, setAuthor] = useState("");
+  const [category, setCategory] = useState("");
+  const [language, setLanguage] = useState("");
+
   const { data, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["infiniteData"],
-    queryFn: fetchDataFromApi,
+    queryKey: [
+      "infiniteData",
+      keyword,
+      title,
+      isbn,
+      author,
+      category,
+      language,
+    ],
+    queryFn: ({ pageParam }) =>
+      fetchDataFromApi({
+        pageParam,
+        keyword,
+        title,
+        isbn,
+        author,
+        category,
+        language,
+      }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       if (!lastPage.data || lastPage.data.length < PAGE_SIZE) {
@@ -30,6 +74,24 @@ const InfiniteScrollList = () => {
     isEmpty ||
     (data && data.pages[data.pages.length - 1]?.data.length < PAGE_SIZE);
 
+  const handleSearch = (e) => {
+    setKeyword(e.target.value);
+  };
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
+  };
+  const handleIsbn = (e) => {
+    setIsbn(e.target.value);
+  };
+  const handleAuthor = (e) => {
+    setAuthor(e.target.value);
+  };
+  const handleCategory = (e) => {
+    setCategory(e.target.value);
+  };
+  const handleLanguage = (e) => {
+    setLanguage(e.target.value);
+  };
   return (
     <>
       <Tabs
@@ -39,7 +101,101 @@ const InfiniteScrollList = () => {
         justify
       >
         <Tab eventKey="search" title="Search">
-          Search
+          <div className="p-3 border justify-content-center">
+            <Form>
+              <Row className="mb-3 align-items-center">
+                <Col md={3}>
+                  <Form.Label htmlFor="keyword">Search</Form.Label>
+                </Col>
+                <Col md={6}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Keyword"
+                    id="keyword"
+                    name="keyword"
+                    onChange={handleSearch}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-3 align-items-center">
+                <Col md={3}>
+                  <Form.Label htmlFor="title">Title</Form.Label>
+                </Col>
+                <Col md={6}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Title"
+                    id="title"
+                    name="title"
+                    onChange={handleTitle}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-3 align-items-center">
+                <Col md={3}>
+                  <Form.Label htmlFor="title">ISBN</Form.Label>
+                </Col>
+                <Col md={6}>
+                  <Form.Control
+                    type="number"
+                    placeholder="ISBN"
+                    id="isbn"
+                    name="isbn"
+                    onChange={handleIsbn}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-3 align-items-center">
+                <Col md={3}>
+                  <Form.Label htmlFor="author">Author</Form.Label>
+                </Col>
+                <Col md={6}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Author"
+                    id="author"
+                    name="author"
+                    onChange={handleAuthor}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-3 align-items-center">
+                <Col md={3}>
+                  <Form.Label htmlFor="category">Category</Form.Label>
+                </Col>
+                <Col md={6}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Category"
+                    id="category"
+                    name="category"
+                    onChange={handleCategory}
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-3 align-items-center">
+                <Col md={3}>
+                  <Form.Label htmlFor="language">Language</Form.Label>
+                </Col>
+                <Col md={6}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Language"
+                    id="language"
+                    name="language"
+                    onChange={handleLanguage}
+                  />
+                </Col>
+              </Row>
+
+              <Col md={3}>
+                <Button variant="warning" type="submit" className="me-3">
+                  Cari
+                </Button>
+                <Button variant="warning">Reset</Button>
+              </Col>
+            </Form>
+          </div>{" "}
         </Tab>
         <Tab eventKey="searchList" title="Search List">
           <div className="container mx-auto p-4">
