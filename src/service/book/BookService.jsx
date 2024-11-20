@@ -36,10 +36,10 @@ const update = async (id, data) => {
 };
 
 const remove = async (id) => {
-  return await api.delete(`/Books${id}`);
+  return await api.delete(`/Books/${id}`);
 };
 
-const UserService = {
+const BookService = {
   getAll,
   getId,
   getSearch,
@@ -48,4 +48,4 @@ const UserService = {
   remove,
 };
 
-export default UserService;
+export default BookService;
