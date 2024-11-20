@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import MemberService from "../service/member/MemberService";
+import BookService from "../service/book/BookService";
 
 const MainPage = () => {
   const [member, setMember] = useState([]);
   const [book, setBook] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5265/api/Users")
+    MemberService.getAllUser()
       .then((res) => {
         const sortedMembers = res.data.sort((a, b) => a.userid - b.userid);
         setMember(sortedMembers);
@@ -16,8 +17,7 @@ const MainPage = () => {
         console.log(err);
       });
 
-    axios
-      .get("http://localhost:5265/api/Books")
+    BookService.getAll()
       .then((res) => {
         const sortedBooks = res.data.sort((a, b) => a.bookid - b.bookid);
         setBook(sortedBooks);
