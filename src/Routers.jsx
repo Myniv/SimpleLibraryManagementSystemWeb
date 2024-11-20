@@ -11,6 +11,9 @@ import TransactionsLayout from "./Component/Layout/TransactionsLayout";
 import BorrowsTable from "./Page/Transactions/BorrowsTable";
 import ReturnsForms from "./Page/Transactions/ReturnsForms";
 import { BookTable2 } from "./Page/Books/BooksTable2";
+import SearchBooks from "./Page/Books/SearchBooks";
+import DetailBooks from "./Page/Books/DetailBooks";
+import SearchBooksLayout from "./Component/Layout/SearchBooksLayout";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -18,6 +21,14 @@ export const router = createBrowserRouter([
     // errorElement: <div>404 Not Found</div>,
     children: [
       { path: "", element: <MainPage /> },
+      {
+        path: "/searchbooks",
+        element: <SearchBooksLayout />,
+        children: [
+          { path: "", element: <SearchBooks /> },
+          { path: "/searchbooks/:id", element: <DetailBooks /> },
+        ],
+      },
       {
         path: "/books",
         element: <BooksLayout />,

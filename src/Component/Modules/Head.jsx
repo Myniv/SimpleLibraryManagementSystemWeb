@@ -22,7 +22,17 @@ const HeaderFunction = () => {
                 Menu
               </NavLink>
             </li>
-            
+            <li className="nav-item">
+              <NavLink
+                to="/searchbooks"
+                className={({ isActive }) => {
+                  return isActive ? "nav-link active" : "nav-link";
+                }}
+              >
+                Search Books
+              </NavLink>
+            </li>
+
             <li className="nav-item">
               <NavLink
                 to="/books"

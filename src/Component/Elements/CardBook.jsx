@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Button, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const CardBook = ({
   cardTitle,
   cardAuthor,
   cardCategory,
   cardIsbn,
-//   cardId,
+  cardId,
 }) => {
   const cardStyle = {
     width: "18rem",
@@ -43,6 +44,8 @@ const CardBook = ({
     backgroundColor: "#0056b3",
   };
 
+  const navigate = useNavigate();
+
   return (
     <Card
       style={cardStyle}
@@ -70,6 +73,7 @@ const CardBook = ({
           style={buttonStyle}
           onMouseOver={(e) => Object.assign(e.target.style, buttonHoverStyle)}
           onMouseOut={(e) => Object.assign(e.target.style, buttonStyle)}
+          onClick={() => navigate(`/searchbooks/${cardId}`)}
         >
           Learn More
         </Button>
