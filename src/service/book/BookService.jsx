@@ -1,14 +1,25 @@
 import api from "../api";
 
 const getAll = async (params) => {
-  return await api.get("/Books", { params });
+  return await api.get("/api/Books", { params });
 };
 
 const getId = async (id) => {
-  return await api.get(`/Books/${id}`);
+  return await api.get(`/api/Books/${id}`);
 };
 
-const getSearch = async (pageNumber, perPage, keyword, sortBy, sortOrder) => {
+const getSearch = async (
+  pageNumber,
+  perPage,
+  keyword,
+  sortBy,
+  sortOrder,
+  title,
+  isbn,
+  author,
+  category,
+  language
+) => {
   try {
     const response = await api.post(
       "/api/Books/search",
@@ -17,7 +28,16 @@ const getSearch = async (pageNumber, perPage, keyword, sortBy, sortOrder) => {
         perPage,
       },
       {
-        params: { Keyword: keyword, SortBy: sortBy, SortOrder: sortOrder },
+        params: {
+          Keyword: keyword,
+          SortBy: sortBy,
+          SortOrder: sortOrder,
+          Category: category,
+          Language: language,
+          Author: author,
+          Isbn: isbn,
+          Title: title,
+        },
       }
     );
     return response;
@@ -28,15 +48,22 @@ const getSearch = async (pageNumber, perPage, keyword, sortBy, sortOrder) => {
 };
 
 const create = async (data) => {
-  return await api.post(`/Books`, data);
+  return await api.post(`/api/Books`, data);
 };
 
 const update = async (id, data) => {
-  return await api.put(`/Books/${id}`, data);
+  return await api.put(`/api/Books/${id}`, data);
 };
 
-const remove = async (id) => {
-  return await api.delete(`/Books/${id}`);
+const remove = async (id, deleteReason) => {
+  return await api.delete(`/api/Books/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {
+      deleteReason: deleteReason,
+    },
+  });
 };
 
 const BookService = {

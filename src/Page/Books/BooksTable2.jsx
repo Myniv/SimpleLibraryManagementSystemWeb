@@ -7,7 +7,7 @@ import ErrorMessage from "../../Component/Elements/ErrorMessage";
 import BookService from "../../service/book/BookService";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import ReactPaginate from "react-paginate";
-import InfiniteScrollList from "./InfiniteScrollList";
+import DangerButton from "../../Component/Elements/DangerButton";
 
 const fetchBooks = async ({ page, pageSize, keyword, sortBy, sortOrder }) => {
   const { data } = await BookService.getSearch(
@@ -30,7 +30,8 @@ const BookTable2 = () => {
   const [sortBy, setSortBy] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  const { data, isLoading, isError } = useQuery({
+
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["books", currentPage, pageSize, keyword, sortBy, sortOrder],
     queryFn: () =>
       fetchBooks({ page: currentPage, pageSize, keyword, sortBy, sortOrder }),
@@ -53,27 +54,15 @@ const BookTable2 = () => {
   //       });
   //   }, [setBook]);
 
-  //   useEffect(() => {
-  //     if (deleteBooks) {
-  //       const deletingBooks = () => {
-  //         setLoading(true);
-  //         axios
-  //           .delete(`http://localhost:5265/api/Users/${deleteBooksId}`)
-  //           .then((res) => {
-  //             const sortedBooks = res.data.sort((a, b) => a.bookid - b.bookid);
-  //             setBook(sortedBooks);
-  //             setDeleteBooks(false);
-  //             setLoading(false);
-  //           })
-  //           .catch((err) => {
-  //             setDeleteBooks(false);
-  //             setLoading(false);
-  //             console.log(err);
-  //           });
-  //       };
-  //       DeleteConfirmation({ deleteData: () => deletingBooks });
-  //     }
-  //   }, [deleteBooks]);
+  const onDeleteBooks = async (id) => {
+    try {
+      await BookService.remove(id, "No longer needed"); // Example delete reason
+      console.log(`Book with ID ${id} deleted successfully.`);
+      refetch();
+    } catch (err) {
+      console.error("Error deleting book:", err);
+    }
+  };
 
   const onEditingBook = (id) => {
     navigate(`/books/${id}`);
@@ -110,8 +99,36 @@ const BookTable2 = () => {
     }
   };
   const getSortIcon = (field) => {
-    if (sortBy !== field) return "↕️";
-    return sortOrder === "asc" ? "↑" : "↓";
+    if (sortBy !== field) {
+      return (
+        <img
+          className="img-fluid"
+          src="/img/sortNoSort.png"
+          alt="sorting"
+          style={{ width: "20px", height: "20px" }}
+        />
+      );
+    }
+    if (sortOrder === "asc") {
+      return (
+        <img
+          className="img-fluid"
+          src="/img/sortAscSort.png"
+          alt="sorting"
+          style={{ width: "20px", height: "20px" }}
+        />
+      );
+    } else {
+      return (
+        <img
+          className="img-fluid"
+          src="/img/sortDescSort.png"
+          alt="sorting"
+          style={{ width: "20px", height: "20px" }}
+        />
+      );
+    }
+    // return sortOrder === "asc" ? "↑" : "↓";
   };
 
   return (
@@ -122,8 +139,8 @@ const BookTable2 = () => {
         <ErrorMessage errorMessage="Error" />
       ) : (
         <div className="m-4">
+          <h2>Book Table</h2>
           <div className="d-flex justify-content-between align-items-between">
-            <h2>Book Table</h2>
             <PrimaryButton onClick={onAddBook} buttonName={"Add Book"} />
 
             <div className="input-group">
@@ -131,7 +148,7 @@ const BookTable2 = () => {
               <input
                 placeholder="Cari pengguna..."
                 type="text"
-                className="form-control"
+                className="form-control-sm"
                 onChange={handleSearch}
                 value={keyword}
               />
@@ -192,7 +209,20 @@ const BookTable2 = () => {
                   <td>{book.isbn}</td>
                   <td>{book.description}</td>
                   <td>
-                    <div className="d-grid gap-2 d-md-flex justify-content-md"></div>
+                    <div className="d-grid gap-2 justify-content-md">
+                      <PrimaryButton
+                        onClick={() => onEditingBook(book.bookId)}
+                        buttonName={"Edit"}
+                      />
+                      <DangerButton
+                        onClick={() => {
+                          // setDeleteBooks(true);
+                          // setDeleteBooksId(book.bookId);
+                          onDeleteBooks(book.bookId);
+                        }}
+                        buttonName={"Delete"}
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -212,7 +242,7 @@ const BookTable2 = () => {
               activeClassName="active"
             />
           </div>
-          <InfiniteScrollList />
+          {/* <SearchBooks /> */}
         </div>
       )}
     </>
