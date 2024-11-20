@@ -1,6 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import BookService from "../../service/book/BookService";
 import InfiniteScroll from "react-infinite-scroll-component";
+import CardBook from "../../Component/Elements/CardBook";
+import LoadingState from "../../Component/Elements/LoadingState";
+import { Tab, Tabs } from "react-bootstrap";
 
 const PAGE_SIZE = 3;
 const fetchDataFromApi = async ({ pageParam }) => {
@@ -28,28 +31,54 @@ const InfiniteScrollList = () => {
     (data && data.pages[data.pages.length - 1]?.data.length < PAGE_SIZE);
 
   return (
-    <div className="container mx-auto p-4">
-      <InfiniteScroll
-        dataLength={items.length}
-        next={fetchNextPage}
-        hasMore={!isReachingEnd}
-        endMessage={
-          <div className="text-center p-4 text-gray-500">
-            <p>You have seen all items</p>
-            <p>Total Items : {items.length} </p>
-          </div>
-        }
+    <>
+      <Tabs
+        defaultActiveKey="search"
+        id="justify-tab-example"
+        className="mb-3"
+        justify
       >
-        {items.map((item) => (
-          <div key={item.bookId}>
-            <h3 className="text-lg font-medium">
-              {item.bookId} - {item.title}
-            </h3>
-            <p className="text-gray-600">{item.author}</p>
+        <Tab eventKey="search" title="Search">
+          Search
+        </Tab>
+        <Tab eventKey="searchList" title="Search List">
+          <div className="container mx-auto p-4">
+            <InfiniteScroll
+              dataLength={items.length}
+              next={fetchNextPage}
+              hasMore={!isReachingEnd}
+              loader={<LoadingState />}
+              endMessage={
+                <div className="text-center p-4 text-gray-500">
+                  <p>You have seen all items</p>
+                  <p>Total Items : {items.length} </p>
+                </div>
+              }
+            >
+              <div
+                className="grid gap-4"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+                  gap: "1.5rem",
+                }}
+              >
+                {items.map((item) => (
+                  <CardBook
+                    key={item.bookId}
+                    cardAuthor={item.author}
+                    cardCategory={item.category}
+                    cardId={item.bookId}
+                    cardTitle={item.title}
+                    cardIsbn={item.isbn}
+                  />
+                ))}
+              </div>
+            </InfiniteScroll>
           </div>
-        ))}
-      </InfiniteScroll>
-    </div>
+        </Tab>
+      </Tabs>
+    </>
   );
 };
 
