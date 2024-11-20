@@ -31,7 +31,7 @@ const fetchDataFromApi = async ({
   return data;
 };
 
-const InfiniteScrollList = () => {
+const SearchBooks = () => {
   const [keyword, setKeyword] = useState("");
   const [title, setTitle] = useState("");
   const [isbn, setIsbn] = useState("");
@@ -238,4 +238,4 @@ const InfiniteScrollList = () => {
   );
 };
 
-export default InfiniteScrollList;
+export default SearchBooks;
