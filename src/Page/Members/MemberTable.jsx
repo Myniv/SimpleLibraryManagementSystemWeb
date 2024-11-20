@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import axios from "axios";
 import DeleteConfirmation from "../../Component/Elements/DeleteConfirmations";
 import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import DangerButton from "../../Component/Elements/DangerButton";
 import LoadingState from "../../Component/Elements/LoadingState";
 import Pagination from "../../Component/Widgets/Pagination";
 import ErrorMessage from "../../Component/Elements/ErrorMessage";
+import MemberService from "../../service/member/MemberService";
 
 const MemberTable = () => {
   const { member, setMember } = useOutletContext();
@@ -23,8 +23,7 @@ const MemberTable = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("http://localhost:5265/api/Users")
+    MemberService.getAllUser()
       .then((res) => {
         const sortedMembers = res.data.sort((a, b) => a.userid - b.userid);
         setMember(sortedMembers);
@@ -41,8 +40,7 @@ const MemberTable = () => {
     if (deleteMember) {
       const deleteMember = () => {
         setLoading(true);
-        axios
-          .delete(`http://localhost:5265/api/Users/${deleteMemberId}`)
+        MemberService.removeUser(deleteMemberId)
           .then((res) => {
             const sortedMembers = res.data.sort((a, b) => a.userid - b.userid);
             setMember(sortedMembers);
@@ -61,6 +59,7 @@ const MemberTable = () => {
 
   const onEditingMember = (id) => {
     navigate(`/members/${id}`);
+    
   };
 
   const onAddMember = () => {
@@ -85,7 +84,7 @@ const MemberTable = () => {
       {loading ? (
         <LoadingState />
       ) : errorMessage ? (
-        <ErrorMessage errorMessage={errorMessage}/>
+        <ErrorMessage errorMessage={errorMessage} />
       ) : (
         <div className="m-4">
           <div className="d-flex justify-content-between align-items-center">
@@ -101,25 +100,35 @@ const MemberTable = () => {
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Name</th>
-                <th scope="col">Phone Number</th>
+                <th scope="col">Position</th>
+                <th scope="col">Privilage</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Card Number</th>
+                <th scope="col">Card Expired Date</th>
                 <th scope="col">ACTION</th>
               </tr>
             </thead>
             <tbody>
               {paginatedMembers.map((member) => (
-                <tr scope="row" key={member.userid}>
-                  <td>{member.userid}</td>
-                  <td>{member.username}</td>
-                  <td>{member.phonenumber}</td>
+                <tr scope="row" key={member.userId}>
+                  <td>{member.userId}</td>
+                  <td>
+                    {member.fName} {member.lName}
+                  </td>
+                  <td>{member.userPosition}</td>
+                  <td>{member.userPrivilage}</td>
+                  <td>{member.userNotes}</td>
+                  <td>{member.libraryCardNumber}</td>
+                  <td>{member.libraryCardExpiredDate}</td>
                   <td>
                     <div className="d-grid gap-2 d-md-flex justify-content-md">
                       <PrimaryButton
-                        onClick={() => onEditingMember(member.userid)}
+                        onClick={() => onEditingMember(member.userId)}
                         buttonName={"Edit"}
                       />
                       <DangerButton
                         onClick={() => {
-                          setDeleteMemberId(member.userid);
+                          setDeleteMemberId(member.userId);
                           setDeleteMember(true);
                         }}
                         buttonName={"Delete"}
@@ -129,7 +138,7 @@ const MemberTable = () => {
                 </tr>
               ))}
               <tr>
-                <td colSpan="4">
+                <td colSpan="8">
                   <div className="d-grid gap-2 d-md-flex justify-content-center">
                     <Pagination
                       currentPage={currentPage}

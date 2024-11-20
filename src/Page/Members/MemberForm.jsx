@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import LoadingAddEdit from "../../Component/Elements/LoadingAddEdit";
-import axios from "axios";
+import MemberService from "../../service/member/MemberService";
 
 const MemberForm = () => {
   const { member } = useOutletContext();
@@ -13,20 +13,27 @@ const MemberForm = () => {
   const params = useParams();
 
   const [formData, setFormData] = useState({
-    userid: "",
-    username: "",
-    phonenumber: "",
+    userId: "",
+    fName: "",
+    lName: "",
+    userPosition: "",
+    userPrivilage: "",
+    userNotes: "",
+    libraryCardNumber: "",
+    libraryCardExpiredDate: "",
   });
 
   const focusNameInput = useRef(null);
 
   useEffect(() => {
     if (params.id) {
-      const findMember = member.find(
-        (member) => member.userid === Number(params.id)
+      const getMember = member.find(
+        (m) => Number(m.userId) === Number(params.id)
       );
-      if (findMember) {
-        setFormData(findMember);
+      if (getMember) {
+        setFormData(getMember);
+      } else {
+        console.warn(`No member found with ID: ${params.id}`);
       }
     }
 
@@ -47,8 +54,7 @@ const MemberForm = () => {
   }, [onSubmit]);
 
   const onAddMember = () => {
-    axios
-      .post("http://localhost:5265/api/Users", formData)
+    MemberService.createUser(formData)
       .then(() => {
         LoadingAddEdit({
           loadingMessage: "The new project is being added...",
@@ -59,8 +65,7 @@ const MemberForm = () => {
   };
 
   const onUpdateMember = () => {
-    axios
-      .put(`http://localhost:5265/api/Users/${formData.userid}`, formData)
+    MemberService.updateUser(params.id, formData)
       .then(() => {
         LoadingAddEdit({
           loadingMessage: "The member is being edited...",
@@ -72,9 +77,14 @@ const MemberForm = () => {
 
   const onCancel = () => {
     setFormData({
-      userid: "",
-      username: "",
-      phonenumber: "",
+      userId: "",
+      fName: "",
+      lName: "",
+      userPosition: "",
+      userPrivilage: "",
+      userNotes: "",
+      libraryCardNumber: "",
+      libraryCardExpiredDate: "",
     });
     navigate("/members");
   };
@@ -83,18 +93,22 @@ const MemberForm = () => {
   const validateForm = () => {
     const newErrors = {};
     if (
-      !formData.username ||
-      formData.username.length < 2 ||
-      formData.username.length > 100
+      !formData.fName ||
+      formData.fName.length < 2 ||
+      formData.fName.length > 100
     ) {
-      newErrors.username = "Name must be between 2 and 100 characters";
+      newErrors.fName = "Front Name must be between 2 and 100 characters";
+    }
+    if (
+      !formData.lName ||
+      formData.lName.length < 2 ||
+      formData.lName.length > 100
+    ) {
+      newErrors.lName = "Last Name must be between 2 and 100 characters";
     }
 
-    const phoneRegex = /^(\+62|62)8[1-9][0-9]{6,9}$/;
-    if (!formData.phonenumber || !phoneRegex.test(formData.phonenumber)) {
-      newErrors.phonenumber =
-        "Phone number must start with +62 and be 10-13 digits.";
-    }
+    
+
     return newErrors;
   };
 
@@ -131,61 +145,117 @@ const MemberForm = () => {
         <div className="container border">
           <form onSubmit={handleSubmit} className="mb-4">
             <div className="mb-3">
-              <label htmlFor="userid" className="form-label">
-                    ID
-                  </label>
+              <label htmlFor="userId" className="form-label">
+                ID
+              </label>
               <input
                 type="number"
                 className="form-control"
-                id="userid"
-                name="userid"
-                value={formData.userid}
+                id="userId"
+                name="userId"
+                value={formData.userId}
                 placeholder={memberId}
                 disabled
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="username" className="form-label">
-                Name
+              <label htmlFor="fName" className="form-label">
+                Front Name
               </label>
               <input
                 type="text"
-                id="username"
-                name="username"
+                id="fName"
+                name="fName"
+                className={`form-control ${errors.fName ? "is-invalid" : ""}`}
+                value={formData.fName}
+                onChange={handleChange}
+                required
+                placeholder="First Name"
+                ref={focusNameInput}
+              />
+              {errors.fName && (
+                <div className="invalid-feedback">{errors.fName}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="lName" className="form-label">
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lName"
+                name="lName"
+                className={`form-control ${errors.lName ? "is-invalid" : ""}`}
+                value={formData.lName}
+                onChange={handleChange}
+                required
+                placeholder="Last Name"
+              />
+              {errors.lName && (
+                <div className="invalid-feedback">{errors.lName}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="userPosition" className="form-label">
+                User Position
+              </label>
+              <input
+                type="text"
+                id="userPosition"
+                name="userPosition"
                 className={`form-control ${
                   errors.username ? "is-invalid" : ""
                 }`}
-                value={formData.username}
+                value={formData.userPosition}
                 onChange={handleChange}
                 required
-                placeholder="Full Name"
-                ref={focusNameInput}
+                placeholder="User Position"
               />
               {errors.username && (
                 <div className="invalid-feedback">{errors.username}</div>
               )}
             </div>
-            <div className="mb-3"></div>
             <div className="mb-3">
-              <label htmlFor="phonenumber" className="form-label">
-                Phone Number
+              <label htmlFor="userPrivilage" className="form-label">
+                User Privilage
               </label>
               <input
-                type="number"
-                id="phonenumber"
-                name="phonenumber"
+                type="text"
+                id="userPrivilage"
+                name="userPrivilage"
                 className={`form-control ${
-                  errors.phonenumber ? "is-invalid" : ""
+                  errors.username ? "is-invalid" : ""
                 }`}
-                value={formData.phonenumber}
+                value={formData.userPrivilage}
                 onChange={handleChange}
                 required
-                placeholder="+628XXXXXXXXX"
+                placeholder="User Position"
               />
-              {errors.phonenumber && (
-                <div className="invalid-feedback">{errors.phonenumber}</div>
+              {errors.username && (
+                <div className="invalid-feedback">{errors.username}</div>
               )}
             </div>
+            <div className="mb-3">
+              <label htmlFor="userNotes" className="form-label">
+                User Notes
+              </label>
+              <input
+                type="text"
+                id="userNotes"
+                name="userNotes"
+                className={`form-control ${
+                  errors.username ? "is-invalid" : ""
+                }`}
+                value={formData.userNotes}
+                onChange={handleChange}
+                required
+                placeholder="User Notes"
+              />
+              {errors.username && (
+                <div className="invalid-feedback">{errors.username}</div>
+              )}
+            </div>
+
             <button type="submit" className="btn btn-primary m-1">
               {params.id ? "Edit Member" : "Add Member"}
             </button>
