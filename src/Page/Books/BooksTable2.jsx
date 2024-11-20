@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import PrimaryButton from "../../Component/Elements/PrimaryButton";
 import LoadingState from "../../Component/Elements/LoadingState";
 import ErrorMessage from "../../Component/Elements/ErrorMessage";
@@ -23,6 +23,8 @@ const fetchBooks = async ({ page, pageSize, keyword, sortBy, sortOrder }) => {
 const BookTable2 = () => {
   const navigate = useNavigate();
 
+  const { setBook } = useOutletContext();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [pageSize, setPageSize] = useState(3);
@@ -30,29 +32,12 @@ const BookTable2 = () => {
   const [sortBy, setSortBy] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
 
-
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["books", currentPage, pageSize, keyword, sortBy, sortOrder],
     queryFn: () =>
       fetchBooks({ page: currentPage, pageSize, keyword, sortBy, sortOrder }),
     placeholderData: keepPreviousData,
   });
-
-  //   useEffect(() => {
-  //     setLoading(true);
-  //     axios
-  //       .get("http://localhost:5265/api/Books")
-  //       .then((res) => {
-  //         const sortedBooks = res.data.sort((a, b) => a.bookid - b.bookid);
-  //         setBook(sortedBooks);
-  //         setLoading(false);
-  //       })
-  //       .catch((err) => {
-  //         setLoading(false);
-  //         setErrorMessage(err.message);
-  //         console.log(err);
-  //       });
-  //   }, [setBook]);
 
   const onDeleteBooks = async (id) => {
     try {
@@ -65,7 +50,18 @@ const BookTable2 = () => {
   };
 
   const onEditingBook = (id) => {
-    navigate(`/books/${id}`);
+    // Find the book by id from the data array
+    const book = data.data.find((book) => book.bookId === id);
+
+    if (book) {
+      // Set the selected book in the outlet context
+      setBook(book);
+
+      // Navigate to the edit page for this book
+      navigate(`/books/${id}`);
+    } else {
+      console.error("Book not found");
+    }
   };
 
   const onAddBook = () => {
