@@ -18,7 +18,7 @@ const BorrowsTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5265/api/Transactions")
+      .get("http://localhost:5238/api/Stocks")
       .then((res) => {
         const sortedTransactions = res.data.sort(
           (a, b) => a.transactionid - b.transactionid

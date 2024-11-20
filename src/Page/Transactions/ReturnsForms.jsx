@@ -27,10 +27,10 @@ const ReturnsForms = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5265/api/Users")
+      .get("http://localhost:5238/api/Users")
       .then((response) => setUsers(response.data));
     axios
-      .get("http://localhost:5265/api/Books")
+      .get("http://localhost:5238/api/Books")
       .then((response) => setBooks(response.data));
 
     if (params.id) {
@@ -65,7 +65,7 @@ const ReturnsForms = () => {
 
   const onAddTransaction = () => {
     axios
-      .post("http://localhost:5265/api/Transactions/borrow", formData)
+      .post("http://localhost:5238/api/Stocks/borrow", formData)
       .then(() => {
         LoadingAddEdit({
           loadingMessage: "Borrowing book...",
@@ -84,7 +84,7 @@ const ReturnsForms = () => {
       ReturnDate: formData.returndate,
     };
     axios
-      .post(`http://localhost:5265/api/Transactions/return`, requestData)
+      .post(`http://localhost:5238/api/Stocks/return`, requestData)
       .then(() => {
         LoadingAddEdit({
           loadingMessage: "Returning book...",
