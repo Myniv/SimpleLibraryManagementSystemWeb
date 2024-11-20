@@ -97,31 +97,34 @@ const BookTable2 = () => {
   const getSortIcon = (field) => {
     if (sortBy !== field) {
       return (
-        <img
-          className="img-fluid"
-          src="/img/sortNoSort.png"
-          alt="sorting"
-          style={{ width: "20px", height: "20px" }}
-        />
+        // <img
+        //   className="img-fluid"
+        //   src="/img/sortNoSort.png"
+        //   alt="sorting"
+        //   style={{ width: "20px", height: "20px" }}
+        // />
+        "↕️"
       );
     }
     if (sortOrder === "asc") {
       return (
-        <img
-          className="img-fluid"
-          src="/img/sortAscSort.png"
-          alt="sorting"
-          style={{ width: "20px", height: "20px" }}
-        />
+        // <img
+        //   className="img-fluid"
+        //   src="/img/sortAscSort.png"
+        //   alt="sorting"
+        //   style={{ width: "20px", height: "20px" }}
+        // />
+        "↑"
       );
     } else {
       return (
-        <img
-          className="img-fluid"
-          src="/img/sortDescSort.png"
-          alt="sorting"
-          style={{ width: "20px", height: "20px" }}
-        />
+        // <img
+        //   className="img-fluid"
+        //   src="/img/sortDescSort.png"
+        //   alt="sorting"
+        //   style={{ width: "20px", height: "20px" }}
+        // />
+        "↓"
       );
     }
     // return sortOrder === "asc" ? "↑" : "↓";
@@ -136,10 +139,13 @@ const BookTable2 = () => {
       ) : (
         <div className="m-4">
           <h2>Book Table</h2>
-          <div className="d-flex justify-content-between align-items-between">
-            <PrimaryButton onClick={onAddBook} buttonName={"Add Book"} />
-
-            <div className="input-group">
+          <div className="d-flex justify-content-end align-items-center mb-3">
+            <PrimaryButton
+              onClick={onAddBook}
+              buttonName={"Add Book"}
+              className="me-2"
+            />
+            <div className="input-group w-auto">
               <span className="input-group-text">Search</span>
               <input
                 placeholder="Cari pengguna..."
@@ -226,8 +232,24 @@ const BookTable2 = () => {
           </table>
           <div className="d-grid gap-2 d-md-flex justify-content-center">
             <ReactPaginate
-              previousLabel={"Previous"}
-              nextLabel={"Next"}
+              previousLabel={
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+              }
+              nextLabel={
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  disabled={currentPage === pageCount}
+                >
+                  Next
+                </button>
+              }
               breakLabel={"..."}
               breakClassName={"break-me"}
               pageCount={pageCount}
