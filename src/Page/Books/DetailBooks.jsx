@@ -23,9 +23,9 @@ const DetailBooks = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh", // Full viewport height
-        backgroundColor: "#f8f9fa", // Optional background color
-        padding: "20px", // Extra padding for smaller screens
+        height: "100vh",
+        backgroundColor: "#f8f9fa",
+        padding: "20px",
       }}
     >
       <div
@@ -34,12 +34,11 @@ const DetailBooks = () => {
           border: "1px solid #ddd",
           borderRadius: "10px",
           padding: "20px",
-          backgroundColor: "#fff", // Optional background for the card
-          boxShadow: "0 4px 10px rgba(0,0,0,0.1)", // Optional shadow for aesthetics
-          position: "relative", // For positioning the back button
+          backgroundColor: "#fff",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+          position: "relative",
         }}
       >
-        {/* Back Button */}
         <Button
           variant="light"
           style={{
