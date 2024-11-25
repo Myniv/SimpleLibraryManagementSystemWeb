@@ -14,13 +14,28 @@ import { BookTable2 } from "./Page/Books/BooksTable2";
 import SearchBooks from "./Page/Books/SearchBooks";
 import DetailBooks from "./Page/Books/DetailBooks";
 import SearchBooksLayout from "./Component/Layout/SearchBooksLayout";
+import Login from "./Page/Login";
+import Profile from "./Page/Profile";
+import PrivateRoute from "./Page/PrivateRoutes";
+import { BookTable } from "./Page/Books/BooksTable";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandingLayout />,
-    // errorElement: <div>404 Not Found</div>,
+    element: (
+      <PrivateRoute
+        allowedRoles={["Librarian", "Library Manager", "Library User"]}
+      />
+    ),
     children: [
-      { path: "", element: <MainPage /> },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+    ],
+  },
+  {
+    element: <PrivateRoute allowedRoles={["Librarian"]} />,
+    children: [
       {
         path: "/searchbooks",
         element: <SearchBooksLayout />,
@@ -33,11 +48,16 @@ export const router = createBrowserRouter([
         path: "/books",
         element: <BooksLayout />,
         children: [
-          { path: "", element: <BookTable2 /> },
+          { path: "", element: <BookTable/> },
           { path: "/books/add", element: <AddBookForm /> },
           { path: "/books/:id", element: <AddBookForm /> },
         ],
       },
+    ],
+  },
+  {
+    element: <PrivateRoute allowedRoles={["Library Manager"]} />,
+    children: [
       {
         path: "/members",
         element: <MembersLayout />,
@@ -58,4 +78,29 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    //For unauthorized user if already login and want to open the unauthorized pages
+    element: <LandingLayout />,
+    children: [
+      { path: "/", element: <MainPage /> },
+      { path: "/login", element: <Login /> },
+      // {path: "/register", element<Register/>},
+      { path: "/unauthorized", element: <MainPage /> },
+    ],
+  },
+  // errorElement: <div>404 Not Found</div>,
+  // children: [
+  //   { path: "", element: <MainPage /> },
+  //   { path: "/login", element: <Login /> },
+  //   { path: "/profile", element: <Profile /> },
+  //   {
+  //     path: "/searchbooks",
+  //     element: <SearchBooksLayout />,
+  //     children: [
+  //       { path: "", element: <SearchBooks /> },
+  //       { path: "/searchbooks/:id", element: <DetailBooks /> },
+  //     ],
+  //   },
+  //
+  // ],
 ]);
