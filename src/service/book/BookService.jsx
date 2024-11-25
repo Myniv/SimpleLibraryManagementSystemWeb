@@ -1,11 +1,11 @@
 import api from "../api";
 
 const getAll = async (params) => {
-  return await api.get("/api/Books", { params });
+  return await api.get("/Books", { params });
 };
 
 const getId = async (id) => {
-  return await api.get(`/api/Books/${id}`);
+  return await api.get(`/Books/${id}`);
 };
 
 const getSearch = async (
@@ -48,15 +48,15 @@ const getSearch = async (
 };
 
 const create = async (data) => {
-  return await api.post(`/api/Books`, data);
+  return await api.post(`/Books`, data);
 };
 
 const update = async (id, data) => {
-  return await api.put(`/api/Books/${id}`, data);
+  return await api.put(`/Books/${id}`, data);
 };
 
 const remove = async (id, deleteReason) => {
-  return await api.delete(`/api/Books/${id}`, {
+  return await api.delete(`/Books/${id}`, {
     headers: {
       "Content-Type": "application/json",
     },
