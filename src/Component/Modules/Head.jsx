@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../Redux/authSlice";
 import { Container, Navbar } from "react-bootstrap";
+import LogoutConfirmation from "../Elements/LogoutConfirmation";
 
 const HeaderFunction = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -40,8 +41,7 @@ const HeaderFunction = () => {
       isAuthenticated: false,
     },
     {
-      label: "logout",
-      path: "/logout",
+      label: "Logout",
       isAuthenticated: true,
     },
   ];
@@ -58,7 +58,7 @@ const HeaderFunction = () => {
     }
 
     //for showing logout if already login
-    if (item.label === "logout" && currentUser) {
+    if (item.label === "Logout" && currentUser) {
       return true;
     }
 
@@ -73,8 +73,10 @@ const HeaderFunction = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
+    LogoutConfirmation({
+      logout: () => dispatch(logout(currentUser.refreshToken)),
+      nextPage: () => navigate("/"),
+    });
   };
 
   return (
@@ -93,9 +95,11 @@ const HeaderFunction = () => {
                     <NavLink
                       key={index}
                       to={item.path}
-                      onClick={item.label === "logout" ? handleLogout : null}
+                      onClick={item.label === "Logout" ? handleLogout : null}
                       className={({ isActive }) => {
-                        return isActive ? "nav-link active" : "nav-link";
+                        return isActive && !item.label === "Logout"
+                          ? "nav-link active"
+                          : "nav-link";
                       }}
                     >
                       {item.label}

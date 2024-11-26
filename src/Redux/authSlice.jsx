@@ -37,9 +37,9 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+export const logout = createAsyncThunk("auth/logout", async (refreshToken, thunkAPI) => {
   try {
-    return await AuthService.logout();
+    return await AuthService.logout(refreshToken);
   } catch (error) {
     const message = error.response?.data?.message || error.message;
     return thunkAPI.rejectWithValue(message);
