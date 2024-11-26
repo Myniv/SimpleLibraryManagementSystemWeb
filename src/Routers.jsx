@@ -18,6 +18,7 @@ import Login from "./Page/Login";
 import Profile from "./Page/Profile";
 import PrivateRoute from "./Page/PrivateRoutes";
 import { BookTable } from "./Page/Books/BooksTable";
+import RegisterUser from "./Page/Auth/RegisterUser";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
         path: "/books",
         element: <BooksLayout />,
         children: [
-          { path: "", element: <BookTable/> },
+          { path: "", element: <BookTable /> },
           { path: "/books/add", element: <AddBookForm /> },
           { path: "/books/:id", element: <AddBookForm /> },
         ],
@@ -84,7 +85,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <MainPage /> },
       { path: "/login", element: <Login /> },
-      // {path: "/register", element<Register/>},
+      { path: "/register", element: <RegisterUser /> },
       { path: "/unauthorized", element: <MainPage /> },
     ],
   },
