@@ -28,6 +28,7 @@ export const router = createBrowserRouter([
       />
     ),
     children: [
+      { path: "/", element: <MainPage /> },
       {
         path: "/profile",
         element: <Profile />,
@@ -49,7 +50,7 @@ export const router = createBrowserRouter([
         path: "/books",
         element: <BooksLayout />,
         children: [
-          { path: "", element: <BookTable /> },
+          { path: "", element: <BookTable2 /> },
           { path: "/books/add", element: <AddBookForm /> },
           { path: "/books/:id", element: <AddBookForm /> },
         ],
