@@ -26,7 +26,7 @@ const BookTable = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5265/api/Books")
+      .get("http://localhost:5238/api/Books")
       .then((res) => {
         const sortedBooks = res.data.sort((a, b) => a.bookid - b.bookid);
         setBook(sortedBooks);

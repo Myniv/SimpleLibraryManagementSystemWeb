@@ -22,7 +22,7 @@ const getSearch = async (
 ) => {
   try {
     const response = await api.post(
-      "/api/Books/search",
+      "/Books/search",
       {
         pageNumber,
         perPage,
@@ -40,6 +40,7 @@ const getSearch = async (
         },
       }
     );
+    console.log(response);
     return response;
   } catch (error) {
     console.error("Error fetching books:", error);

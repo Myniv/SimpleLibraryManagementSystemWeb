@@ -202,7 +202,7 @@ const BookTable2 = () => {
               </tr>
             </thead>
             <tbody>
-              {data.data.map((book) => (
+              {data.map((book) => (
                 <tr scope="row" key={book.bookId}>
                   <td>{book.bookId}</td>
                   <td>{book.title}</td>
@@ -230,7 +230,17 @@ const BookTable2 = () => {
               ))}
             </tbody>
           </table>
-          <div className="d-grid gap-2 d-md-flex justify-content-center">
+          <div className="d-grid gap-2 d-md-flex justify-content-between">
+            <div className="input-group w-auto">
+              <select
+                className="form-select-sm"
+                value={pageSize}
+                onChange={handlePageSizeChange}
+              >
+                <option value="3">3</option>
+                <option value="6">6</option>
+              </select>
+            </div>
             <ReactPaginate
               previousLabel={
                 <button
