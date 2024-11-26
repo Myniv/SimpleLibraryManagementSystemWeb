@@ -8,6 +8,9 @@ import { useState } from "react";
 
 const PAGE_SIZE = 3;
 
+//USE THE LAST COMMIT OF THE SEARCH BOOKS AND THE LAST BACKEND API (FROM ASSIGNMENT 5 BACKEND AND FRONT END)
+//CAUSE THIS IS THE ERROR ONE, AND THE LAST BEFORE THIS IS THE WORKED ONE
+
 const fetchDataFromApi = async ({
   pageParam,
   keyword,
@@ -89,8 +92,7 @@ const SearchBooks = () => {
   const items = data?.data?.flatMap((page) => page.data) ?? [];
   const isEmpty = items.length === 0;
   const isReachingEnd =
-    isEmpty ||
-    (data && data.pages[data.pages.length - 1]?.length < PAGE_SIZE);
+    isEmpty || (data && data.pages[data.pages.length - 1]?.length < PAGE_SIZE);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
