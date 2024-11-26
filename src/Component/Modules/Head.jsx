@@ -13,7 +13,7 @@ const HeaderFunction = () => {
     {
       label: "Dashboard",
       path: "/",
-      visibleForAll: true,
+      visibleForRoles: ["Librarian", "Library Manager", "Library User"],
     },
     {
       label: "Profile",
@@ -23,7 +23,12 @@ const HeaderFunction = () => {
     {
       label: "Book List",
       path: "/books",
-      visibleForRoles: ["Librarian", "Library Manager"],
+      visibleForRoles: ["Librarian"],
+    },
+    {
+      label: "Search Books",
+      path: "/searchbooks",
+      visibleForRoles: ["Librarian"],
     },
     {
       label: "Users",

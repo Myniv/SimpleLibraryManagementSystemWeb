@@ -7,6 +7,7 @@ import { Button, Col, Form, Row, Tab, Tabs } from "react-bootstrap";
 import { useState } from "react";
 
 const PAGE_SIZE = 3;
+
 const fetchDataFromApi = async ({
   pageParam,
   keyword,
@@ -16,19 +17,25 @@ const fetchDataFromApi = async ({
   category,
   language,
 }) => {
-  const { data } = await BookService.getSearch(
-    pageParam,
-    PAGE_SIZE,
-    keyword,
-    "",
-    "",
-    title,
-    isbn,
-    author,
-    category,
-    language
-  );
-  return data;
+  try {
+    const { data } = await BookService.getSearch(
+      pageParam,
+      PAGE_SIZE,
+      keyword,
+      "",
+      "",
+      title,
+      isbn,
+      author,
+      category,
+      language
+    );
+    console.log("Fetched Data from API:", data); // Debugging API response
+    return { data: data.data }; // Ensure returned data matches expected structure
+  } catch (error) {
+    console.error("Error fetching data:", error); // Handle API errors
+    throw error;
+  }
 };
 
 const SearchBooks = () => {
@@ -79,11 +86,11 @@ const SearchBooks = () => {
     },
   });
 
-  const items = data?.pages.flatMap((page) => page.data) ?? [];
+  const items = data?.data?.flatMap((page) => page.data) ?? [];
   const isEmpty = items.length === 0;
   const isReachingEnd =
     isEmpty ||
-    (data && data.pages[data.pages.length - 1]?.data.length < PAGE_SIZE);
+    (data && data.pages[data.pages.length - 1]?.length < PAGE_SIZE);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,14 +109,6 @@ const SearchBooks = () => {
     setCategory(formData.category);
     setLanguage(formData.language);
     setKey("searchList");
-    setFormData({
-      keyword: "",
-      title: "",
-      isbn: "",
-      author: "",
-      category: "",
-      language: "",
-    });
   };
 
   const onCancel = () => {
@@ -122,6 +121,7 @@ const SearchBooks = () => {
       language: "",
     });
   };
+
   return (
     <>
       <Tabs
@@ -167,7 +167,7 @@ const SearchBooks = () => {
                 </Row>
                 <Row className="mb-3 align-items-center">
                   <Col md={3}>
-                    <Form.Label htmlFor="title">ISBN</Form.Label>
+                    <Form.Label htmlFor="isbn">ISBN</Form.Label>
                   </Col>
                   <Col md={6}>
                     <Form.Control
@@ -227,7 +227,7 @@ const SearchBooks = () => {
                 </Row>
 
                 <Button variant="primary" type="submit" className="me-3">
-                  Cari
+                  Search
                 </Button>
                 <Button variant="danger" onClick={onCancel}>
                   Reset
@@ -246,7 +246,7 @@ const SearchBooks = () => {
               endMessage={
                 <div className="text-center p-4 text-gray-500">
                   <p>You have seen all items</p>
-                  <p>Total Items : {items.length} </p>
+                  <p>Total Items: {items.length}</p>
                 </div>
               }
             >
@@ -258,10 +258,9 @@ const SearchBooks = () => {
                   gap: "1.5rem",
                 }}
               >
-                {items.map((item) => (
+                {items.map((item, index) => (
                   <CardBook
-                    key={item.bookId}
-                    cardAuthor={item.author}
+                    key={item.bookId || index}
                     cardCategory={item.category}
                     cardId={item.bookId}
                     cardTitle={item.title}
