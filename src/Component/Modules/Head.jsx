@@ -28,7 +28,7 @@ const HeaderFunction = () => {
     {
       label: "Search Books",
       path: "/searchbooks",
-      visibleForRoles: ["Librarian"],
+      visibleForRoles: ["Librarian", "Library User", "Library Manager"],
     },
     {
       label: "Users",

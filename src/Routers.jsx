@@ -37,11 +37,6 @@ export const router = createBrowserRouter([
             path: "/profile",
             element: <Profile />,
           },
-        ],
-      },
-      {
-        element: <PrivateRoute allowedRoles={["Librarian"]} />,
-        children: [
           {
             path: "/searchbooks",
             element: <SearchBooksLayout />,
@@ -50,6 +45,11 @@ export const router = createBrowserRouter([
               { path: "/searchbooks/:id", element: <DetailBooks /> },
             ],
           },
+        ],
+      },
+      {
+        element: <PrivateRoute allowedRoles={["Librarian"]} />,
+        children: [
           {
             path: "/books",
             element: <BooksLayout />,
