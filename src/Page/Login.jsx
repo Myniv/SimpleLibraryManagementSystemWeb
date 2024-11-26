@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login, reset } from "../Redux/authSlice";
 import LoadingState from "../Component/Elements/LoadingState";
+import LoadingAddEdit from "../Component/Elements/LoadingAddEdit";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -23,8 +24,11 @@ const Login = () => {
       alert(message);
     }
     if (isSuccess || user) {
+      LoadingAddEdit({
+        loadingMessage: "Logging in...",
+        nextPage: () => navigate("/profile"),
+      });
       console.log("Success login");
-      navigate("/profile");
     }
 
     dispatch(reset());
