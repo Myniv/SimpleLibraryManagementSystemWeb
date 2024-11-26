@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../Redux/authSlice";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Navbar } from "react-bootstrap";
 
 const HeaderFunction = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -85,27 +85,33 @@ const HeaderFunction = () => {
           <h1 className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             Library Management
           </h1>
-          <Navbar bg="light" expand="lg">
+          <Navbar bg="dark" expand="lg">
             <Container>
-              <Navbar.Brand href="#">Library App</Navbar.Brand>
-              <Nav className="me-auto">
+              <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 nav nav-pills">
                 {menuItems.filter(isMenuVisible).map((item, index) => (
-                  <NavLink
-                    key={index}
-                    to={item.path}
-                    onClick={item.label === "logout" ? handleLogout : null}
-                  >
-                    {item.label}
-                  </NavLink>
+                  <li className="nav-item" key={index}>
+                    <NavLink
+                      key={index}
+                      to={item.path}
+                      onClick={item.label === "logout" ? handleLogout : null}
+                      className={({ isActive }) => {
+                        return isActive ? "nav-link active" : "nav-link";
+                      }}
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
                 ))}
-              </Nav>
+              </ul>
             </Container>
           </Navbar>
           {currentUser && (
             <hd>
               Welcome,{" "}
               <strong>
-                {currentUser.user?.userName ? currentUser.user.userName : currentUser.role}
+                {currentUser.user?.userName
+                  ? currentUser.user.userName
+                  : currentUser.role}
               </strong>
             </hd>
           )}

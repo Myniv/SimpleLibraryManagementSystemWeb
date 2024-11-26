@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import MemberService from "../service/member/MemberService";
 import BookService from "../service/book/BookService";
@@ -29,7 +28,7 @@ const MainPage = () => {
 
   return (
     <div className="container text-center my-4">
-      <h2>Library Dashboard</h2>
+      <h2>Welcome to Library Management</h2>
       <div className="container d-flex justify-content-center">
         <div className="card text-center m-3" style={{ width: "18rem" }}>
           <div className="card-body">
