@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { login, reset } from "../Redux/authSlice";
 import LoadingState from "../Component/Elements/LoadingState";
 import LoadingAddEdit from "../Component/Elements/LoadingAddEdit";
+import LoadingWithErrorMessage from "../Component/Elements/LoadingWithErrorMessage";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,11 @@ const Login = () => {
 
   useEffect(() => {
     if (isError) {
-      alert(message);
+      console.log(message);
+      LoadingWithErrorMessage({
+        loadingMessage: "Logging in...",
+        errorMessage: "Username or Password is wrong.",
+      });
     }
     if (isSuccess || user) {
       LoadingAddEdit({
