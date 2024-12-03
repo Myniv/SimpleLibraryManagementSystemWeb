@@ -20,6 +20,7 @@ import PrivateRoute from "./Page/PrivateRoutes";
 import RegisterUser from "./Page/Auth/RegisterUser";
 import UnauthorizedLayout from "./Component/Layout/UnauthorizedLayout";
 import UploadFiles from "./Page/Books/UploadFiles";
+import BookRequestForm from "./Page/Books/BookRequestForm";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -45,6 +46,16 @@ export const router = createBrowserRouter([
               { path: "/searchbooks", element: <SearchBooks /> },
               { path: "/searchbooks/:id", element: <DetailBooks /> },
             ],
+          },
+        ],
+      },
+      {
+        path: "/",
+        element: <PrivateRoute allowedRoles={["Library User"]} />,
+        children: [
+          {
+            path: "/bookrequest",
+            element: <BookRequestForm />,
           },
         ],
       },

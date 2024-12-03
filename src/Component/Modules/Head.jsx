@@ -36,6 +36,11 @@ const HeaderFunction = () => {
       visibleForRoles: ["Library Manager"],
     },
     {
+      label: "Book Request",
+      path: "/bookrequest",
+      visibleForRoles: ["Library User"],
+    },
+    {
       label: "Login",
       path: "/login",
       isAuthenticated: false,

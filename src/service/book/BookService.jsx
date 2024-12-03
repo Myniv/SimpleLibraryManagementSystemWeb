@@ -52,6 +52,11 @@ const create = async (data) => {
   return await api.post(`/Books`, data);
 };
 
+//Changing soon
+const bookRequest = async (data) => {
+  return await api.post(`/Stocks/book-request`, data);
+};
+
 const update = async (id, data) => {
   return await api.put(`/Books/${id}`, data);
 };
@@ -74,6 +79,7 @@ const BookService = {
   create,
   update,
   remove,
+  bookRequest,
 };
 
 export default BookService;
