@@ -19,6 +19,7 @@ import Profile from "./Page/Profile";
 import PrivateRoute from "./Page/PrivateRoutes";
 import RegisterUser from "./Page/Auth/RegisterUser";
 import UnauthorizedLayout from "./Component/Layout/UnauthorizedLayout";
+import UploadFiles from "./Page/Books/UploadFiles";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -89,6 +90,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "/login", element: <Login /> },
           { path: "/register", element: <RegisterUser /> },
+          { path: "/upload", element: <UploadFiles /> },
         ],
       },
     ],

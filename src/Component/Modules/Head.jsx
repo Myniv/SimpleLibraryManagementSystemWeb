@@ -46,6 +46,11 @@ const HeaderFunction = () => {
       isAuthenticated: false,
     },
     {
+      label: "Upload",
+      path: "/upload",
+      isAuthenticated: false,
+    },
+    {
       label: "Logout",
       isAuthenticated: true,
     },
