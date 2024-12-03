@@ -18,9 +18,10 @@ import Login from "./Page/Login";
 import Profile from "./Page/Profile";
 import PrivateRoute from "./Page/PrivateRoutes";
 import RegisterUser from "./Page/Auth/RegisterUser";
-import UnauthorizedLayout from "./Component/Layout/UnauthorizedLayout";
+// import UnauthorizedLayout from "./Component/Layout/UnauthorizedLayout";
 import UploadFiles from "./Page/Books/UploadFiles";
 import BookRequestForm from "./Page/Books/BookRequestForm";
+import BooksApproval from "./Page/Books/BooksApproval";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -50,12 +51,23 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: "/",
         element: <PrivateRoute allowedRoles={["Library User"]} />,
         children: [
           {
             path: "/bookrequest",
             element: <BookRequestForm />,
+          },
+        ],
+      },
+
+      {
+        element: (
+          <PrivateRoute allowedRoles={["Librarian", "Library Manager"]} />
+        ),
+        children: [
+          {
+            path: "/bookapproval",
+            element: <BooksApproval />,
           },
         ],
       },
