@@ -22,7 +22,7 @@ const getSearch = async (
 ) => {
   try {
     const response = await api.post(
-      "/Books/search",
+      "/Books/search2",
       {
         pageNumber,
         perPage,

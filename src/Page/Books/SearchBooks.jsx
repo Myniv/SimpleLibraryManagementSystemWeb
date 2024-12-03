@@ -89,7 +89,8 @@ const SearchBooks = () => {
     },
   });
 
-  const items = data?.data?.flatMap((page) => page.data) ?? [];
+  const items = data?.pages?.flatMap((page) => page.data) ?? [];
+  console.log(items);
   const isEmpty = items.length === 0;
   const isReachingEnd =
     isEmpty || (data && data.pages[data.pages.length - 1]?.length < PAGE_SIZE);
