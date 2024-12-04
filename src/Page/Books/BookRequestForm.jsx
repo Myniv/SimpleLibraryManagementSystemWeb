@@ -73,7 +73,7 @@ const BookRequestForm = () => {
     ) {
       newErrors.notes = "Notes must be between 2 and 100 characters";
     }
-    
+
     const isValidISBN = /^(978|979)\d{10}$/;
     if (!formData.isbn || (formData.isbn && !isValidISBN.test(formData.isbn))) {
       newErrors.isbn =
@@ -208,7 +208,7 @@ const BookRequestForm = () => {
                 value={formData.notes}
                 onChange={handleChange}
                 required
-                placeholder="Publisher"
+                placeholder="Notes for books"
               />
               {errors.notes && (
                 <div className="invalid-feedback">{errors.notes}</div>
