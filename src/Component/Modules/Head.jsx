@@ -41,9 +41,9 @@ const HeaderFunction = () => {
       visibleForRoles: ["Library User"],
     },
     {
-      label: "Book Approval",
-      path: "/bookapproval",
-      visibleForRoles: ["Librarian", "Library User", "Library Manager"],
+      label: "Book Request Table",
+      path: "/bookrequesttable",
+      visibleForRoles: ["Librarian", "Library Manager"],
     },
     {
       label: "Login",
@@ -83,9 +83,9 @@ const HeaderFunction = () => {
     }
 
     //for role for spesifict menu
-    if (item.visibleForRoles && currentUser?.role) {
+    if (item.visibleForRoles && currentUser?.roles) {
       return item.visibleForRoles.some((role) =>
-        currentUser.role.includes(role)
+        currentUser.roles.includes(role)
       );
     }
 
