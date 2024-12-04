@@ -22,6 +22,8 @@ import RegisterUser from "./Page/Auth/RegisterUser";
 import UploadFiles from "./Page/Books/UploadFiles";
 import BookRequestForm from "./Page/Books/BookRequestForm";
 import BooksApproval from "./Page/Books/BooksApproval";
+import BookRequestTable2 from "./Page/Books/BookRequestTable2";
+import BooksRequestApprovedLayout from "./Component/Layout/BookRequestApprovedLayout";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -66,8 +68,18 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "/bookapproval",
-            element: <BooksApproval />,
+            path: "/",
+            element: <BooksRequestApprovedLayout />,
+            children: [
+              {
+                path: "/bookapproval/:id",
+                element: <BooksApproval />,
+              },
+              {
+                path: "/bookrequesttable",
+                element: <BookRequestTable2 />,
+              },
+            ],
           },
         ],
       },
