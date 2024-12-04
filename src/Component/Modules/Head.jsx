@@ -131,12 +131,7 @@ const HeaderFunction = () => {
           </Navbar>
           {currentUser && (
             <hd>
-              Welcome,{" "}
-              <strong>
-                {currentUser.user?.userName
-                  ? currentUser.user.userName
-                  : currentUser.role}
-              </strong>
+              Welcome, <strong>{currentUser.user.fName}</strong>
             </hd>
           )}
         </div>
