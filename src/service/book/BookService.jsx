@@ -62,6 +62,13 @@ const bookApproval = async (data) => {
   return await api.post(`/Stocks/book-approval`, data);
 };
 
+const getBookRequestList = async () => {
+  return await api.get(`/Stocks/workflow-dashboard`);
+};
+const getBookRequestId = async (id) => {
+  return await api.get(`/Stocks/request/${id}`);
+};
+
 const update = async (id, data) => {
   return await api.put(`/Books/${id}`, data);
 };
@@ -86,6 +93,8 @@ const BookService = {
   remove,
   bookRequest,
   bookApproval,
+  getBookRequestList,
+  getBookRequestId,
 };
 
 export default BookService;
