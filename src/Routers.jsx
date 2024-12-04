@@ -67,6 +67,7 @@ export const router = createBrowserRouter([
           <PrivateRoute allowedRoles={["Librarian", "Library Manager"]} />
         ),
         children: [
+          { path: "/upload", element: <UploadFiles /> },
           {
             path: "/",
             element: <BooksRequestApprovedLayout />,
@@ -125,7 +126,6 @@ export const router = createBrowserRouter([
         children: [
           { path: "/login", element: <Login /> },
           { path: "/register", element: <RegisterUser /> },
-          { path: "/upload", element: <UploadFiles /> },
         ],
       },
     ],

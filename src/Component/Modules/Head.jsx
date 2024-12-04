@@ -58,7 +58,7 @@ const HeaderFunction = () => {
     {
       label: "Upload",
       path: "/upload",
-      isAuthenticated: false,
+      visibleForRoles: ["Librarian", "Library Manager"],
     },
     {
       label: "Logout",
