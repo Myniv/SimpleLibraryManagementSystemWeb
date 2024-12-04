@@ -14,9 +14,9 @@ const BookRequestForm = () => {
     isbn: "978-0987654321",
     author: "",
     publisher: "",
-    startDate: "",
+    startDate: "2020-01-05",
     endDate: "2055-03-04",
-    locationId: 2,
+    notes: "",
   });
 
   const onRequestBook = () => {
@@ -65,6 +65,19 @@ const BookRequestForm = () => {
       formData.publisher.length > 100
     ) {
       newErrors.publisher = "Publisher must be between 2 and 100 characters";
+    }
+    if (
+      !formData.notes ||
+      formData.notes.length < 2 ||
+      formData.notes.length > 100
+    ) {
+      newErrors.notes = "Notes must be between 2 and 100 characters";
+    }
+    
+    const isValidISBN = /^(978|979)\d{10}$/;
+    if (!formData.isbn || (formData.isbn && !isValidISBN.test(formData.isbn))) {
+      newErrors.isbn =
+        "The first 3 digit ISBN must be 978 or 979 and have a total of 13 digit.";
     }
 
     return newErrors;
@@ -128,6 +141,24 @@ const BookRequestForm = () => {
               )}
             </div>
             <div className="mb-3">
+              <label htmlFor="isbn" className="form-label">
+                ISBN
+              </label>
+              <input
+                type="number"
+                id="isbn"
+                name="isbn"
+                className={`form-control ${errors.isbn ? "is-invalid" : ""}`}
+                value={formData.isbn}
+                onChange={handleChange}
+                required
+                placeholder="ISBN"
+              />
+              {errors.isbn && (
+                <div className="invalid-feedback">{errors.isbn}</div>
+              )}
+            </div>
+            <div className="mb-3">
               <label htmlFor="author" className="form-label">
                 Author
               </label>
@@ -166,23 +197,21 @@ const BookRequestForm = () => {
               )}
             </div>
             <div className="mb-3">
-              <label htmlFor="startDate" className="form-label">
-                Publish Year
+              <label htmlFor="notes" className="form-label">
+                Notes
               </label>
               <input
-                type="date"
-                id="startDate"
-                name="startDate"
-                className={`form-control ${
-                  errors.startDate ? "is-invalid" : ""
-                }`}
-                value={formData.startDate}
+                type="text"
+                id="notes"
+                name="notes"
+                className={`form-control ${errors.notes ? "is-invalid" : ""}`}
+                value={formData.notes}
                 onChange={handleChange}
                 required
                 placeholder="Publisher"
               />
-              {errors.startDate && (
-                <div className="invalid-feedback">{errors.startDate}</div>
+              {errors.notes && (
+                <div className="invalid-feedback">{errors.notes}</div>
               )}
             </div>
             <button type="submit" className="btn btn-primary m-3 btn-sm">

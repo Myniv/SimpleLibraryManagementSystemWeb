@@ -69,10 +69,11 @@ const AddBookForm = () => {
       newErrors.title = "Title must be more than 2 characters!!";
     }
 
-    // const isValidISBN = /^(978|979)\d{10}$/;
-    // if (!formData.isbn || (formData.isbn && !isValidISBN.test(formData.isbn))) {
-    //   newErrors.isbn =
-    //     "The first 3 digit ISBN must be 978 or 979 and have a total of 13 digit.";
+    const isValidISBN = /^(978|979)\d{10}$/;
+    if (!formData.isbn || (formData.isbn && !isValidISBN.test(formData.isbn))) {
+      newErrors.isbn =
+        "The first 3 digit ISBN must be 978 or 979 and have a total of 13 digit.";
+    }
     // } else if (
     //   //.some is for searching array data that at least have one that same as the condition and return boolean
     //   //if form adding based isEditing false
