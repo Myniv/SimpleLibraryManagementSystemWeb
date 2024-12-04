@@ -3,9 +3,11 @@ import BookService from "../../service/book/BookService";
 import LoadingAddEdit from "../../Component/Elements/LoadingAddEdit";
 import { useNavigate } from "react-router-dom";
 import DangerButton from "../../Component/Elements/DangerButton";
+import { useSelector } from "react-redux";
 
 const BookRequestForm = () => {
   const navigate = useNavigate();
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -94,6 +96,19 @@ const BookRequestForm = () => {
         <h2 className="ms-5">Request Book</h2>
         <div className="container border">
           <form onSubmit={handleSubmit} className="mb-4">
+            <div className="mb-3">
+              <label htmlFor="requester" className="form-label">
+                Requester
+              </label>
+              <input
+                type="text"
+                id="requester"
+                name="requester"
+                className={`form-control`}
+                value={currentUser.user.fName}
+                disabled
+              />
+            </div>
             <div className="mb-3">
               <label htmlFor="title" className="form-label">
                 Title
