@@ -65,6 +65,11 @@ const bookApproval = async (data) => {
 const getBookRequestList = async () => {
   return await api.get(`/Stocks/workflow-dashboard`);
 };
+
+const getDashboardList = async () => {
+  return await api.get(`/Stocks/dashboard`);
+};
+
 const getBookRequestId = async (id) => {
   return await api.get(`/Stocks/request/${id}`);
 };
@@ -95,6 +100,7 @@ const BookService = {
   bookApproval,
   getBookRequestList,
   getBookRequestId,
+  getDashboardList,
 };
 
 export default BookService;
