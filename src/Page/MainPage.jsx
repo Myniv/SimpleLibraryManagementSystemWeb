@@ -5,8 +5,7 @@ import PieChartCodes from "../Component/Widgets/PieChartCodes";
 import BarChartCodes from "../Component/Widgets/BarChartCodes";
 import BookRequestTable2 from "./Books/BookRequestTable2";
 import BookOverdueTable from "./Books/BookOverdueTable";
-import ReportForm from "./Transactions/ReportForm";
-import ReportFormIFrame from "./Transactions/ReportFormIFrame";
+
 
 const MainPage = () => {
   const [member, setMember] = useState([]);
@@ -151,8 +150,6 @@ const MainPage = () => {
           </div>
         </div>
       </div>
-      <ReportForm />
-      <ReportFormIFrame />
     </div>
   );
 };

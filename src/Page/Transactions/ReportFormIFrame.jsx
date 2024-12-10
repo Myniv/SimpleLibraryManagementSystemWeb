@@ -63,7 +63,7 @@ const ReportFormIFrame = () => {
 
   return (
     <div className="container">
-      <h4>Laporan Buku Keluar</h4>
+      <h4>Overdue Book Report</h4>
 
       {error && (
         <div className="alert alert-danger" role="alert">
@@ -71,7 +71,7 @@ const ReportFormIFrame = () => {
         </div>
       )}
 
-      <div className="text-center mb-3">
+      <div className="text-left mb-3">
         <button
           className="btn btn-primary me-2"
           onClick={handleGenerateReport}

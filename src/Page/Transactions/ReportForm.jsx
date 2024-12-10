@@ -91,7 +91,7 @@ const ReportForm = () => {
   return (
     <>
       <div className="container">
-        <h4>Laporan Buku Keluar</h4>
+        <h4>Check Out Book Report</h4>
         <div className="row">
           <div className="col-md-4 mb-3">
             <label className="form-label">Tanggal Mulai</label>
@@ -129,7 +129,7 @@ const ReportForm = () => {
                   </span>
                 </>
               ) : (
-                "Lihar Laporan"
+                "Lihat Laporan"
               )}
             </button>
             {pdfFile && (
