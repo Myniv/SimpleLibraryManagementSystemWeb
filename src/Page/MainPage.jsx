@@ -3,8 +3,6 @@ import MemberService from "../service/member/MemberService";
 import BookService from "../service/book/BookService";
 import PieChartCodes from "../Component/Widgets/PieChartCodes";
 import BarChartCodes from "../Component/Widgets/BarChartCodes";
-import LineChartCodes from "../Component/Widgets/LineChartCodes";
-import AreaChartCodes from "../Component/Widgets/AreaChartCodes";
 import BookRequestTable2 from "./Books/BookRequestTable2";
 import BookOverdueTable from "./Books/BookOverdueTable";
 
@@ -131,39 +129,9 @@ const MainPage = () => {
             <div className="card text-center mt-3">
               <div className="card-body">
                 <h5 className="card-title bg-dark text-white p-2 rounded">
-                  Total Overdue Books
+                  Total Overdue Books ({dashboard?.overdueBooks?.length || 0})
                 </h5>
-                {/* <p
-                  className="card-text"
-                  style={{ fontSize: "2rem", fontWeight: "bold" }}
-                >
-                  {dashboard?.overdueBooks?.length || 0}
-                </p> */}
                 <BookOverdueTable data={dashboard.overdueBooks} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div className="card text-center mt-3">
-              <div className="card-body">
-                <h5 className="card-title bg-dark text-white p-2 rounded">
-                  Line Charts
-                </h5>
-                <LineChartCodes />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div className="card text-center mt-3">
-              <div className="card-body">
-                <h5 className="card-title bg-dark text-white p-2 rounded">
-                  Area Charts
-                </h5>
-                <AreaChartCodes />
               </div>
             </div>
           </div>
