@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 
-const PieChartCodes = ({ data }) => {
+const PieChartCodes = ({ data, name, value }) => {
   const bookCategories = [
     { name: "Fiction", value: 450 },
     { name: "Non-Fiction", value: 300 },
@@ -17,6 +17,12 @@ const PieChartCodes = ({ data }) => {
     { name: "Arts", value: 50 },
   ];
 
+  const dataBookCategories = data ? data : bookCategories;
+
+  const nameData = name ? name : "name";
+
+  const valueData = value ? value : "borrowCount";
+
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AA3377"];
 
   return (
@@ -24,7 +30,7 @@ const PieChartCodes = ({ data }) => {
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
-            data={data}
+            data={dataBookCategories}
             cx="50%"
             cy="50%"
             labelLine={true}
@@ -33,8 +39,8 @@ const PieChartCodes = ({ data }) => {
             }
             outerRadius={120}
             fill="#8884d8"
-            dataKey="count"
-            nameKey="category"
+            dataKey={valueData}
+            nameKey={nameData}
           >
             {bookCategories.map((entry, index) => (
               <Cell
