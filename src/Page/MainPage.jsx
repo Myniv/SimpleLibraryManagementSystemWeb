@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import MemberService from "../service/member/MemberService";
 import BookService from "../service/book/BookService";
 import PieChartCodes from "../Component/Widgets/PieChartCodes";
+import BarChartCodes from "../Component/Widgets/BarChartCodes";
+import LineChartCodes from "../Component/Widgets/LineChartCodes";
+import AreaChartCodes from "../Component/Widgets/AreaChartCodes";
+import BookRequestTable2 from "./Books/BookRequestTable2";
 
 const MainPage = () => {
   const [member, setMember] = useState([]);
@@ -41,61 +45,138 @@ const MainPage = () => {
   return (
     <div className="container text-center my-4">
       <h2>Welcome to Library Management</h2>
-      <div className="container d-flex justify-content-center">
-        <div className="card text-center m-3" style={{ width: "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title bg-dark text-white p-2 rounded">
-              Total Books
-            </h5>
-            <p
-              className="card-text"
-              style={{ fontSize: "2rem", fontWeight: "bold" }}
-            >
-              {book.length}
-            </p>
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <div className="card text-center" style={{ width: "25rem" }}>
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Total Books
+                </h5>
+                <p
+                  className="card-text"
+                  style={{ fontSize: "2rem", fontWeight: "bold" }}
+                >
+                  {book.length}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col">
+            <div className="card text-center" style={{ width: "25rem" }}>
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Total Overdue Books
+                </h5>
+                <p
+                  className="card-text"
+                  style={{ fontSize: "2rem", fontWeight: "bold" }}
+                >
+                  {dashboard?.overdueBooks?.length}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col">
+            <div className="card text-center" style={{ width: "25rem" }}>
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Process To Follow Up
+                </h5>
+                <p
+                  className="card-text"
+                  style={{ fontSize: "2rem", fontWeight: "bold" }}
+                >
+                  {dashboard?.processToFollowUp || 0}
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* <div className="col">
+            <div className="card text-center m-3" style={{ width: "18rem" }}>
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Total Members
+                </h5>
+                <p
+                  className="card-text"
+                  style={{ fontSize: "2rem", fontWeight: "bold" }}
+                >
+                  {member.length}
+                </p>
+              </div>
+            </div>
+          </div> */}
+        </div>
+
+        <div className="row d-grid gap-2 d-md-flex justify-content-between">
+          <div className="col-5">
+            <div className="card text-center mt-3">
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Bar Chart
+                </h5>
+
+                <BarChartCodes
+                  data={dashboard.mostActiveUsers}
+                  name="name"
+                  value="totalTransaction"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col">
+            <div className="card text-center mt-3">
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Pie Charts
+                </h5>
+                <PieChartCodes
+                  data={dashboard.booksPerCategory}
+                  name="category"
+                  value="count"
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="card text-center m-3" style={{ width: "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title bg-dark text-white p-2 rounded">
-              Total Overdue Books
-            </h5>
-            <p
-              className="card-text"
-              style={{ fontSize: "2rem", fontWeight: "bold" }}
-            >
-              {dashboard?.overdueBooks?.length}
-            </p>
+        <div className="row">
+          <div className="col">
+            <div className="card text-center mt-3">
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Line Charts
+                </h5>
+                <LineChartCodes />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="card text-center m-3" style={{ width: "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title bg-dark text-white p-2 rounded">
-              Process To Follow Up
-            </h5>
-            <p
-              className="card-text"
-              style={{ fontSize: "2rem", fontWeight: "bold" }}
-            >
-              {dashboard?.processToFollowUp || 0}
-            </p>
+        <div className="row">
+          <div className="col">
+            <div className="card text-center mt-3">
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Area Charts
+                </h5>
+                <AreaChartCodes />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="card text-center m-3" style={{ width: "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title bg-dark text-white p-2 rounded">
-              Total Members
-            </h5>
-            <p
-              className="card-text"
-              style={{ fontSize: "2rem", fontWeight: "bold" }}
-            >
-              {member.length}
-            </p>
+        <div className="row">
+          <div className="col">
+            <div className="card text-center mt-3">
+              <div className="card-body">
+                <h5 className="card-title bg-dark text-white p-2 rounded">
+                  Follow Up Task
+                </h5>
+                <BookRequestTable2 />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <PieChartCodes data={dashboard.booksPerCategory} />
     </div>
   );
 };
