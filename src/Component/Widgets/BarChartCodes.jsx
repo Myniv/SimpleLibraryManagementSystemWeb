@@ -29,12 +29,12 @@ const BarChartCodes = ({ data, name, value }) => {
   return (
     <div style={{ height: "400px" }}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={dataActiveMembers} layout="horizontal">
+        <BarChart data={dataActiveMembers} layout="vertical">
           <CartesianGrid strokeDasharray="3 3" />
 
-          <XAxis dataKey={nameData} type="category" width={100} />
+          <XAxis  type="number" />
 
-          <YAxis type="number" />
+          <YAxis dataKey={nameData} type="category" width={100}/>
 
           <Tooltip />
 
