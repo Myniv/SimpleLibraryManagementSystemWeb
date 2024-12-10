@@ -21,9 +21,39 @@ const PieChartCodes = ({ data, name, value }) => {
 
   const nameData = name ? name : "name";
 
-  const valueData = value ? value : "borrowCount";
+  const valueData = value ? value : "value";
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AA3377"];
+
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.65;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    const categoryName = dataBookCategories[index][nameData] || ""; // Get category name using index
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor="middle"
+        dominantBaseline="central"
+        style={{ fontSize: "12px", fontWeight: "bold" }} // Adjust text size if needed
+      >
+        {`${categoryName} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
 
   return (
     <div style={{ height: "400px" }}>
@@ -33,10 +63,11 @@ const PieChartCodes = ({ data, name, value }) => {
             data={dataBookCategories}
             cx="50%"
             cy="50%"
-            labelLine={true}
-            label={({ category, percent }) =>
-              `${category} (${(percent * 100).toFixed(0)}%)`
-            }
+            labelLine={false}
+            // label={({ category, percent }) =>
+            //   `${category} (${(percent * 100).toFixed(0)}%)`
+            // }
+            label={renderCustomizedLabel}
             outerRadius={120}
             fill="#8884d8"
             dataKey={valueData}
