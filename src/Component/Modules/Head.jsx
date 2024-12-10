@@ -61,6 +61,11 @@ const HeaderFunction = () => {
       visibleForRoles: ["Librarian", "Library Manager"],
     },
     {
+      label: "Report",
+      path: "/report",
+      visibleForRoles: ["Librarian", "Library Manager"],
+    },
+    {
       label: "Logout",
       isAuthenticated: true,
     },
@@ -129,10 +134,12 @@ const HeaderFunction = () => {
               </ul>
             </Container>
           </Navbar>
-          {currentUser && (
+          {currentUser?.user?.fName ? (
             <hd>
               Welcome, <strong>{currentUser.user.fName}</strong>
             </hd>
+          ) : (
+            <hd>Welcome, Guest</hd>
           )}
         </div>
       </div>

@@ -24,6 +24,7 @@ import BookRequestForm from "./Page/Books/BookRequestForm";
 import BooksApproval from "./Page/Books/BooksApproval";
 import BookRequestTable2 from "./Page/Books/BookRequestTable2";
 import BooksRequestApprovedLayout from "./Component/Layout/BookRequestApprovedLayout";
+import ReportPage from "./Page/Transactions/ReportPage";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -67,6 +68,7 @@ export const router = createBrowserRouter([
           <PrivateRoute allowedRoles={["Librarian", "Library Manager"]} />
         ),
         children: [
+          { path: "/report", element: <ReportPage /> },
           { path: "/upload", element: <UploadFiles /> },
           {
             path: "/",
